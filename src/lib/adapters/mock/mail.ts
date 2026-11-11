@@ -3,11 +3,11 @@ import type { MailboxAdapter } from "../types";
 export const mockMailboxAdapter: MailboxAdapter = {
   name: "Mock Migadu",
   webmailUrl: "https://webmail.zaffrehost.com",
-  async create() {
-    return { ok: true };
+  async create(address) {
+    return { setupUrl: `https://webmail.zaffrehost.com/setup?demo=${encodeURIComponent(address)}` };
   },
-  async resetPassword() {
-    return { ok: true };
+  async resetPassword(address) {
+    return { resetUrl: `https://webmail.zaffrehost.com/reset?demo=${encodeURIComponent(address)}` };
   },
   async dnsStatus(domain) {
     const allOk = !domain.includes("shop");

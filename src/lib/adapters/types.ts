@@ -102,8 +102,10 @@ export interface MailDnsStatus {
 export interface MailboxAdapter {
   readonly name: string;
   readonly webmailUrl: string;
-  create(address: string, password: string): Promise<{ ok: true }>;
-  resetPassword(address: string, password: string): Promise<{ ok: true }>;
+  /** Creates the mailbox and returns a one-time link where the user sets the password. */
+  create(address: string): Promise<{ setupUrl: string }>;
+  /** Returns a one-time password reset link. */
+  resetPassword(address: string): Promise<{ resetUrl: string }>;
   dnsStatus(domain: string): Promise<MailDnsStatus[]>;
 }
 
