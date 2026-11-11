@@ -71,8 +71,21 @@ export default function HomePage() {
             <p className="text-lg leading-relaxed text-white/85">{home.why.body}</p>
           </Reveal>
         </div>
-        <div className="mt-14 overflow-x-auto sm:mt-20">
-          <table className="w-full min-w-[640px] text-left">
+        <dl className="mt-12 md:hidden">
+          {home.why.rows.map((row) => (
+            <div key={row.label} className="border-t border-white/30 py-6">
+              <dt className="text-[0.9375rem] font-medium text-white/70">{row.label}</dt>
+              {row.values.map((value, i) => (
+                <dd key={value} className={i === 2 ? "mt-3 rounded-[4px] bg-white px-4 py-3 text-zaffre-700" : "mt-3"}>
+                  <span className={i === 2 ? "block text-sm font-medium" : "block text-sm text-white/70"}>{home.why.columns[i]}</span>
+                  <span className={i === 2 ? "mt-0.5 block text-lg leading-snug font-semibold" : "mt-0.5 block text-lg leading-snug text-white/90"}>{value}</span>
+                </dd>
+              ))}
+            </div>
+          ))}
+        </dl>
+        <div className="mt-20 hidden md:block">
+          <table className="w-full text-left">
             <caption className="sr-only">How Zaffre compares with shared hosting and developer platforms</caption>
             <thead>
               <tr className="border-b border-white/30 text-[0.9375rem]">

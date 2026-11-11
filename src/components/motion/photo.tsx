@@ -42,7 +42,7 @@ export function Photo({
       transition={{ duration: 0.9, ease }}
     >
       <motion.div className="absolute -inset-y-8 inset-x-0 motion-reduce:!transform-none" style={{ y }}>
-        <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" style={{ objectPosition: position }} />
+        <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover text-transparent" style={{ objectPosition: position }} />
       </motion.div>
     </motion.div>
   );
