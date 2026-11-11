@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { connection } from "next/server";
+import { requestTime } from "@/lib/request";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -18,8 +18,7 @@ import { formatCents, formatDate } from "@/lib/utils";
 export const metadata: Metadata = { title: "Invoice" };
 
 export default async function InvoicePage({ params, searchParams }: PageProps<"/dashboard/billing/[invoiceId]">) {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const { invoiceId } = await params;
   const submitted = (await searchParams).submitted === "1";
   const viewer = await getViewer();

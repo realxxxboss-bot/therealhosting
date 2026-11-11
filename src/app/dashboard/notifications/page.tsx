@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { requestTime } from "@/lib/request";
 import Link from "next/link";
-import { connection } from "next/server";
 import { Bell } from "lucide-react";
 import { getViewer } from "@/lib/auth/viewer";
 import { getNotificationPrefs, listNotifications } from "@/lib/data/client";
@@ -25,8 +25,7 @@ const kindLabels = {
 } as const;
 
 export default async function NotificationsPage() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const viewer = await getViewer();
   const items = listNotifications(viewer);
   const prefs = getNotificationPrefs(viewer);

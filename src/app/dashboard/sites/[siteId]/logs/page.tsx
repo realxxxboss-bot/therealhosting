@@ -1,4 +1,4 @@
-import { connection } from "next/server";
+import { requestTime } from "@/lib/request";
 import { notFound } from "next/navigation";
 import { getViewer } from "@/lib/auth/viewer";
 import { getSite } from "@/lib/data/client";
@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 const levelColor = { info: "text-zaffre-300", warn: "text-amber-300", error: "text-red-300" } as const;
 
 export default async function LogsPage({ params }: PageProps<"/dashboard/sites/[siteId]/logs">) {
-  await connection();
+  const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
   const site = getSite(viewer, siteId);
   if (!site) notFound();
-  const lines = await getAdapters().deploy.logs(site.id, { limit: 60, now: Date.now() });
+  const lines = await getAdapters().deploy.logs(site.id, { limit: 60, now });
   return (
     <Card className="overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-5 py-3">

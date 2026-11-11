@@ -1,4 +1,4 @@
-import { connection } from "next/server";
+import { requestTime } from "@/lib/request";
 import { notFound } from "next/navigation";
 import { GitCommit } from "lucide-react";
 import { getViewer } from "@/lib/auth/viewer";
@@ -10,8 +10,7 @@ import { DeployStatusBadge } from "@/components/app/status";
 import { formatDateTime, formatRelative } from "@/lib/utils";
 
 export default async function DeploymentsPage({ params }: PageProps<"/dashboard/sites/[siteId]/deployments">) {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
   const site = getSite(viewer, siteId);

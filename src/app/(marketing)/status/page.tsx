@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { requestTime } from "@/lib/request";
 import { Suspense } from "react";
-import { connection } from "next/server";
 import { getAdapters } from "@/lib/adapters";
 import type { ServiceStatus } from "@/lib/adapters/types";
 import { PageHero, Section } from "@/components/marketing/section";
@@ -32,8 +32,7 @@ export default function StatusPage() {
 }
 
 async function LiveStatus() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const services = await getAdapters().uptime.platformStatus({ now });
   const worst = services.some((s) => s.status === "outage") ? "outage" : services.some((s) => s.status === "degraded") ? "degraded" : "operational";
   return (

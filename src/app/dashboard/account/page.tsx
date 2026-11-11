@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { connection } from "next/server";
+import { requestTime } from "@/lib/request";
 import { getViewer } from "@/lib/auth/viewer";
 import { listActivity, listSessions } from "@/lib/data/client";
 import { revokeSession, toggleTwoFactor, updateProfile } from "@/app/actions/account";
@@ -39,8 +39,7 @@ const actionLabels: Record<string, string> = {
 };
 
 export default async function AccountPage() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const viewer = await getViewer();
   const sessions = listSessions(viewer);
   const activity = listActivity(viewer).slice(0, 15);

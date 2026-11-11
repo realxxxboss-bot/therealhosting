@@ -1,6 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { db } from "@/lib/data/store";
 import type { Account, Membership, User } from "@/lib/data/types";
 import { sign, verify } from "./token";
@@ -45,6 +46,8 @@ export async function clearSession(): Promise<void> {
 }
 
 export async function readSession(): Promise<SessionPayload | null> {
+  // Session checks depend on the request and the clock, so they always run at request time.
+  await connection();
   const jar = await cookies();
   const payload = verify<SessionPayload>(jar.get(SESSION_COOKIE)?.value, secret());
   if (!payload || payload.exp < Date.now() / 1000) return null;
@@ -58,6 +61,7 @@ export async function setPendingTwoFactor(uid: string): Promise<void> {
 }
 
 export async function readPendingTwoFactor(): Promise<string | null> {
+  await connection();
   const jar = await cookies();
   const payload = verify<{ uid: string; exp: number }>(jar.get(PENDING_2FA_COOKIE)?.value, secret());
   if (!payload || payload.exp < Date.now() / 1000) return null;

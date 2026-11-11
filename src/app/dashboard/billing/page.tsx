@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { requestTime } from "@/lib/request";
 import Link from "next/link";
-import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { getViewer } from "@/lib/auth/viewer";
 import { hasCapability, listInvoices, listPayments, listPaymentMethods, listSites, listSubscriptions } from "@/lib/data/client";
@@ -18,8 +18,7 @@ import { formatCents, formatDate } from "@/lib/utils";
 export const metadata: Metadata = { title: "Billing" };
 
 export default async function BillingPage() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const viewer = await getViewer();
   if (!hasCapability(viewer, "billing:view")) notFound();
   const subs = listSubscriptions(viewer);

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { requestTime } from "@/lib/request";
 import Link from "next/link";
-import { connection } from "next/server";
 import { LifeBuoy, MessageCircle } from "lucide-react";
 import { getViewer } from "@/lib/auth/viewer";
 import { listSites, listTickets } from "@/lib/data/client";
@@ -15,8 +15,7 @@ import { formatRelative } from "@/lib/utils";
 export const metadata: Metadata = { title: "Support" };
 
 export default async function SupportPage() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const viewer = await getViewer();
   const tickets = listTickets(viewer);
   const sites = new Map(listSites(viewer).map((s) => [s.id, s.name]));

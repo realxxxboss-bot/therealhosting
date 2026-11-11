@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { requestTime } from "@/lib/request";
 import Link from "next/link";
-import { connection } from "next/server";
 import { AlertTriangle, ArrowRight, CalendarClock, LifeBuoy, Receipt, Server } from "lucide-react";
 import { getViewer } from "@/lib/auth/viewer";
 import { hasCapability, listInvoices, listNotifications, listSites, listSubscriptions, listTickets } from "@/lib/data/client";
@@ -18,8 +18,7 @@ import { formatCents, formatDate, formatRelative } from "@/lib/utils";
 export const metadata: Metadata = { title: "Overview" };
 
 export default async function OverviewPage() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const viewer = await getViewer();
   const sites = listSites(viewer);
   const invoices = listInvoices(viewer);

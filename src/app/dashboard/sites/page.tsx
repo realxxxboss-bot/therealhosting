@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { requestTime } from "@/lib/request";
 import Link from "next/link";
-import { connection } from "next/server";
 import { Server } from "lucide-react";
 import { getViewer } from "@/lib/auth/viewer";
 import { listSites, listSubscriptions, getServer } from "@/lib/data/client";
@@ -16,8 +16,7 @@ import { formatRelative } from "@/lib/utils";
 export const metadata: Metadata = { title: "Sites" };
 
 export default async function SitesPage() {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const viewer = await getViewer();
   const sites = listSites(viewer);
   const subs = listSubscriptions(viewer);

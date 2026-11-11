@@ -1,4 +1,4 @@
-import { connection } from "next/server";
+import { requestTime } from "@/lib/request";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getViewer } from "@/lib/auth/viewer";
@@ -11,8 +11,7 @@ import { DeployStatusBadge, SslBadge } from "@/components/app/status";
 import { formatDateTime, formatRelative } from "@/lib/utils";
 
 export default async function SiteOverview({ params }: PageProps<"/dashboard/sites/[siteId]">) {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
   const site = getSite(viewer, siteId);

@@ -1,4 +1,4 @@
-import { connection } from "next/server";
+import { requestTime } from "@/lib/request";
 import { notFound } from "next/navigation";
 import { getViewer } from "@/lib/auth/viewer";
 import { getSite } from "@/lib/data/client";
@@ -8,8 +8,7 @@ import { Stat } from "@/components/ui/stat";
 import { Chart } from "@/components/app/chart";
 
 export default async function AnalyticsPage({ params }: PageProps<"/dashboard/sites/[siteId]/analytics">) {
-  await connection();
-  const now = Date.now();
+  const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
   const site = getSite(viewer, siteId);
