@@ -16,7 +16,9 @@ export default async function AuditPage({ searchParams }: PageProps<"/admin/audi
   const store = db();
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
   const users = new Map(store.users.map((u) => [u.id, u.name]));
+  // Newest first. Seeded and live events are appended in different orders, so sort explicitly.
   const events = store.auditLog
+    .toSorted((a, b) => b.createdAt.localeCompare(a.createdAt))
     .filter((e) => !q || [e.action, e.actorName, e.target ?? "", e.accountId ? (accounts.get(e.accountId) ?? "") : ""].some((v) => v.toLowerCase().includes(q)))
     .slice(0, 200);
 
@@ -27,8 +29,8 @@ export default async function AuditPage({ searchParams }: PageProps<"/admin/audi
         <label htmlFor="q" className="sr-only">
           Filter
         </label>
-        <input id="q" name="q" defaultValue={q} placeholder="Filter by action, person or client" className="h-10 w-full max-w-sm rounded-[10px] border border-border bg-surface px-3 text-sm" />
-        <button type="submit" className="rounded-[10px] border border-border px-4 text-sm font-medium hover:bg-surface-2">
+        <input id="q" name="q" defaultValue={q} placeholder="Filter by action, person or client" className="h-10 w-full max-w-sm rounded-[4px] border border-border bg-surface px-3 text-sm" />
+        <button type="submit" className="rounded-[4px] border border-border px-4 text-sm font-medium hover:bg-surface-2">
           Filter
         </button>
       </form>
@@ -54,7 +56,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/admin/audi
                     {e.impersonatorId ? <Badge tone="warning" className="ml-2">via {users.get(e.impersonatorId)}</Badge> : null}
                   </TD>
                   <TD className="font-mono text-xs">{e.action}</TD>
-                  <TD className="text-muted">{e.target ?? "—"}</TD>
+                  <TD className="text-muted">{e.target ?? ""}</TD>
                   <TD className="text-muted">{e.accountId ? accounts.get(e.accountId) : "Platform"}</TD>
                 </TR>
               ))}

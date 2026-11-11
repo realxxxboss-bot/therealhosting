@@ -9,7 +9,7 @@ export function Stat({ label, value, hint, icon: Icon }: { label: string; value:
         <p className="text-sm text-muted">{label}</p>
         {Icon ? <Icon className="size-4 text-muted" aria-hidden /> : null}
       </div>
-      <p className="mt-2 font-display text-2xl font-bold tracking-tight">{value}</p>
+      <p className="mt-2 text-2xl font-semibold tracking-[-0.025em]">{value}</p>
       {hint ? <p className="mt-1 text-xs text-muted">{hint}</p> : null}
     </Card>
   );

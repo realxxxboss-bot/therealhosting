@@ -1,28 +1,69 @@
-Moving a Next.js app is mostly about collecting the things your current platform does quietly for you. Here is the list we use for every migration.
+Moving a Next.js app is mostly about collecting the things your current platform does quietly for you. The code is the easy part: it is in Git and it builds the same way anywhere. The risk is in everything around the code that somebody set up once and then forgot.
+
+This is the checklist we use for every Next.js migration. You can follow it on your own with any host.
+
+## Why Next.js moves go wrong
+
+A Next.js app in production leans on its platform for more than serving pages. Environment variables, scheduled jobs, the cache behind ISR, image optimisation, redirects, preview deployments. On a platform built for Next.js these work without you thinking about them, which is exactly why they get missed in a move.
+
+The typical failure is not a crash. It is something small and silent: a cron job that no longer runs, a page that never revalidates, a secret that was set for production but not for previews. So the method is simple. Write down everything the platform does, then prove each item on the new host before you switch.
 
 ## Before the move
 
+Collect these first. It takes about an hour for most apps.
+
 1. **Repository and branch.** Which branch is production? Are there preview branches people rely on?
-2. **Node.js and Next.js versions.** Check `engines` in `package.json` and the `next` version.
-3. **Environment variables.** Export them for production and preview. Mark which ones are secrets.
-4. **Cron jobs.** Platform cron schedules often live in a config file, for example `vercel.json`. List each path and schedule.
-5. **Caching.** If you use ISR or `revalidateTag`, the new host needs a cache that survives restarts.
-6. **Images.** `next/image` needs the image optimiser and a cache directory.
-7. **Redirects and headers.** In `next.config` and in platform settings.
-8. **Domains.** Every hostname, including `www` and any old domains that redirect.
+2. **Node.js and Next.js versions.** Check `engines` in `package.json` and the `next` version. Run the same Node.js version on the new host.
+3. **Environment variables.** Export them for production and for preview. Mark which ones are secrets, and which ones are read at build time.
+4. **Cron jobs.** Platform cron schedules often live in a config file, for example `vercel.json`. List each path and its schedule.
+5. **Caching.** If you use ISR or `revalidateTag`, the new host needs a cache that survives restarts and deploys.
+6. **Images.** `next/image` needs the image optimiser and a cache directory with room in it.
+7. **Redirects and headers.** Look in `next.config` and in the platform's own settings. They are often split across both.
+8. **Domains.** Every hostname, including `www` and any old domains that only redirect.
+9. **Outside services.** Webhooks that point at your current URL, allow-lists that contain your current IP addresses, and OAuth callback addresses.
+
+Item 9 is the one people skip. A payment provider that sends webhooks to the old address will keep doing so after you move.
+
+## Build-time and run-time variables
+
+It is worth a moment on item 3, because it causes the most confusing bugs.
+
+Variables that start with `NEXT_PUBLIC_` are written into the JavaScript bundle when the app is built. If one of them is missing at build time, the app builds without complaint and the value is simply empty in the browser. Setting it afterwards does nothing until the next build.
+
+Server-side variables are read when the code runs. Those can be changed with a restart.
+
+So when you test on the new host, do not only check that the build passes. Open the site and check that the things driven by public variables, such as analytics IDs or the API address, are actually there.
+
+## The cache is the part that needs a real server
+
+ISR keeps rendered pages and refreshes them in the background. That cache has to live somewhere. On a single long-running server with a disk, it lives on the disk and survives a restart. On hosting that starts a fresh container for every deploy, the cache starts empty each time unless it is stored outside the container.
+
+Ask your new host one question: after a deploy, are my ISR pages still cached? If the answer is no, the first visitor to every page after every deploy pays for a full render.
+
+The same applies to `next/image`. Optimised images are cached on disk. Lose the disk and each image is processed again.
 
 ## The move
 
 1. Build and run the app on the new host with production variables.
-2. Test on a private URL: pages, forms, API routes, sign-in, payments.
-3. Lower DNS TTL to 5 minutes a day before the switch.
-4. Switch DNS records. Keep the old deployment running.
-5. Watch logs and traffic on both sides until the old host is idle.
+2. Test on a private URL: pages, forms, API routes, sign-in and payments.
+3. Trigger each cron path by hand once and read the log.
+4. Change a piece of content and confirm that revalidation picks it up.
+5. Lower your DNS TTL to 5 minutes, a day before the switch.
+6. Switch the DNS records. Keep the old deployment running.
+7. Watch logs and traffic on both sides until the old host is idle.
+
+Step 5 is what makes a switch reversible. With a short TTL, pointing DNS back to the old host takes effect within minutes. With the usual TTL of several hours, a mistake stays visible for several hours.
 
 ## After the move
 
-- Confirm SSL is active on every hostname.
-- Confirm cron jobs ran at least once.
+- Confirm SSL is active on every hostname, including the ones that only redirect.
+- Confirm each cron job ran at least once on its own schedule, not only when you triggered it.
+- Update webhook addresses and callback URLs at outside services.
+- Raise the DNS TTL again.
 - Remove the old deployment and revoke temporary access.
 
-We do all of this for free when you move to Zaffre. [Start a migration](/migration).
+Leave the old deployment in place for a few days before deleting it. It costs little and it is your rollback.
+
+## If you would rather not do this yourself
+
+We do all of this for free when you move to Zaffre: we copy the variables, recreate the cron schedules, test on a private link and switch DNS when you approve. [See how a migration works](/migration), or read more about [Next.js hosting](/hosting/nextjs).

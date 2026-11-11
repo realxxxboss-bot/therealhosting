@@ -52,14 +52,14 @@ export default async function BillingPage() {
               const plan = getPlan(s.planId);
               const used = sites.filter((x) => x.subscriptionId === s.id).length;
               return (
-                <div key={s.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[12px] border border-border p-4">
+                <div key={s.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[8px] border border-border p-4">
                   <div>
                     <p className="font-semibold">{plan?.name}</p>
                     <p className="text-sm text-muted">
-                      {used} of {plan?.sites} sites · {s.cycle === "monthly" ? "Monthly" : "Yearly"} · renews {formatDate(s.renewsAt)}
+                      {used} of {plan?.sites} sites, {s.cycle === "monthly" ? "Monthly" : "Yearly"}, renews {formatDate(s.renewsAt)}
                     </p>
                   </div>
-                  <p className="font-display text-lg font-bold">
+                  <p className="font-display text-lg font-semibold">
                     {formatCents(s.priceCents)}
                     <span className="text-sm font-normal text-muted"> / {s.cycle === "monthly" ? "mo" : "yr"}</span>
                   </p>

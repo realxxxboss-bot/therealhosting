@@ -1,14 +1,16 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import type { FormState } from "@/lib/forms";
 import { cn } from "@/lib/utils";
+import { useToast } from "./toast";
 
 type Variant = "primary" | "secondary" | "ghost" | "soft" | "danger";
 
 /**
- * A one-click action form (redeploy, restart, mark read …) that shows its result inline.
+ * A one-click action form (redeploy, restart, mark read …). The result appears as a toast,
+ * so the button row never changes size.
  * Hidden fields carry the ids; the server action re-checks permissions.
  */
 export function ActionButton({
@@ -33,10 +35,14 @@ export function ActionButton({
   icon?: React.ReactNode;
 }) {
   const [state, formAction, pending] = useActionState(action, { ok: false });
+  const toast = useToast();
+  useEffect(() => {
+    if (state.message) toast({ message: state.message, tone: state.ok ? "success" : "danger" });
+  }, [state, toast]);
   return (
     <form
       action={formAction}
-      className={cn("inline-flex flex-col items-start gap-1", className)}
+      className={cn("inline-flex", className)}
       onSubmit={(e) => {
         if (confirm && !window.confirm(confirm)) e.preventDefault();
       }}
@@ -48,11 +54,6 @@ export function ActionButton({
         {icon}
         {pending ? (pendingLabel ?? "Working…") : label}
       </Button>
-      {state.message ? (
-        <p role="status" className={cn("text-xs", state.ok ? "text-success" : "text-danger")}>
-          {state.message}
-        </p>
-      ) : null}
     </form>
   );
 }

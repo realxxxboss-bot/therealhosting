@@ -48,7 +48,7 @@ export default async function DomainsPage() {
                   <TR key={d.id}>
                     <TD>
                       <p className="font-mono text-xs font-semibold">{d.hostname}</p>
-                      {d.redirectTo ? <p className="text-xs text-muted">→ {d.redirectTo}</p> : null}
+                      {d.redirectTo ? <p className="text-xs text-muted">Redirects to {d.redirectTo}</p> : null}
                     </TD>
                     <TD>
                       {site ? (

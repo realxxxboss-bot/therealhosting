@@ -2,7 +2,7 @@
 
 Living plan. Updated at the end of every work session.
 
-**Current status (2026-11-11):** Phase 0 done. Phase 1 (clickable UI on mock data) built and tested on branch `claude/project-thread-izox2i`; preview deploy waiting on OWNER-ACTIONS #2 (Vercel repo access). Next: Phase 2 (real backend).
+**Current status (2026-11-11):** Phase 0 and Phase 1 are merged. The design overhaul ([DESIGN-PLAN.md](./DESIGN-PLAN.md), DECISIONS D-006) is in review on branch `claude/project-thread-izox2i`. Phase 2 (real backend) starts only after the owner approves the design. Preview deploy still waits on OWNER-ACTIONS #2 (Vercel repo access).
 
 Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 

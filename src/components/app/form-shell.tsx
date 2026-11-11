@@ -37,7 +37,7 @@ export function FormShell({
     <form ref={formRef} action={formAction} className={cn("grid gap-4", className)} noValidate>
       {children}
       {errors.length > 0 ? (
-        <ul role="alert" className="grid gap-1 rounded-[10px] bg-danger-soft px-3 py-2 text-sm text-danger">
+        <ul role="alert" className="grid gap-1 rounded-[4px] bg-danger-soft px-3 py-2 text-sm text-danger">
           {errors.map((e) => (
             <li key={e}>{e}</li>
           ))}

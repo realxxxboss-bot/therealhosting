@@ -28,11 +28,11 @@ export default async function SupportPage() {
         actions={
           <>
             {wa ? (
-              <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-[10px] border border-border bg-surface px-4 text-sm font-medium hover:bg-surface-2">
+              <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-[4px] border border-border bg-surface px-4 text-sm font-medium hover:bg-surface-2">
                 <MessageCircle className="size-4 text-success" aria-hidden /> WhatsApp
               </a>
             ) : (
-              <span className="inline-flex h-10 items-center gap-2 rounded-[10px] border border-dashed border-border px-4 text-sm text-muted" title="WhatsApp number coming soon">
+              <span className="inline-flex h-10 items-center gap-2 rounded-[4px] border border-dashed border-border px-4 text-sm text-muted" title="WhatsApp number coming soon">
                 <MessageCircle className="size-4" aria-hidden /> WhatsApp coming soon
               </span>
             )}
@@ -52,7 +52,7 @@ export default async function SupportPage() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{t.subject}</p>
                     <p className="text-sm text-muted">
-                      {t.siteId ? sites.get(t.siteId) ?? "Site" : "General"} · {t.messages.length} message{t.messages.length === 1 ? "" : "s"} · updated {formatRelative(t.updatedAt, now)}
+                      {t.siteId ? sites.get(t.siteId) ?? "Site" : "General"}, {t.messages.length} message{t.messages.length === 1 ? "" : "s"}, updated {formatRelative(t.updatedAt, now)}
                     </p>
                   </div>
                   <TicketStatusBadge status={t.status} />

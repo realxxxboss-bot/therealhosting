@@ -1,8 +1,6 @@
-import { site } from "@/config/site";
+import { site, legalEntity, isConfirmed } from "@/config/site";
 
-_Last updated: 11 November 2026. This document is a draft and must be reviewed before launch._
-
-These Terms of Service ("Terms") are an agreement between you and {site.legalName} ("{site.name}", "we", "us") for the hosting and related services we provide (the "Services").
+These Terms of Service ("Terms") are an agreement between you and {legalEntity} ("we", "us") for the hosting and related services we provide (the "Services").
 
 ## 1. Your account
 
@@ -55,7 +53,7 @@ We will give at least 30 days' notice by email of any material change.
 
 ## 11. Governing law
 
-These Terms are governed by {site.governingLaw}.
+{isConfirmed(site.governingLaw) ? <p>These Terms are governed by {site.governingLaw}.</p> : <p>The governing law for these Terms is being confirmed and will be added here before the service launches.</p>}
 
 ## 12. Contact
 

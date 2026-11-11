@@ -1,24 +1,26 @@
 import { home } from "@/config/marketing";
 import { ButtonLink } from "@/components/ui/button";
+import { Reveal } from "@/components/motion/reveal";
+import { Container } from "./section";
 
-export function CtaBand() {
+/** Closing band: one solid field of zaffre, left-aligned. */
+export function CtaBand({ title = home.cta.title, body = home.cta.body }: { title?: string; body?: string }) {
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
-      <div className="relative overflow-hidden rounded-[24px] bg-zaffre-950 px-6 py-14 text-white sm:px-12">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_80%_0%,rgb(62_76_247/55%),transparent_70%)]" aria-hidden />
-        <div className="relative max-w-2xl">
-          <h2 className="text-3xl font-bold sm:text-4xl">{home.cta.title}</h2>
-          <p className="mt-4 text-lg text-zaffre-100">{home.cta.body}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href="/contact" size="lg" className="bg-white text-zaffre-900 hover:bg-zaffre-50">
-              Talk to us
-            </ButtonLink>
-            <ButtonLink href="/pricing" size="lg" variant="ghost" className="text-white hover:bg-white/10">
-              Compare plans
-            </ButtonLink>
-          </div>
+    <section className="bg-band text-band-foreground">
+      <Container className="grid gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:items-end">
+        <Reveal className="lg:col-span-8">
+          <h2 className="max-w-3xl text-[2.5rem] leading-[1.02] font-semibold tracking-[-0.035em] sm:text-[3.5rem]">{title}</h2>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl">{body}</p>
+        </Reveal>
+        <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
+          <ButtonLink href="/contact" size="lg" variant="inverse">
+            Talk to us
+          </ButtonLink>
+          <ButtonLink href="/pricing" size="lg" variant="inverse-outline">
+            See plans
+          </ButtonLink>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

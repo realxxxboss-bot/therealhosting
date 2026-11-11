@@ -10,10 +10,10 @@ import { Alert } from "@/components/ui/alert";
 export function TwoFactorForm() {
   const [state, action, pending] = useActionState(verifyTwoFactor, initialFormState);
   return (
-    <form action={action} className="mt-6 grid gap-4" noValidate>
+    <form action={action} className="mt-8 grid gap-5" noValidate>
       {state.message ? <Alert tone="danger">{state.message}</Alert> : null}
       <Field label="Authentication code" htmlFor="code" error={state.errors?.code}>
-        <Input id="code" name="code" inputMode="numeric" autoComplete="one-time-code" maxLength={7} className="h-12 text-center font-mono text-xl tracking-[0.4em]" required aria-invalid={Boolean(state.errors?.code)} />
+        <Input id="code" name="code" inputMode="numeric" autoComplete="one-time-code" maxLength={7} className="h-14 font-mono text-2xl tracking-[0.35em]" required aria-invalid={Boolean(state.errors?.code)} />
       </Field>
       <Button type="submit" size="lg" disabled={pending}>
         {pending ? "Checking…" : "Verify"}

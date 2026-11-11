@@ -44,7 +44,7 @@ export function MaskedValue({ value, label, reveal }: { value: string; label: st
     <span className="inline-flex items-center gap-2">
       <code className="font-mono text-xs">{shown ? value : "•".repeat(Math.min(16, Math.max(8, value.length)))}</code>
       {reveal ? (
-        <button type="button" onClick={() => setShown((s) => !s)} className="grid size-7 place-items-center rounded-md text-muted hover:bg-surface-2 hover:text-foreground" aria-label={shown ? `Hide ${label}` : `Show ${label}`}>
+        <button type="button" onClick={() => setShown((s) => !s)} className="grid size-7 place-items-center rounded-[4px] text-muted hover:bg-surface-2 hover:text-foreground" aria-label={shown ? `Hide ${label}` : `Show ${label}`}>
           {shown ? <EyeOff className="size-3.5" aria-hidden /> : <Eye className="size-3.5" aria-hidden />}
         </button>
       ) : null}

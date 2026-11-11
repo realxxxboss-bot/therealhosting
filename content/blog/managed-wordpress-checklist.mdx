@@ -1,23 +1,75 @@
-"Managed WordPress" can mean almost anything. Here is what we think it should mean, so you can compare hosts on substance.
+"Managed WordPress" can mean almost anything. For one host it means a button that installs WordPress. For another it means a team that looks after the site. Both use the same two words on the pricing page.
+
+Here is what we think the term should mean, as a list of questions. Ask them of any host, including us, and compare the answers on substance.
 
 ## Updates that someone checks
 
-Automatic updates are easy. **Checked** updates are the point: a backup first, the update, then a look at the important pages. If something breaks, a rollback.
+Automatic updates are easy. Any host can switch them on. **Checked** updates are the point.
+
+A plugin update that breaks the checkout at two in the morning is worse than no update at all, because nobody knows it happened until a customer says so. A proper routine has four parts: a backup first, then the update, then a look at the pages that matter, and a rollback if something is wrong.
+
+Ask:
+
+- Who applies core, plugin and theme updates?
+- Does anyone look at the site afterwards, or does a script report "success"?
+- If an update breaks the site, who fixes it, and is that included?
 
 ## Backups you can restore
 
-Ask three questions: Where are backups stored? How many days are kept? Who restores them, and how fast? A backup on the same server as the site is not enough.
+Every host says it has backups. The useful questions are about restoring.
 
-## Security at the edge
+- **Where are backups stored?** A backup on the same server as the site disappears together with the site. It should be stored somewhere else.
+- **How many days are kept?** A problem you notice after ten days needs a backup older than ten days.
+- **Who restores them, and how fast?** A self-service button is fine if it works. A person who does it for you is better when you are already having a bad day.
+- **Is the database included?** Files without the database are half a site.
 
-A firewall and login protection should stop most attacks before WordPress sees them. Malware scans should run on a schedule, and someone should act on the results.
+A backup you have never restored is a hope, not a backup. A good host has restored theirs.
+
+## Security before WordPress sees it
+
+Most attacks on WordPress are not clever. They are thousands of automated login attempts and probes for old plugin holes. The right place to stop them is in front of WordPress, so that the site never spends effort on them.
+
+Look for a firewall, limits on repeated login attempts, and malware scans that run on a schedule. Then ask the question that matters: when a scan finds something, does a person act on it, or does it send you an email?
 
 ## Caching that fits WordPress
 
-Page caching for visitors, object caching for logged-in users and shops, and the right exceptions for carts and checkouts.
+A fast WordPress site is mostly a well-cached one. There are three layers, and they need to agree with each other:
+
+1. **Page caching** for visitors who are not logged in. Most traffic is served from here.
+2. **Object caching** for logged-in users, admin screens and shops, where pages cannot be cached whole.
+3. **The right exceptions.** Carts, checkouts and account pages must never be served from a shared cache.
+
+When caching is set up on the server, you do not need a caching plugin. In fact a second cache on top often causes the strange bugs: the price that does not update, the cart that shows someone else's items.
+
+## Room to work
+
+Shared hosting puts many sites on one machine and hopes they are not all busy at once. When a neighbour has a good day, you have a slow one.
+
+Ask whether the plan has resources of its own. For WooCommerce in particular, memory matters. A shop that runs out of memory at checkout loses the sale.
+
+## A staging copy
+
+Before a redesign, a big plugin change or a PHP upgrade, you want to try it somewhere that is not the live site. A staging copy is a private duplicate for exactly that. Ask whether you get one, and whether moving the changes to the live site is something the host helps with.
 
 ## A person who answers
 
 When the site is down, you want a human who can see the server, not a script that asks you to clear your browser cache.
+
+Ask who answers support requests. Is it the people who run the servers, or a first line that passes messages along? Neither is wrong, but one of them is much faster when something is actually broken.
+
+## The price next year
+
+Finally, read the renewal price. Many WordPress plans are sold at a first-term discount and renew at several times that. The plan did not get better in year two. We wrote about this in [why your hosting bill jumps at renewal](/blog/renewal-prices-explained).
+
+## The short version
+
+| Question | A good answer |
+| --- | --- |
+| Who updates the site? | The host, with a check afterwards |
+| Where are backups? | Off the server, every day |
+| Who restores? | A person, on request |
+| Who acts on a malware alert? | The host |
+| Is there a staging copy? | Yes, on request |
+| What is the renewal price? | The same as today |
 
 That is the standard we hold ourselves to on every [WordPress plan](/hosting/wordpress).

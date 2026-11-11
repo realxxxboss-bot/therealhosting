@@ -89,7 +89,7 @@ Review prices every 6 months, or before any big marketing push.
 | Framework | **Next.js 16.4 (App Router), React 19, TypeScript strict** | Required by brief. Also proves our own Next.js expertise. Cache Components and Partial Prefetching are on (Next 16 defaults). |
 | Styling | **Tailwind CSS 4** with our own design tokens and in-house components (shadcn/ui-style patterns, not stock) | Fast to build, easy to keep on-brand. We copy only the patterns we need, so there is no unused UI code. |
 | Icons | **lucide-react** | Consistent 1.75px stroke icons that match our icon style. |
-| Fonts | **Plus Jakarta Sans** (headings), **Inter** (body), **JetBrains Mono** (code). Self-hosted woff2 files via `next/font/local`. | No call to Google at build or run time (privacy, works offline in CI and on Coolify). All three are SIL Open Font License. |
+| Fonts | **Schibsted Grotesk** (everything), **IBM Plex Mono** (code only). Self-hosted woff2 files via `next/font/local`. Changed from Plus Jakarta Sans + Inter in the design overhaul (D-006). | No call to Google at build or run time (privacy, works offline in CI and on Coolify). Both are SIL Open Font License. |
 | Validation | **Zod 4** | One schema for forms, server actions and API inputs. |
 | Content | **MDX** (`@next/mdx`) for blog and legal pages; typed config files in `src/config` for everything else | Content lives outside components, as the brief requires. |
 | Theme | **next-themes**, light first, dark mode supported | No flash of wrong theme. |
@@ -144,3 +144,22 @@ The UI never talks to infrastructure. Every outside system sits behind a TypeScr
 ## D-010 CI
 
 GitHub Actions on every push and PR: install → secret scan (gitleaks) → lint → typecheck → unit tests → build → Playwright e2e + axe accessibility checks. A PR must be green before merge.
+
+---
+
+## D-006 Design overhaul: "cobalt glaze"
+
+**Date:** 2026-11-11
+
+**Decision.** After the owner's review of Phase 1 the whole visual layer was rebuilt. Plan and reasoning: [DESIGN-PLAN.md](./DESIGN-PLAN.md). Rules: [BRAND.md](./BRAND.md).
+
+- **No gradients, glows, grid backgrounds or drawn product mockups**, anywhere. The logo is a flat tile.
+- **One typeface** (Schibsted Grotesk) instead of the common Inter pairing; IBM Plex Mono for code only.
+- **Palette** reduced to white, ink, one zaffre blue (`#0014A8`, the pigment's own colour) used in large solid bands, and greys. The cyan accent is gone.
+- **Structure**: ruled lists and tables in 4/8 and 5/7 splits instead of grids of identical cards with icons. Status is a dot and a word, not a pill.
+- **Photography** from Unsplash (free licence), served from Unsplash's CDN, with a credits page. A cream-paper-and-serif direction was considered and rejected because it is as common a template look as the one it would replace.
+- **Motion** with the `motion` library, limited to one hero sequence, photo reveals, sliding markers and press states.
+- **Content**: every public page was extended with real, checkable content. No testimonials, logos or numbers were invented. Legal pages no longer print `TODO(confirm)` placeholders; they show a clear draft notice instead.
+
+**Known limit.** The build environment cannot reach `images.unsplash.com`, so the photographs were chosen from their descriptions and have not been looked at. The owner should review them on the first live preview (OWNER-ACTIONS).
+

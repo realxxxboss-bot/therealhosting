@@ -1,16 +1,25 @@
-import { ChevronDown } from "lucide-react";
+import type { ReactNode } from "react";
+import { Plus } from "lucide-react";
+import { Reveal } from "@/components/motion/reveal";
 import { JsonLd } from "./json-ld";
+import { Section } from "./section";
 
-export function Faq({ items, withSchema = true }: { items: { q: string; a: string }[]; withSchema?: boolean }) {
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+/** Questions as a ruled list. Answers open with a height transition (see `.faq` in globals.css). */
+export function Faq({ items, withSchema = true }: { items: FaqItem[]; withSchema?: boolean }) {
   return (
-    <div className="divide-y divide-border rounded-[16px] border border-border bg-surface">
+    <div className="border-t border-foreground">
       {items.map((item) => (
-        <details key={item.q} className="group px-5 [&_summary::-webkit-details-marker]:hidden">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium">
+        <details key={item.q} className="faq group border-b border-border [&_summary::-webkit-details-marker]:hidden">
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-accent">
             {item.q}
-            <ChevronDown className="size-4 shrink-0 text-muted transition-transform group-open:rotate-180" aria-hidden />
+            <Plus className="mt-1 size-5 shrink-0 transition-transform duration-300 ease-[var(--ease-out)] group-open:rotate-45" aria-hidden />
           </summary>
-          <p className="pb-5 text-sm leading-relaxed text-muted">{item.a}</p>
+          <p className="max-w-[62ch] pb-6 leading-relaxed text-muted">{item.a}</p>
         </details>
       ))}
       {withSchema ? (
@@ -23,5 +32,22 @@ export function Faq({ items, withSchema = true }: { items: { q: string; a: strin
         />
       ) : null}
     </div>
+  );
+}
+
+/** FAQ block: heading on the left, questions on the right. */
+export function FaqSection({ title = "Questions people ask us", body, items, tone = "plain" }: { title?: string; body?: ReactNode; items: FaqItem[]; tone?: "plain" | "sunk" }) {
+  return (
+    <Section tone={tone}>
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <Reveal className="lg:col-span-4">
+          <h2 className="text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[2.5rem]">{title}</h2>
+          {body ? <div className="mt-5 text-lg leading-relaxed text-muted">{body}</div> : null}
+        </Reveal>
+        <div className="lg:col-span-8">
+          <Faq items={items} />
+        </div>
+      </div>
+    </Section>
   );
 }

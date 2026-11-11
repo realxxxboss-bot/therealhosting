@@ -79,7 +79,7 @@ export default async function TeamPage() {
                     <div className="min-w-0 flex-1">
                       <p className="font-medium">{inv.email}</p>
                       <p className="text-sm text-muted">
-                        {roleLabels[inv.role].label} · {inv.role === "billing" ? "No site access" : scope(inv.siteIds)} · sent {formatDate(inv.createdAt)}
+                        {roleLabels[inv.role].label}, {inv.role === "billing" ? "No site access" : scope(inv.siteIds)}, sent {formatDate(inv.createdAt)}
                       </p>
                     </div>
                     <ActionButton action={revokeAccess} fields={{ kind: "invite", id: inv.id }} label="Cancel invite" variant="ghost" />

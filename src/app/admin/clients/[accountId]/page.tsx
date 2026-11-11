@@ -39,9 +39,9 @@ export default async function ClientPage({ params }: PageProps<"/admin/clients/[
       </Link>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">{account.name}</h1>
+          <h1 className="text-2xl font-semibold">{account.name}</h1>
           <p className="mt-1 text-sm text-muted">
-            {account.billingEmail} · client since {formatDate(account.createdAt)}
+            {account.billingEmail}, client since {formatDate(account.createdAt)}
           </p>
         </div>
         <form action={impersonateClient}>
@@ -92,10 +92,10 @@ export default async function ClientPage({ params }: PageProps<"/admin/clients/[
             </FormShell>
             <ol className="grid gap-3">
               {notes.map((n) => (
-                <li key={n.id} className="rounded-[12px] bg-surface-2 p-3 text-sm">
+                <li key={n.id} className="rounded-[8px] bg-surface-2 p-3 text-sm">
                   <p className="whitespace-pre-wrap">{n.body}</p>
                   <p className="mt-1 text-xs text-muted">
-                    {n.authorName} · {formatDateTime(n.createdAt)}
+                    {n.authorName}, {formatDateTime(n.createdAt)}
                   </p>
                 </li>
               ))}
@@ -115,7 +115,7 @@ export default async function ClientPage({ params }: PageProps<"/admin/clients/[
           {subs.map((s) => (
             <PackageForm key={s.id} accountId={account.id} sub={s} used={sites.filter((x) => x.subscriptionId === s.id).length} />
           ))}
-          <div className="rounded-[12px] border border-dashed border-border p-4">
+          <div className="rounded-[8px] border border-dashed border-border p-4">
             <p className="mb-3 text-sm font-semibold">Add a package</p>
             <PackageForm accountId={account.id} />
           </div>
@@ -212,7 +212,7 @@ function PackageForm({ accountId, sub, used }: { accountId: string; sub?: { id: 
       {sub ? <input type="hidden" name="subscriptionId" value={sub.id} /> : null}
       {sub && plan ? (
         <p className="text-sm text-muted">
-          {used} of {plan.sites} sites used · renews {formatDate(sub.renewsAt)}
+          {used} of {plan.sites} sites used, renews {formatDate(sub.renewsAt)}
         </p>
       ) : null}
       <div className="grid gap-3 sm:grid-cols-3">

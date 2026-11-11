@@ -1,11 +1,9 @@
 "use client";
 
 import { useActionState } from "react";
-import { Search } from "lucide-react";
 import { searchDomains, type DomainSearchState } from "@/app/actions/public";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/field";
-import { StatusBadge } from "@/components/ui/badge";
 import { formatUSD } from "@/lib/utils";
 
 const initial: DomainSearchState = { query: "", results: [] };
@@ -18,9 +16,9 @@ export function DomainSearch() {
         <label htmlFor="q" className="sr-only">
           Domain name
         </label>
-        <Input id="q" name="q" defaultValue={state.query} placeholder="yourbusiness.com" className="h-12 text-base" autoComplete="off" aria-invalid={Boolean(state.error)} aria-describedby={state.error ? "q-error" : undefined} />
-        <Button type="submit" size="lg" disabled={pending}>
-          <Search aria-hidden /> {pending ? "Searching…" : "Search"}
+        <Input id="q" name="q" defaultValue={state.query} placeholder="yourbusiness.com" className="h-14 border-foreground/30 px-4 text-lg" autoComplete="off" autoCapitalize="none" spellCheck={false} aria-invalid={Boolean(state.error)} aria-describedby={state.error ? "q-error" : undefined} />
+        <Button type="submit" size="lg" className="h-14 px-8" disabled={pending}>
+          {pending ? "Searching…" : "Search"}
         </Button>
       </form>
       {state.error ? (
@@ -28,23 +26,22 @@ export function DomainSearch() {
           {state.error}
         </p>
       ) : null}
-      {state.results.length > 0 ? (
-        <div className="mt-6" aria-live="polite">
-          <p className="mb-3 text-xs text-muted">Demo results. Prices are indicative yearly prices, the same on renewal.</p>
-          <ul className="divide-y divide-border rounded-[16px] border border-border bg-surface">
-            {state.results.map((r) => (
-              <li key={r.domain} className="flex flex-wrap items-center gap-3 px-5 py-4">
-                <span className="min-w-0 flex-1 font-mono text-sm">{r.domain}</span>
-                {r.available ? <StatusBadge tone="success" label="Available" /> : <StatusBadge tone="neutral" label="Taken" />}
-                <span className="w-24 text-right text-sm">{r.available && r.priceUsd ? `${formatUSD(r.priceUsd)}/yr` : "—"}</span>
-                <Button size="sm" variant="secondary" disabled title="Domain registration is coming soon">
-                  Coming soon
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      <div aria-live="polite">
+        {state.results.length > 0 ? (
+          <div className="mt-10">
+            <ul className="border-t border-foreground">
+              {state.results.map((r) => (
+                <li key={r.domain} className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-b border-border py-4 sm:grid-cols-[1fr_8rem_8rem]">
+                  <span className="min-w-0 font-mono text-[0.9375rem] font-medium break-all">{r.domain}</span>
+                  <span className={r.available ? "font-medium text-success" : "text-muted"}>{r.available ? "Available" : "Taken"}</span>
+                  <span className="col-span-2 text-muted tabular-nums sm:col-span-1 sm:text-right">{r.available && r.priceUsd ? `${formatUSD(r.priceUsd)} a year` : ""}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm text-muted">Sample results while registration is being set up. Prices are indicative yearly prices, and they will be the same at renewal.</p>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

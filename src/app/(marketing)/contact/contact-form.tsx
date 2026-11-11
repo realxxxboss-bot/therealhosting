@@ -28,15 +28,16 @@ export function ContactForm() {
 
   if (state.ok) {
     return (
-      <Alert tone="success" title="Message sent">
-        {state.message}
-      </Alert>
+      <div role="status" className="border-y border-foreground py-10">
+        <p className="text-[2rem] leading-tight font-semibold tracking-[-0.03em]">Message sent.</p>
+        <p className="mt-3 max-w-md text-lg text-muted">{state.message}</p>
+      </div>
     );
   }
 
   const err = state.errors ?? {};
   return (
-    <form action={action} className="grid gap-5 rounded-[20px] border border-border bg-surface p-6 sm:p-8" noValidate>
+    <form action={action} className="grid gap-6" noValidate>
       {state.message ? <Alert tone="danger">{state.message}</Alert> : null}
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Your name" htmlFor="name" error={err.name}>
@@ -58,7 +59,7 @@ export function ContactForm() {
           </Select>
         </Field>
       </div>
-      <Field label="Your sites (optional)" htmlFor="sites" hint="Domains and where they're hosted today, e.g. example.com on a Next.js platform.">
+      <Field label="Your sites (optional)" htmlFor="sites" hint="Domains and where they are hosted today, for example: example.com on a Next.js platform.">
         <Input id="sites" name="sites" />
       </Field>
       <Field label="Message" htmlFor="message" error={err.message}>

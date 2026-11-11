@@ -39,21 +39,21 @@ async function DashboardFrame({ children }: { children: ReactNode }) {
   ];
 
   const accountSwitcher = (
-    <div className="rounded-[12px] border border-border bg-background p-3">
-      <p className="text-[11px] font-medium tracking-wide text-muted uppercase">Account</p>
+    <div className="border-y border-border px-2 py-3">
+      <p className="text-xs text-muted">Account</p>
       {viewer.accounts.length > 1 ? (
         <form action={switchAccount} className="mt-1 flex gap-2">
           <label htmlFor="accountId" className="sr-only">
             Switch account
           </label>
-          <select id="accountId" name="accountId" defaultValue={viewer.account.id} className="min-w-0 flex-1 rounded-[8px] border border-border bg-surface px-2 py-1 text-sm">
+          <select id="accountId" name="accountId" defaultValue={viewer.account.id} className="min-w-0 flex-1 rounded-[4px] border border-border bg-surface px-2 py-1 text-sm">
             {viewer.accounts.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name}
               </option>
             ))}
           </select>
-          <button type="submit" className="rounded-[8px] border border-border px-2 text-xs">
+          <button type="submit" className="cursor-pointer rounded-[4px] border border-border px-2 text-xs">
             Go
           </button>
         </form>

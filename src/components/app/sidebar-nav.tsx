@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { navIcons, type NavItem } from "./nav-icons";
 
@@ -19,14 +20,15 @@ export function SidebarNav({ items, label }: { items: NavItem[]; label: string }
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-3 rounded-[10px] px-3 py-2 text-sm transition-colors",
-                  active ? "bg-primary-soft font-semibold text-primary" : "text-muted hover:bg-surface-2 hover:text-foreground",
+                  "relative flex items-center gap-3 rounded-[4px] px-3 py-2 text-[0.9375rem] transition-colors duration-150",
+                  active ? "bg-surface-2 font-semibold text-foreground" : "text-muted hover:bg-surface-2 hover:text-foreground",
                 )}
               >
+                {active ? <motion.span layoutId={`${label}-marker`} className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-primary dark:bg-accent" transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }} /> : null}
                 <Icon className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden />
                 <span className="flex-1">{item.label}</span>
                 {item.badge ? (
-                  <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] leading-none font-semibold text-primary-foreground">{item.badge}</span>
+                  <span className="min-w-5 rounded-full bg-foreground px-1.5 py-0.5 text-center text-[0.6875rem] leading-none font-semibold text-background tabular-nums">{item.badge}</span>
                 ) : null}
               </Link>
             </li>
