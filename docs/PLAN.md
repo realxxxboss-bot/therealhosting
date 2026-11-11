@@ -2,7 +2,7 @@
 
 Living plan. Updated at the end of every work session.
 
-**Current status (2026-11-11):** Phase 0 done. Phase 1 (clickable UI on mock data) built and tested on branch `claude/project-thread-izox2i`; preview deploy in progress. Next: Phase 2 (real backend).
+**Current status (2026-11-11):** Phase 0 done. Phase 1 (clickable UI on mock data) built and tested on branch `claude/project-thread-izox2i`; preview deploy waiting on OWNER-ACTIONS #2 (Vercel repo access). Next: Phase 2 (real backend).
 
 Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 
@@ -27,7 +27,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 - [x] Unit tests (Vitest, 35) and e2e + accessibility tests (Playwright + axe, 22 incl. every dashboard and admin screen)
 - [x] CI: secret scan, lint, typecheck, unit, build, e2e
 - [x] Dockerfile (Coolify) + Vercel compatible
-- [~] Preview deployment link shared with owner
+- [~] Preview deployment link shared with owner (blocked: Vercel needs GitHub access to the repo, OWNER-ACTIONS #2; screenshots shared meanwhile)
 
 ## Phase 2: Real backend
 

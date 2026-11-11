@@ -26,22 +26,21 @@ Status: ⏳ = baaki, ✅ = ho gaya. Sab se zaroori upar hain.
 
 ---
 
-## 2. ⏳ GitHub par preview deploy ke liye Vercel connect karein  (blocks: demo link)
+## 2. ⏳ Vercel ko is repo tak access dein  (blocks: demo link)
 
-**Kyun:** Demo ka live link banane ke liye. Vercel previews free hain (Hobby plan). Asal hosting baad mein hamare apne server (Coolify) par hogi.
+**Kyun:** Vercel account pehle se connected hai, lekin Vercel ki GitHub app ko `therealhosting` repo dekhne ki ijazat nahi hai. Ijazat milte hi main khud project banaunga, settings daalunga aur preview link bhej dunga. Asal hosting baad mein hamare apne server (Coolify) par hogi.
 
-**Steps:**
-1. **https://vercel.com/signup** kholein → **Continue with GitHub** dabayein.
-2. GitHub permission screen par **Authorize** dabayein.
-3. Vercel dashboard mein **Add New… → Project** dabayein.
-4. List mein `therealhosting` repo dhoondein → **Import**.
-5. "Framework Preset" khud **Next.js** select hoga. Kuch change na karein.
-6. **Environment Variables** section kholein aur yeh ek variable add karein:
-   - Name: `SESSION_SECRET`  · Value: koi bhi lamba random text (kam az kam 32 characters). Aap https://1password.com/password-generator se bana sakte hain.
-   - Name: `ADAPTER_MODE` · Value: `mock`
-7. **Deploy** dabayein. 2-3 minute mein link mil jayega.
+**Steps (2 minute):**
+1. **https://github.com/settings/installations** kholein (GitHub mein sign in hon).
+2. List mein **Vercel** ke saamne **Configure** dabayein.
+3. Neeche **Repository access** section mein:
+   - ya **All repositories** chunein,
+   - ya **Only select repositories** → **Select repositories** → `therealhosting` chunein.
+4. **Save** dabayein.
 
-**Mujhe bhejein:** "Vercel connect ho gaya" — bas. Link main khud dekh lunga.
+Agar list mein Vercel nahi hai: **https://github.com/apps/vercel** kholein → **Install** (ya **Configure**) → `realxxxboss-bot` account → `therealhosting` repo chunein → **Install**.
+
+**Mujhe bhejein:** "Vercel access de diya" — bas. Koi password ya key chat mein na bhejein; secret settings main khud Vercel mein daal dunga.
 
 ---
 
