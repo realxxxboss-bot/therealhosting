@@ -31,7 +31,7 @@ export default async function AdminTicketPage({ params }: PageProps<"/admin/tick
           <p className="font-mono text-xs text-muted">#{ticket.number}</p>
           <h1 className="text-2xl font-bold">{ticket.subject}</h1>
           <p className="mt-1 text-sm text-muted">
-            <Link href={`/admin/clients/${ticket.accountId}`} className="text-primary hover:underline">
+            <Link href={`/admin/clients/${ticket.accountId}`} className="text-primary underline underline-offset-2">
               {account?.name}
             </Link>{" "}
             · {site ? `${site.name} (${site.primaryDomain})` : "General"} · {ticket.priority} priority

@@ -2,7 +2,7 @@
 
 Living plan. Updated at the end of every work session.
 
-**Current status (2026-11-11):** Phase 0 done. Phase 1 (clickable UI on mock data) in progress on branch `claude/project-thread-izox2i`.
+**Current status (2026-11-11):** Phase 0 done. Phase 1 (clickable UI on mock data) built and tested on branch `claude/project-thread-izox2i`; preview deploy in progress. Next: Phase 2 (real backend).
 
 Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 
@@ -23,8 +23,8 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 - [x] Public site: Home, Pricing (+ comparison table, FAQ), Features, Next.js / WordPress / Static landing pages, Migration, Domain search, Status, Blog (MDX), Contact, About, Terms, Privacy, Refund, AUP, SLA, 404
 - [x] SEO: metadata, sitemap, robots, JSON-LD
 - [x] Client dashboard: sign-in, reset password, 2FA screen, overview, sites + site detail tabs, domains, email, billing + pay invoice + proof upload, support tickets, team access, notifications, account settings
-- [x] Admin panel: overview, clients, login-as-client (audited), sites, plans, invoices, payment verification queue, tickets, fleet health, backups, payment methods, email templates, announcements, audit log
-- [x] Unit tests (Vitest) and e2e + accessibility tests (Playwright + axe)
+- [x] Admin panel: overview, clients (create, edit, notes, per-client package prices), login-as-client (audited), sites (create, assign server), plans (read-only list; list prices live in `src/config/plans.ts`), invoices (one-off + renewal run), payment verification queue, tickets, fleet health, backups, payment methods, email templates, announcements, audit log
+- [x] Unit tests (Vitest, 35) and e2e + accessibility tests (Playwright + axe, 22 incl. every dashboard and admin screen)
 - [x] CI: secret scan, lint, typecheck, unit, build, e2e
 - [x] Dockerfile (Coolify) + Vercel compatible
 - [~] Preview deployment link shared with owner

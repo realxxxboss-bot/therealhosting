@@ -63,7 +63,7 @@ Defined in `src/app/globals.css` as CSS variables and mapped to Tailwind (`bg-pr
 | `--primary` | `#1B2BDB` | `#7381FF` | Actions |
 | `--primary-foreground` | `#FFFFFF` | `#070A1F` | Text on primary |
 | `--accent` | `#0E9BBB` | `#38D6F5` | "Live" cyan, highlights, focus glow |
-| `--success` | `#0E8A5F` | `#34D399` | Up, paid |
+| `--success` | `#0B7A55` | `#34D399` | Up, paid |
 | `--warning` | `#B45309` | `#FBBF24` | Pending, due soon |
 | `--danger` | `#C8261B` | `#F87171` | Down, overdue |
 

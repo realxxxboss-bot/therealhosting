@@ -1,0 +1,12 @@
+# Secret scanning config. Extends the default rules; the allowlist only covers documented demo placeholders.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Demo and placeholder values"
+regexes = [
+  '''replace-with-a-long-random-string''',
+  '''ci-only-session-secret-not-used-anywhere-else''',
+  '''e2e-only-secret-e2e-only-secret-1234''',
+  '''development-only-session-secret-change-me''',
+]

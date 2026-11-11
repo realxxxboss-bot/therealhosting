@@ -63,7 +63,7 @@ export function AppShell({
 
 export function ShellSkeleton() {
   return (
-    <div className="flex min-h-dvh" aria-busy="true" aria-label="Loading">
+    <div className="flex min-h-dvh" role="status" aria-busy="true" aria-label="Loading">
       <div className="hidden w-64 border-r border-border bg-surface lg:block" />
       <div className="flex-1 p-8">
         <div className="h-7 w-48 animate-pulse rounded-md bg-surface-2" />
@@ -79,7 +79,7 @@ export function ShellSkeleton() {
 
 export function PageSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading">
+    <div role="status" aria-busy="true" aria-label="Loading">
       <div className="h-7 w-56 animate-pulse rounded-md bg-surface-2" />
       <div className="mt-2 h-4 w-80 animate-pulse rounded-md bg-surface-2" />
       <div className="mt-8 h-64 animate-pulse rounded-[16px] bg-surface-2" />
