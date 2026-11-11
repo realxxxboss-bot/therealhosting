@@ -23,6 +23,9 @@ function secret(): string {
   const value = process.env.SESSION_SECRET;
   if (value && value.length >= 32) return value;
   if (process.env.NODE_ENV !== "production") return "development-only-session-secret-change-me";
+  // The sample-data preview holds no real accounts and its demo sign-ins are public,
+  // so it may run without a secret. Live mode never falls back.
+  if (process.env.ADAPTER_MODE !== "live") return "sample-data-preview-session-secret-not-for-live";
   throw new Error("SESSION_SECRET must be set to at least 32 characters.");
 }
 

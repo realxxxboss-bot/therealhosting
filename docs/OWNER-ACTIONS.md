@@ -26,7 +26,7 @@ Status: ⏳ = baaki, ✅ = ho gaya. Sab se zaroori upar hain.
 
 ---
 
-## 2. ⏳ Vercel ko is repo tak access dein  (blocks: demo link)
+## 2. ✅ Vercel ko is repo tak access dein  (blocks: demo link)
 
 **Kyun:** Vercel account pehle se connected hai, lekin Vercel ki GitHub app ko `therealhosting` repo dekhne ki ijazat nahi hai. Ijazat milte hi main khud project banaunga, settings daalunga aur preview link bhej dunga. Asal hosting baad mein hamare apne server (Coolify) par hogi.
 
