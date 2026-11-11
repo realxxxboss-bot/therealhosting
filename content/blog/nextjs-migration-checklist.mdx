@@ -1,0 +1,28 @@
+Moving a Next.js app is mostly about collecting the things your current platform does quietly for you. Here is the list we use for every migration.
+
+## Before the move
+
+1. **Repository and branch.** Which branch is production? Are there preview branches people rely on?
+2. **Node.js and Next.js versions.** Check `engines` in `package.json` and the `next` version.
+3. **Environment variables.** Export them for production and preview. Mark which ones are secrets.
+4. **Cron jobs.** Platform cron schedules often live in a config file, for example `vercel.json`. List each path and schedule.
+5. **Caching.** If you use ISR or `revalidateTag`, the new host needs a cache that survives restarts.
+6. **Images.** `next/image` needs the image optimiser and a cache directory.
+7. **Redirects and headers.** In `next.config` and in platform settings.
+8. **Domains.** Every hostname, including `www` and any old domains that redirect.
+
+## The move
+
+1. Build and run the app on the new host with production variables.
+2. Test on a private URL: pages, forms, API routes, sign-in, payments.
+3. Lower DNS TTL to 5 minutes a day before the switch.
+4. Switch DNS records. Keep the old deployment running.
+5. Watch logs and traffic on both sides until the old host is idle.
+
+## After the move
+
+- Confirm SSL is active on every hostname.
+- Confirm cron jobs ran at least once.
+- Remove the old deployment and revoke temporary access.
+
+We do all of this for free when you move to Zaffre. [Start a migration](/migration).
