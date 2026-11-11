@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   poweredByHeader: false,
+  images: {
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
+  },
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   turbopack: {
     rules: {
@@ -28,6 +32,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({ options: { remarkPlugins: ["remark-gfm"] } });
+const withMDX = createMDX({ options: { remarkPlugins: ["remark-gfm"], rehypePlugins: ["rehype-slug"] } });
 
 export default withMDX(nextConfig);

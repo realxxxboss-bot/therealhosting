@@ -10,15 +10,15 @@ export function Table({ className, ...props }: ComponentProps<"table">) {
 }
 
 export function THead({ className, ...props }: ComponentProps<"thead">) {
-  return <thead className={cn("bg-surface-2 text-left text-xs font-medium text-muted", className)} {...props} />;
+  return <thead className={cn("border-b border-border text-left text-[0.8125rem] font-medium text-muted", className)} {...props} />;
 }
 
 export function TH({ className, ...props }: ComponentProps<"th">) {
-  return <th scope="col" className={cn("px-4 py-2.5 font-medium whitespace-nowrap", className)} {...props} />;
+  return <th scope="col" className={cn("px-4 py-3 font-medium whitespace-nowrap", className)} {...props} />;
 }
 
 export function TR({ className, ...props }: ComponentProps<"tr">) {
-  return <tr className={cn("border-b border-border last:border-0", className)} {...props} />;
+  return <tr className={cn("border-b border-border transition-colors duration-150 last:border-0 [tbody>&]:hover:bg-surface-2/60", className)} {...props} />;
 }
 
 export function TD({ className, ...props }: ComponentProps<"td">) {

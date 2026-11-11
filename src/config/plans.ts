@@ -62,7 +62,7 @@ export const plans: Plan[] = [
   { id: "wordpress-business", type: "wordpress", tier: "business", name: "WordPress Business", monthly: 29, sites: 3, vcpu: 2, ramGb: 4, storageGb: 50, bandwidthTb: 2, backupDays: 30, highlight: true, blurb: "Shops and busy sites that need room to grow." },
   { id: "wordpress-pro", type: "wordpress", tier: "pro", name: "WordPress Pro", monthly: 49, sites: 8, vcpu: 4, ramGb: 8, storageGb: 100, bandwidthTb: 4, backupDays: 30, blurb: "WooCommerce and high-traffic WordPress." },
 
-  { id: "nextjs-starter", type: "nextjs", tier: "starter", name: "Next.js Starter", monthly: 24, sites: 2, vcpu: 1, ramGb: 2, storageGb: 20, bandwidthTb: 1, backupDays: 14, blurb: "A production app and a staging copy." },
+  { id: "nextjs-starter", type: "nextjs", tier: "starter", name: "Next.js Starter", monthly: 24, sites: 2, vcpu: 1, ramGb: 2, storageGb: 20, bandwidthTb: 1, backupDays: 14, blurb: "One production app, with room for a second." },
   { id: "nextjs-business", type: "nextjs", tier: "business", name: "Next.js Business", monthly: 39, sites: 5, vcpu: 2, ramGb: 4, storageGb: 50, bandwidthTb: 2, backupDays: 30, highlight: true, blurb: "Product teams running several apps." },
   { id: "nextjs-pro", type: "nextjs", tier: "pro", name: "Next.js Pro", monthly: 69, sites: 12, vcpu: 4, ramGb: 8, storageGb: 100, bandwidthTb: 4, backupDays: 30, blurb: "Many apps, heavier traffic, more compute." },
 ];

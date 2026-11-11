@@ -26,7 +26,7 @@ export function ProofForm({ invoiceId, methods, action }: { invoiceId: string; m
         <Input id="reference" name="reference" className="font-mono" autoComplete="off" aria-invalid={Boolean(err.reference)} />
       </Field>
       <Field label="Proof of payment" htmlFor="proof" error={err.proof}>
-        <Input id="proof" name="proof" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" className="h-auto py-2 file:mr-3 file:rounded-md file:border-0 file:bg-primary-soft file:px-3 file:py-1 file:text-sm file:font-medium file:text-primary" aria-invalid={Boolean(err.proof)} />
+        <Input id="proof" name="proof" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" className="h-auto py-2 file:mr-3 file:rounded-[4px] file:border-0 file:bg-primary-soft file:px-3 file:py-1 file:text-sm file:font-medium file:text-primary" aria-invalid={Boolean(err.proof)} />
       </Field>
       <div>
         <Button type="submit" size="lg" disabled={pending}>

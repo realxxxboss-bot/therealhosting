@@ -25,7 +25,7 @@ export function Alert({
   const t = tones[tone];
   const Icon = t.icon;
   return (
-    <div role={tone === "danger" || tone === "warning" ? "alert" : "status"} className={cn("flex gap-3 rounded-[12px] border p-4 text-sm", t.box, className)}>
+    <div role={tone === "danger" || tone === "warning" ? "alert" : "status"} className={cn("flex gap-3 rounded-[8px] border p-4 text-sm", t.box, className)}>
       <Icon className={cn("mt-0.5 size-5 shrink-0", t.iconClass)} aria-hidden />
       <div className="min-w-0 flex-1">
         {title ? <p className="font-semibold">{title}</p> : null}

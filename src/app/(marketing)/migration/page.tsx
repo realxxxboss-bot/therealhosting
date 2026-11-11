@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { ArrowRight, Check } from "lucide-react";
 import { migration } from "@/config/marketing";
+import { photos } from "@/config/photos";
 import { PageHero, Section, SectionHeading } from "@/components/marketing/section";
+import { LineList, RuledList, Split } from "@/components/marketing/blocks";
 import { ButtonLink } from "@/components/ui/button";
+import { FaqSection } from "@/components/marketing/faq";
 import { CtaBand } from "@/components/marketing/cta-band";
+import { Timeline } from "@/components/motion/timeline";
+import { Reveal } from "@/components/motion/reveal";
 
 export const metadata: Metadata = {
   title: "Free website migration",
@@ -14,44 +18,52 @@ export const metadata: Metadata = {
 export default function MigrationPage() {
   return (
     <>
-      <PageHero eyebrow="Free migration" title={migration.title} body={migration.intro}>
+      <PageHero title={migration.title} lines={migration.lines} body={migration.intro} photo={photos.migration}>
         <div className="mt-8">
           <ButtonLink href="/contact?topic=migration" size="lg">
-            Start my migration <ArrowRight aria-hidden />
+            Start my migration
           </ButtonLink>
         </div>
       </PageHero>
+
       <Section>
-        <SectionHeading title="How a move works" />
-        <ol className="mt-10 grid gap-4">
-          {migration.steps.map((step, i) => (
-            <li key={step.title} className="flex gap-5 rounded-[16px] border border-border bg-surface p-6">
-              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary font-display font-bold text-primary-foreground">{i + 1}</span>
-              <div>
-                <h3 className="text-lg font-bold">{step.title}</h3>
-                <p className="mt-1 text-muted">{step.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <Split heading={<SectionHeading title="How a move works" body="Five steps. You are needed for two of them." />}>
+          <Timeline steps={migration.steps} />
+        </Split>
       </Section>
-      <div className="border-y border-border bg-surface">
-        <Section>
-          <SectionHeading title="We move sites from" />
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-            {migration.from.map((f) => (
-              <li key={f} className="flex gap-2">
-                <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
-                {f}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 max-w-2xl text-sm text-muted">
-            Your domains stay registered in your name. We only change the DNS records that point to your site, and we keep your old host running until the new one is confirmed.
-          </p>
-        </Section>
-      </div>
-      <CtaBand />
+
+      <Section tone="sunk">
+        <Split heading={<SectionHeading title="Where we move sites from" />}>
+          <RuledList items={migration.from} />
+        </Split>
+      </Section>
+
+      <Section>
+        <div className="grid gap-12 md:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <h2 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">{migration.need.title}</h2>
+            <LineList items={migration.need.items} className="mt-6 border-foreground" />
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">{migration.same.title}</h2>
+            <LineList items={migration.same.items} className="mt-6 border-foreground" />
+          </Reveal>
+        </div>
+      </Section>
+
+      <Section tone="band">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+          <Reveal className="lg:col-span-5">
+            <h2 className="text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[3rem]">{migration.rollback.title}</h2>
+          </Reveal>
+          <Reveal className="lg:col-span-7 lg:pt-2" delay={0.08}>
+            <p className="text-xl leading-relaxed text-white/90">{migration.rollback.body}</p>
+          </Reveal>
+        </div>
+      </Section>
+
+      <FaqSection title="Questions about moving" items={migration.faq} />
+      <CtaBand title="Tell us where your sites are today." body="Send us the addresses and we will reply with a plan for the move. It costs nothing to ask." />
     </>
   );
 }

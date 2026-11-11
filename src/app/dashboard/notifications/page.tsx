@@ -50,7 +50,7 @@ export default async function NotificationsPage() {
                     <p className="font-medium">{n.href ? <Link href={n.href} className="hover:underline">{n.title}</Link> : n.title}</p>
                     <p className="text-sm text-muted">{n.body}</p>
                     <p className="mt-1 text-xs text-muted">
-                      {kindLabels[n.kind]} · {formatRelative(n.createdAt, now)}
+                      {kindLabels[n.kind]}, {formatRelative(n.createdAt, now)}
                     </p>
                   </div>
                   {!n.read ? <ActionButton action={markNotificationsRead} fields={{ id: n.id }} label="Mark read" variant="ghost" /> : null}

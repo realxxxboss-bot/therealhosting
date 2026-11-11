@@ -115,6 +115,19 @@ Demo mein abhi sample (fake) details hain jo "DEMO" likhe hue hain.
 
 ---
 
+## 8. ⏳ Website ki tasveerein dekh kar approve karein  (blocks: design final)
+
+**Kyun:** Tasveerein Unsplash se li hain (free licence). Jis jagah main kaam karta hoon wahan se Unsplash ki images khulti nahi, is liye maine har tasveer sirf uski description parh kar chuni hai, dekh kar nahi. Aap ko ek dafa dekhna hoga ke har tasveer achi lag rahi hai.
+
+**Steps:**
+
+1. Pehle upar wala step 2 (Vercel access) karein, taake preview link ban sake.
+2. Preview link khol kar yeh pages dekhein: Home, Next.js, WordPress, Static, Migration, About, Contact, Blog, Sign in.
+3. Jo tasveer pasand na aaye, mujhe sirf page ka naam aur "yeh wali badlo" likh dein. Main nayi laga dunga.
+4. Sab tasveeron ki list `/credits` page par hai.
+
+---
+
 ## Baad mein (abhi kuch nahi karna)
 
 Yeh Phase 2–3 mein aayenge. Har ek ke poore steps tab yahan add honge:

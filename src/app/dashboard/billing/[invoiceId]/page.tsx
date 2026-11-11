@@ -57,7 +57,7 @@ export default async function InvoicePage({ params, searchParams }: PageProps<"/
               <p className="text-sm text-muted">{site.contact.supportEmail}</p>
             </div>
             <div className="text-right">
-              <h1 className="text-2xl font-bold">Invoice</h1>
+              <h1 className="text-2xl font-semibold">Invoice</h1>
               <p className="font-mono text-sm">{invoice.number}</p>
               <div className="mt-2">
                 <InvoiceStatusBadge status={invoice.status} overdue={isOverdue(invoice, now)} />
@@ -66,16 +66,16 @@ export default async function InvoicePage({ params, searchParams }: PageProps<"/
           </div>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             <div>
-              <p className="text-xs font-medium tracking-wide text-muted uppercase">Billed to</p>
+              <p className="text-xs font-medium text-muted">Billed to</p>
               <p className="mt-1 font-medium">{viewer.account.name}</p>
               <p className="text-sm text-muted">{viewer.account.billingEmail}</p>
             </div>
             <div>
-              <p className="text-xs font-medium tracking-wide text-muted uppercase">Issued</p>
+              <p className="text-xs font-medium text-muted">Issued</p>
               <p className="mt-1">{formatDate(invoice.issuedAt)}</p>
             </div>
             <div>
-              <p className="text-xs font-medium tracking-wide text-muted uppercase">Due</p>
+              <p className="text-xs font-medium text-muted">Due</p>
               <p className="mt-1">{formatDate(invoice.dueAt)}</p>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default async function InvoicePage({ params, searchParams }: PageProps<"/
                 <th scope="row" colSpan={3} className="pt-4 text-right font-semibold">
                   Total (USD)
                 </th>
-                <td className="pt-4 text-right font-display text-xl font-bold">{formatCents(total)}</td>
+                <td className="pt-4 text-right font-display text-xl font-semibold">{formatCents(total)}</td>
               </tr>
             </tfoot>
           </table>

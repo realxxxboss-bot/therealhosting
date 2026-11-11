@@ -28,6 +28,13 @@ const dateTimeFmt = new Intl.DateTimeFormat("en-GB", {
   timeZoneName: "short",
 });
 
+const longDateFmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+
+/** "11 November 2026", for articles and documents. */
+export function formatLongDate(iso: string): string {
+  return longDateFmt.format(new Date(iso));
+}
+
 export function formatDate(iso: string): string {
   return dateFmt.format(new Date(iso));
 }

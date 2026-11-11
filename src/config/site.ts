@@ -20,6 +20,8 @@ export const site = {
   refundWindowDays: 14,
   /** Where client data and backups are physically stored. Shown in the Privacy Policy. TODO(confirm) once the VPS is rented. */
   dataRegions: ["Germany, EU"],
+  /** Short form for the footer and FAQ. Must stay true to dataRegions. */
+  dataRegionShort: "the EU",
   /** Where off-site backups are stored. Cloudflare R2 "EU" jurisdiction. TODO(confirm). */
   backupRegions: ["European Union (Cloudflare R2, EU jurisdiction)"],
   contact: {
@@ -39,6 +41,14 @@ export const site = {
 } as const;
 
 export type SiteConfig = typeof site;
+
+/** True once the owner has replaced a TODO(confirm) placeholder with a real value. */
+export function isConfirmed(value: string): boolean {
+  return !value.startsWith("TODO(confirm)");
+}
+
+/** The legal entity when it is confirmed, otherwise the brand name. Placeholders are never shown to visitors. */
+export const legalEntity: string = isConfirmed(site.legalName) ? site.legalName : site.name;
 
 export function whatsappLink(message?: string): string | null {
   if (!site.contact.whatsappNumber) return null;

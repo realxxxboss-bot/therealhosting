@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
-import { requestTime } from "@/lib/request";
 import Link from "next/link";
-import { AlertTriangle, CreditCard, LifeBuoy, Server, Users, Wallet } from "lucide-react";
+import { requestTime } from "@/lib/request";
 import { getAdmin } from "@/lib/auth/viewer";
 import { db } from "@/lib/data/store";
 import { invoiceTotalCents, isOverdue } from "@/lib/billing";
 import { PageHeader } from "@/components/ui/page-header";
-import { Stat } from "@/components/ui/stat";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
-import { StatusBadge } from "@/components/ui/badge";
+import { StatusBadge, type BadgeTone } from "@/components/ui/badge";
 import { formatCents, formatRelative } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Admin" };
+
+interface QueueItem {
+  key: string;
+  tone: BadgeTone;
+  kind: string;
+  client: string;
+  detail: string;
+  since: string;
+  href: string;
+  action: string;
+}
 
 export default async function AdminOverview() {
   const now = await requestTime();
@@ -25,73 +33,114 @@ export default async function AdminOverview() {
   const openTickets = store.tickets.filter((t) => t.status === "open");
   const unhealthy = store.sites.filter((s) => s.status === "down" || s.status === "degraded");
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
+  const client = (id: string) => accounts.get(id) ?? "Unknown client";
+  const recent = store.auditLog.toSorted((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 8);
 
-  const queue = [
-    ...pending.map((p) => ({ key: p.id, tone: "warning" as const, label: "Payment to check", text: `${accounts.get(p.accountId)} · ${formatCents(p.amountCents)} · ${p.reference}`, href: "/admin/payments" })),
-    ...openTickets.map((t) => ({ key: t.id, tone: t.priority === "urgent" || t.priority === "high" ? ("danger" as const) : ("primary" as const), label: `Ticket #${t.number}`, text: `${accounts.get(t.accountId)} · ${t.subject}`, href: `/admin/tickets/${t.id}` })),
-    ...overdue.map((i) => ({ key: i.id, tone: "danger" as const, label: "Overdue invoice", text: `${accounts.get(i.accountId)} · ${i.number} · ${formatCents(invoiceTotalCents(i))}`, href: "/admin/invoices" })),
-    ...unhealthy.map((s) => ({ key: s.id, tone: "danger" as const, label: `Site ${s.status}`, text: `${accounts.get(s.accountId)} · ${s.name}`, href: "/admin/sites" })),
+  const queue: QueueItem[] = [
+    ...unhealthy.map((s) => ({ key: s.id, tone: "danger" as const, kind: s.status === "down" ? "Site down" : "Site slow", client: client(s.accountId), detail: `${s.name}, ${s.responseMs} ms`, since: s.lastDeployAt, href: "/admin/sites", action: "Open sites" })),
+    ...pending.map((p) => ({ key: p.id, tone: "warning" as const, kind: "Payment to check", client: client(p.accountId), detail: `${formatCents(p.amountCents)}, reference ${p.reference}`, since: p.submittedAt, href: "/admin/payments", action: "Check proof" })),
+    ...openTickets.map((t) => ({
+      key: t.id,
+      tone: t.priority === "urgent" || t.priority === "high" ? ("danger" as const) : ("primary" as const),
+      kind: `Ticket #${t.number}`,
+      client: client(t.accountId),
+      detail: t.subject,
+      since: t.updatedAt,
+      href: `/admin/tickets/${t.id}`,
+      action: "Reply",
+    })),
+    ...overdue.map((i) => ({ key: i.id, tone: "danger" as const, kind: "Overdue invoice", client: client(i.accountId), detail: `${i.number}, ${formatCents(invoiceTotalCents(i))}`, since: i.dueAt, href: "/admin/invoices", action: "Open invoice" })),
+  ];
+
+  const facts = [
+    { label: "Clients", value: String(store.accounts.length), hint: `${store.sites.length} sites hosted` },
+    { label: "Monthly recurring", value: formatCents(mrr), hint: `${activeSubs.length} active packages` },
+    { label: "Payments to check", value: String(pending.length), hint: "Bank and Wise proofs" },
+    { label: "Open tickets", value: String(openTickets.length), hint: "Waiting on us" },
+    { label: "Overdue invoices", value: String(overdue.length), hint: overdue.length ? formatCents(overdue.reduce((s, i) => s + invoiceTotalCents(i), 0)) : "None" },
+    { label: "Servers", value: String(store.servers.length), hint: `${store.servers.filter((s) => s.status !== "healthy").length} need a look` },
   ];
 
   return (
     <>
       <PageHeader title="Admin overview" description="What needs attention across every client." />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Stat label="Clients" value={store.accounts.length} hint={`${store.sites.length} sites hosted`} icon={Users} />
-        <Stat label="Monthly recurring" value={formatCents(mrr)} hint={`${activeSubs.length} active packages`} icon={CreditCard} />
-        <Stat label="Payments to check" value={pending.length} hint="Bank and Wise proofs" icon={Wallet} />
-        <Stat label="Open tickets" value={openTickets.length} hint="Waiting on us" icon={LifeBuoy} />
-        <Stat label="Overdue invoices" value={overdue.length} hint={overdue.length ? formatCents(overdue.reduce((s, i) => s + invoiceTotalCents(i), 0)) : "None"} icon={AlertTriangle} />
-        <Stat label="Servers" value={store.servers.length} hint={`${store.servers.filter((s) => s.status !== "healthy").length} need a look`} icon={Server} />
-      </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <Card>
-          <CardHeader>
-            <div>
-              <CardTitle>Work queue</CardTitle>
-              <CardDescription>Everything waiting on staff. Clear this list every day.</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {queue.length === 0 ? (
-              <p className="text-sm text-muted">Nothing waiting. Nice.</p>
-            ) : (
-              <ul className="grid gap-2">
+      <section aria-labelledby="queue-heading">
+        <div className="flex items-baseline justify-between gap-4 border-b border-foreground pb-3">
+          <h2 id="queue-heading" className="text-lg font-semibold tracking-[-0.02em]">
+            Work queue
+          </h2>
+          <p className="text-sm text-muted">{queue.length === 0 ? "Clear" : `${queue.length} waiting on staff`}</p>
+        </div>
+        {queue.length === 0 ? (
+          <p className="border-b border-border py-5 text-muted">Nothing is waiting on staff.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-left text-[0.9375rem]">
+              <thead className="text-[0.8125rem] text-muted">
+                <tr className="border-b border-border">
+                  <th scope="col" className="py-2.5 pr-4 font-medium">What</th>
+                  <th scope="col" className="py-2.5 pr-4 font-medium">Client</th>
+                  <th scope="col" className="py-2.5 pr-4 font-medium">Detail</th>
+                  <th scope="col" className="py-2.5 pr-4 text-right font-medium">Since</th>
+                  <th scope="col" className="py-2.5 text-right font-medium">
+                    <span className="sr-only">Action</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
                 {queue.map((q) => (
-                  <li key={q.key}>
-                    <Link href={q.href} className="flex flex-wrap items-center gap-3 rounded-[12px] border border-border p-3 text-sm hover:bg-surface-2">
-                      <StatusBadge tone={q.tone} label={q.label} />
-                      <span className="min-w-0 flex-1 truncate">{q.text}</span>
-                    </Link>
-                  </li>
+                  <tr key={q.key} className="border-b border-border transition-colors duration-150 hover:bg-surface-2/70">
+                    <td className="py-3 pr-4">
+                      <StatusBadge tone={q.tone} label={q.kind} />
+                    </td>
+                    <td className="py-3 pr-4 font-medium">{q.client}</td>
+                    <td className="max-w-xs truncate py-3 pr-4 text-muted">{q.detail}</td>
+                    <td className="py-3 pr-4 text-right whitespace-nowrap text-muted">{formatRelative(q.since, now)}</td>
+                    <td className="py-3 text-right">
+                      <ButtonLink href={q.href} size="sm" variant="secondary">
+                        {q.action}
+                      </ButtonLink>
+                    </td>
+                  </tr>
                 ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent activity</CardTitle>
-            <ButtonLink href="/admin/audit" size="sm" variant="ghost">
-              Audit log
-            </ButtonLink>
-          </CardHeader>
-          <CardContent>
-            <ol className="grid gap-3 text-sm">
-              {store.auditLog.slice(0, 8).map((e) => (
-                <li key={e.id} className="flex justify-between gap-3">
-                  <span className="min-w-0">
-                    <span className="font-medium">{e.actorName}</span> <span className="font-mono text-xs text-muted">{e.action}</span>
-                    {e.target ? <span className="block truncate text-xs text-muted">{e.target}</span> : null}
-                  </span>
-                  <span className="shrink-0 text-xs text-muted">{formatRelative(e.createdAt, now)}</span>
-                </li>
-              ))}
-            </ol>
-          </CardContent>
-        </Card>
-      </div>
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <dl className="mt-10 grid grid-cols-2 gap-x-8 border-t border-foreground md:grid-cols-3 xl:grid-cols-6">
+        {facts.map((fact) => (
+          <div key={fact.label} className="border-b border-border py-4 xl:border-b-0">
+            <dt className="text-sm text-muted">{fact.label}</dt>
+            <dd className="mt-1 text-2xl font-semibold tracking-[-0.025em]">{fact.value}</dd>
+            <dd className="mt-0.5 text-sm text-muted">{fact.hint}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <section className="mt-12" aria-labelledby="activity-heading">
+        <div className="flex items-baseline justify-between gap-4 border-b border-foreground pb-3">
+          <h2 id="activity-heading" className="text-lg font-semibold tracking-[-0.02em]">
+            Recent activity
+          </h2>
+          <Link href="/admin/audit" className="link text-sm">
+            Audit log
+          </Link>
+        </div>
+        <ol>
+          {recent.map((e) => (
+            <li key={e.id} className="grid grid-cols-[1fr_auto] gap-x-4 border-b border-border py-3 text-[0.9375rem]">
+              <p className="min-w-0 truncate">
+                <span className="font-medium">{e.actorName}</span> <span className="font-mono text-[0.8125rem] text-muted">{e.action}</span>
+                {e.target ? <span className="text-muted"> {e.target}</span> : null}
+              </p>
+              <p className="text-sm whitespace-nowrap text-muted">{formatRelative(e.createdAt, now)}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
     </>
   );
 }

@@ -19,7 +19,7 @@ export default async function LogsPage({ params }: PageProps<"/dashboard/sites/[
     <Card className="overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-5 py-3">
         <p className="text-sm font-medium">Recent logs</p>
-        <p className="text-xs text-muted">Last {lines.length} lines · times in UTC · secrets are redacted</p>
+        <p className="text-xs text-muted">Last {lines.length} lines, times in UTC, secrets are redacted</p>
       </div>
       <div className="max-h-[560px] overflow-auto bg-zaffre-950 p-4 font-mono text-xs leading-6 text-zaffre-50" tabIndex={0} aria-label="Log output">
         {lines.map((l, i) => (

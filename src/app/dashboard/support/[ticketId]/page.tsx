@@ -27,9 +27,9 @@ export default async function TicketPage({ params }: PageProps<"/dashboard/suppo
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="font-mono text-xs text-muted">#{ticket.number}</p>
-          <h1 className="text-2xl font-bold">{ticket.subject}</h1>
+          <h1 className="text-2xl font-semibold">{ticket.subject}</h1>
           <p className="mt-1 text-sm text-muted">
-            {site ? site.name : "General"} · {ticket.priority} priority · opened {formatDateTime(ticket.createdAt)}
+            {site ? site.name : "General"}, {ticket.priority} priority, opened {formatDateTime(ticket.createdAt)}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ export default async function TicketPage({ params }: PageProps<"/dashboard/suppo
                 {m.attachments.length ? (
                   <ul className="mt-3 flex flex-wrap gap-2">
                     {m.attachments.map((a) => (
-                      <li key={a.name} className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-1 text-xs">
+                      <li key={a.name} className="inline-flex items-center gap-1 rounded-[4px] border border-border bg-surface px-2 py-1 text-xs">
                         <Paperclip className="size-3" aria-hidden /> {a.name} <span className="text-muted">({formatBytes(a.size)})</span>
                       </li>
                     ))}

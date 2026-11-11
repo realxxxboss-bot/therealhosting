@@ -7,7 +7,7 @@ export function UserMenu({ name, email, notificationsHref, unread }: { name: str
   return (
     <div className="flex items-center gap-1.5">
       {notificationsHref ? (
-        <Link href={notificationsHref} className="relative grid size-9 place-items-center rounded-[10px] text-muted hover:bg-surface-2 hover:text-foreground" aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}>
+        <Link href={notificationsHref} className="relative grid size-9 place-items-center rounded-[4px] text-muted hover:bg-surface-2 hover:text-foreground" aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}>
           <Bell className="size-[18px]" aria-hidden />
           {unread ? <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-danger" aria-hidden /> : null}
         </Link>
@@ -22,7 +22,7 @@ export function UserMenu({ name, email, notificationsHref, unread }: { name: str
         </span>
       </div>
       <form action={signOut}>
-        <button type="submit" className="grid size-9 place-items-center rounded-[10px] text-muted hover:bg-surface-2 hover:text-foreground" aria-label="Sign out">
+        <button type="submit" className="grid size-9 place-items-center rounded-[4px] text-muted hover:bg-surface-2 hover:text-foreground" aria-label="Sign out">
           <LogOut className="size-[18px]" aria-hidden />
         </button>
       </form>

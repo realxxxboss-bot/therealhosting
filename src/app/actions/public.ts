@@ -49,5 +49,5 @@ export async function submitContact(_prev: FormState, formData: FormData): Promi
     subject: `[${topic}] New enquiry from ${name}`,
     body: [`From: ${name} <${email}>`, company ? `Company: ${company}` : "", sites ? `Sites: ${sites}` : "", "", message].filter(Boolean).join("\n"),
   });
-  return { ok: true, message: "Thanks! We've got your message and will reply by email, usually within one business day." };
+  return { ok: true, message: "We have your message and will reply by email, usually within one business day." };
 }

@@ -15,7 +15,7 @@ test("a client can't open another client's site", async ({ page }) => {
   await signIn(page, "owner@ukclient.example");
   await page.waitForURL("**/dashboard");
   await page.goto("/dashboard/sites/site_7");
-  await expect(page.getByText(/page not found|couldn.t find/i).first()).toBeVisible();
+  await expect(page.getByText(/that page is not here/i).first()).toBeVisible();
 });
 
 test("wrong password shows a generic error", async ({ page }) => {

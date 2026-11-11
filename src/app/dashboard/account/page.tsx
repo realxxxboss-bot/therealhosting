@@ -80,7 +80,7 @@ export default async function AccountPage() {
                       {s.device} {s.current ? <span className="text-xs font-normal text-success">· this device</span> : null}
                     </p>
                     <p className="text-sm text-muted">
-                      {s.location} · active {formatRelative(s.lastActiveAt, now)}
+                      {s.location}, active {formatRelative(s.lastActiveAt, now)}
                     </p>
                   </div>
                   {!s.current ? <ActionButton action={revokeSession} fields={{ sessionId: s.id }} label="Sign out" variant="ghost" /> : null}

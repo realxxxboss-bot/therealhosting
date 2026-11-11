@@ -38,7 +38,7 @@ export default async function FleetPage() {
                 <div>
                   <CardTitle className="font-mono">{s.name}</CardTitle>
                   <CardDescription>
-                    {s.region} · {s.vcpu} vCPU · {s.ramGb} GB RAM · {s.diskGb} GB disk · {s.ip}
+                    {s.region}, {s.vcpu} vCPU, {s.ramGb} GB RAM, {s.diskGb} GB disk, {s.ip}
                   </CardDescription>
                 </div>
                 <StatusBadge tone={s.status === "healthy" ? "success" : s.status === "warning" ? "warning" : "danger"} label={s.status === "healthy" ? "Healthy" : s.status === "warning" ? "Needs a look" : "Down"} />

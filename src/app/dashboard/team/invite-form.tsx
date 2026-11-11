@@ -28,7 +28,7 @@ export function InviteForm({
         <legend className="text-sm font-medium">Role</legend>
         <div className="mt-2 grid gap-2 md:grid-cols-3">
           {roles.map((r) => (
-            <label key={r.value} className={cn("cursor-pointer rounded-[12px] border p-3 text-sm transition-colors", role === r.value ? "border-primary bg-primary-soft" : "border-border hover:bg-surface-2")}>
+            <label key={r.value} className={cn("cursor-pointer rounded-[8px] border p-3 text-sm transition-colors", role === r.value ? "border-primary bg-primary-soft" : "border-border hover:bg-surface-2")}>
               <span className="flex items-center gap-2 font-medium">
                 <input type="radio" name="role" value={r.value} checked={role === r.value} onChange={() => setRole(r.value)} className="accent-[var(--primary)]" />
                 {r.label}
@@ -52,7 +52,7 @@ export function InviteForm({
           {scope === "selected" ? (
             <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {sites.map((s) => (
-                <label key={s.id} className="flex items-center gap-2 rounded-[10px] border border-border px-3 py-2 text-sm">
+                <label key={s.id} className="flex items-center gap-2 rounded-[4px] border border-border px-3 py-2 text-sm">
                   <input type="checkbox" name="siteIds" value={s.id} /> {s.name}
                 </label>
               ))}

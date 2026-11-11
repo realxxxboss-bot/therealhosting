@@ -46,8 +46,8 @@ async function AdminFrame({ children }: { children: ReactNode }) {
       navLabel="Admin"
       homeHref="/admin"
       sidebarTop={
-        <div className="rounded-[12px] border border-border bg-background p-3">
-          <p className="text-[11px] font-medium tracking-wide text-muted uppercase">Workspace</p>
+        <div className="border-y border-border px-2 py-3">
+          <p className="text-xs text-muted">Workspace</p>
           <p className="mt-0.5 text-sm font-semibold">Zaffre admin</p>
           <p className="mt-1 text-xs text-muted">Staff only. Every action is logged.</p>
         </div>

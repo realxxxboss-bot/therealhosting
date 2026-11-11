@@ -7,7 +7,7 @@ import { getSite, hasCapability } from "@/lib/data/client";
 import { redeploySite, restartSite } from "@/app/actions/sites";
 import { TabsNav } from "@/components/app/tabs-nav";
 import { SiteStatusBadge } from "@/components/app/status";
-import { SiteTypeIcon, siteTypeLabel } from "@/components/app/site-type";
+import { siteTypeLabel } from "@/components/app/site-type";
 import { ActionButton } from "@/components/app/action-button";
 import { PageSkeleton } from "@/components/app/app-shell";
 
@@ -43,10 +43,9 @@ async function SiteFrame({ children, params }: { children: ReactNode; params: Pr
         <ArrowLeft className="size-4" aria-hidden /> All sites
       </Link>
       <div className="mb-6 flex flex-wrap items-start gap-4">
-        <SiteTypeIcon type={site.type} className="size-12 text-sm" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold">{site.name}</h1>
+            <h1 className="text-[1.75rem] leading-tight font-semibold tracking-[-0.03em] sm:text-[2rem]">{site.name}</h1>
             <SiteStatusBadge status={site.status} />
           </div>
           <a href={`https://${site.primaryDomain}`} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-sm text-muted hover:text-primary">
@@ -54,7 +53,7 @@ async function SiteFrame({ children, params }: { children: ReactNode; params: Pr
             <span className="sr-only">(opens in a new tab)</span>
           </a>
           <p className="mt-0.5 text-xs text-muted">
-            {siteTypeLabel(site.type)} · {site.framework}
+            {siteTypeLabel(site.type)}, {site.framework}
           </p>
         </div>
         {canManage ? (

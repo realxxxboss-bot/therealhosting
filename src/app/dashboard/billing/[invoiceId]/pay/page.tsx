@@ -44,12 +44,12 @@ export default async function PayInvoicePage({ params }: PageProps<"/dashboard/b
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               {methods.map((m) => (
-                <div key={m.id} className="rounded-[14px] border border-border p-5">
+                <div key={m.id} className="rounded-[8px] border border-border p-5">
                   <p className="font-semibold">{m.label}</p>
                   <p className="mt-1 text-sm text-muted">{m.instructions}</p>
                   <dl className="mt-4 grid gap-2">
                     {[...m.fields, { label: "Amount", value: formatCents(total) }, { label: "Reference", value: invoice.number }].map((f) => (
-                      <div key={f.label} className="flex flex-wrap items-center justify-between gap-2 rounded-[10px] bg-surface-2 px-3 py-2">
+                      <div key={f.label} className="flex flex-wrap items-center justify-between gap-2 rounded-[4px] bg-surface-2 px-3 py-2">
                         <dt className="text-xs text-muted">{f.label}</dt>
                         <dd className="flex items-center gap-2">
                           <span className="font-mono text-sm">{f.value}</span>

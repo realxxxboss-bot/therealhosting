@@ -44,7 +44,7 @@ export default async function PlansPage() {
                   <TD>{formatUSD(priceFor(p, "yearly"))}</TD>
                   <TD>{p.sites}</TD>
                   <TD className="text-muted">
-                    {p.vcpu} vCPU · {p.ramGb} GB · {p.storageGb} GB SSD
+                    {p.vcpu} vCPU, {p.ramGb} GB, {p.storageGb} GB SSD
                   </TD>
                   <TD className="text-muted">{p.backupDays} days</TD>
                   <TD>{store.subscriptions.filter((s) => s.planId === p.id && s.status === "active").length}</TD>

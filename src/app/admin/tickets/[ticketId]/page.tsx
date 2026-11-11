@@ -29,12 +29,12 @@ export default async function AdminTicketPage({ params }: PageProps<"/admin/tick
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="font-mono text-xs text-muted">#{ticket.number}</p>
-          <h1 className="text-2xl font-bold">{ticket.subject}</h1>
+          <h1 className="text-2xl font-semibold">{ticket.subject}</h1>
           <p className="mt-1 text-sm text-muted">
             <Link href={`/admin/clients/${ticket.accountId}`} className="text-primary underline underline-offset-2">
               {account?.name}
-            </Link>{" "}
-            · {site ? `${site.name} (${site.primaryDomain})` : "General"} · {ticket.priority} priority
+            </Link>
+            , {site ? `${site.name} (${site.primaryDomain})` : "General"}, {ticket.priority} priority
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -54,7 +54,7 @@ export default async function AdminTicketPage({ params }: PageProps<"/admin/tick
             </span>
             <Card className={cn("max-w-2xl flex-1 p-4", m.fromStaff && "border-zaffre-200 bg-primary-soft dark:border-zaffre-800")}>
               <p className="text-xs text-muted">
-                <span className="font-medium text-foreground">{m.authorName}</span> · {formatDateTime(m.createdAt)}
+                <span className="font-medium text-foreground">{m.authorName}</span>, {formatDateTime(m.createdAt)}
               </p>
               <p className="mt-2 text-sm whitespace-pre-wrap">{m.body}</p>
               {m.attachments.length > 0 ? (

@@ -42,7 +42,7 @@ export default async function PaymentsPage() {
                 <CardHeader>
                   <div>
                     <CardTitle>
-                      {accounts.get(p.accountId)} · {invoice?.number}
+                      {accounts.get(p.accountId)}, {invoice?.number}
                     </CardTitle>
                     <CardDescription>
                       Sent {formatRelative(p.submittedAt, now)} by {users.get(p.submittedBy)}
@@ -70,7 +70,7 @@ export default async function PaymentsPage() {
                   </dl>
                   <div className="grid content-start gap-4">
                     <ActionButton action={reviewPayment} fields={{ paymentId: p.id, decision: "approve" }} label="Approve and mark paid" variant="primary" size="md" confirm="Have you seen this money arrive?" />
-                    <FormShell action={reviewPayment} submitLabel="Reject" variant="danger" className="rounded-[12px] border border-border p-4">
+                    <FormShell action={reviewPayment} submitLabel="Reject" variant="danger" className="rounded-[8px] border border-border p-4">
                       <input type="hidden" name="paymentId" value={p.id} />
                       <input type="hidden" name="decision" value="reject" />
                       <Field label="Reason (the client sees this)" htmlFor={`reason-${p.id}`}>

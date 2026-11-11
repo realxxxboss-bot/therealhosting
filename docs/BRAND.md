@@ -12,84 +12,68 @@ That is our promise: deep, dependable, crafted. Pronounced _ZAF-er_.
 
 ## Logo
 
-| File | Use |
-| --- | --- |
-| `public/brand/icon.svg` | App icon, avatar, favicon source. Gradient tile + white Z + cyan "node" block. |
-| `public/brand/icon-mono.svg` | One-colour version (inherits `currentColor`). For print, embossing, watermarks. |
-| `public/brand/logo.svg` | Icon + wordmark on light backgrounds. |
-| `public/brand/logo-on-dark.svg` | Icon + wordmark on dark backgrounds. |
-| `src/app/icon.svg`, `src/app/favicon.ico`, `src/app/apple-icon.png`, `public/brand/icon-192.png`, `public/brand/icon-512.png` | Favicon set. Regenerate with `node scripts/generate-icons.mjs`. |
-| `src/app/opengraph-image.tsx` + `src/lib/og.tsx` | Open Graph image template (1200×630). Pages can reuse `renderOgImage({ title, eyebrow })`. |
+- **Mark:** a flat zaffre tile (8px corner on a 64px grid) with a white Z. No gradient, no glow, no second colour.
+- **Wordmark:** "zaffre" in lowercase, Schibsted Grotesk 700, tracking -4.5%.
+- Files: `public/brand/icon.svg`, `icon-mono.svg`, `logo.svg`, `logo-on-dark.svg`, plus PNG icons made by `npm run icons`.
+- Clear space: half the tile width on every side. Minimum size: 20px tile.
+- Never: add effects, rotate, recolour outside zaffre, ink or white, or place on a busy photo.
+- In the product UI the wordmark is live text (sharper and accessible); the SVG files are for use outside the app.
 
-**The mark.** A geometric Z built from two bars and a diagonal, like a stack of server layers. The small cyan block at the bottom right is a "live node": the site is up, someone is watching it.
+## Direction: "cobalt glaze"
 
-**Rules.**
+Zaffre is the cobalt pigment used on blue-and-white porcelain. The site borrows that, not a tech look: white porcelain surfaces, one deep cobalt used in large solid fields, ink type, and real photographs. Full reasoning: [DESIGN-PLAN.md](./DESIGN-PLAN.md).
 
-- Clear space around the logo = the height of the cyan block × 2.
-- Minimum size: icon 16 px, full logo 96 px wide.
-- Do not recolour the tile outside the brand blues, do not rotate, do not add shadows or outlines.
-- In the product UI the wordmark is live text in Plus Jakarta Sans 800 (sharper and accessible); the SVG files are for use outside the app.
+Hard rules from the owner: **no gradients anywhere, no grid or pattern backgrounds, no fake product mockups, no template "SaaS" look.**
 
 ## Colour tokens
 
-Defined in `src/app/globals.css` as CSS variables and mapped to Tailwind (`bg-primary`, `text-muted`, …).
+Source of truth: `src/app/globals.css`.
 
-### Zaffre blue scale
-
-| Token | Hex | Notes |
-| --- | --- | --- |
-| zaffre-50 | `#EEF1FF` | Tinted backgrounds |
-| zaffre-100 | `#DDE3FF` | Hover on tinted backgrounds |
-| zaffre-200 | `#BCC7FF` | Borders on tinted backgrounds |
-| zaffre-300 | `#8E9DFF` | Dark-mode links |
-| zaffre-400 | `#6F7CFF` | Dark-mode primary |
-| zaffre-500 | `#3E4CF7` | Gradients |
-| zaffre-600 | `#1B2BDB` | **Light-mode primary (buttons, links)** |
-| zaffre-700 | `#0014A8` | **Brand blue (the pigment)** |
-| zaffre-800 | `#0A138A` | Pressed |
-| zaffre-900 | `#0D156B` | Headings on tinted areas |
-| zaffre-950 | `#070A3A` | Hero backgrounds |
-
-### Semantic tokens
-
-| Token | Light | Dark | Use |
+| Name | Light | Dark | Use |
 | --- | --- | --- | --- |
-| `--background` | `#F7F8FC` | `#070A1F` | Page |
-| `--surface` | `#FFFFFF` | `#0D1230` | Cards, panels |
-| `--surface-2` | `#F0F2FA` | `#141A3D` | Table headers, subtle fills |
-| `--border` | `#E1E5F2` | `#252D58` | Lines |
-| `--foreground` | `#0B1030` | `#E8EBFA` | Body text |
-| `--muted` | `#545C7E` | `#A0A8CC` | Secondary text (AA on surface) |
-| `--primary` | `#1B2BDB` | `#7381FF` | Actions |
-| `--primary-foreground` | `#FFFFFF` | `#070A1F` | Text on primary |
-| `--accent` | `#0E9BBB` | `#38D6F5` | "Live" cyan, highlights, focus glow |
-| `--success` | `#0B7A55` | `#34D399` | Up, paid |
-| `--warning` | `#B45309` | `#FBBF24` | Pending, due soon |
-| `--danger` | `#C8261B` | `#F87171` | Down, overdue |
+| Porcelain (`--background`, `--surface`) | `#FFFFFF` | `#0E1018`, `#151824` | page and surfaces |
+| Sunk (`--surface-2`) | `#F4F5F7` | `#1B1F2D` | alternate sections, hover rows |
+| Ink (`--foreground`, `--ink`) | `#0E1018` | `#ECEEF4` | text; the footer is always Ink |
+| Zaffre (`--primary`, `--band`) | `#0014A8` | buttons become Porcelain on Ink; bands stay `#0014A8` | primary buttons, links, full-width bands, logo |
+| Glaze (`--primary-soft`) | `#E9ECFB` | `#1D2346` | selected rows, highlights |
+| Stone (`--border`) | `#DCDDE2` | `#2A2E3D` | 1px rules |
+| Slate (`--muted`) | `#5A5F6E` | `#A3A8B8` | secondary text |
+| Link in dark (`--accent`) | `#0014A8` | `#8C97FF` | text links and active markers in dark mode |
 
-All text/background pairs above meet WCAG AA (4.5:1 for body text).
+Status colours: success `#0B7A55`, warning `#B45309`, danger `#C8261B` (lighter in dark mode). A status is always a dot plus a word, never colour alone and never a filled pill.
+
+All text pairs meet WCAG AA. The browser tests run axe on every screen.
 
 ## Typography
 
-| Role | Font | Weight | Size (desktop / mobile) |
+| Role | Font | Weight | Size |
 | --- | --- | --- | --- |
-| Display | Plus Jakarta Sans | 800 | 56 / 38 px, tracking -2% |
-| H1 | Plus Jakarta Sans | 800 | 44 / 32 px |
-| H2 | Plus Jakarta Sans | 700 | 32 / 26 px |
-| H3 | Plus Jakarta Sans | 700 | 22 / 20 px |
-| Body large | Inter | 400 | 18 px / 1.6 |
-| Body | Inter | 400 | 15–16 px / 1.6 |
-| Small / labels | Inter | 500 | 13 px |
-| Code, DNS records, env vars | JetBrains Mono | 450 | 13–14 px |
+| Display (home hero) | Schibsted Grotesk | 600 | 52 to 84 px, line height 0.98, tracking -3.5% |
+| H1 (inner pages) | Schibsted Grotesk | 600 | 44 to 64 px |
+| H2 | Schibsted Grotesk | 600 | 32 to 40 px |
+| H3 | Schibsted Grotesk | 600 | 20 to 28 px |
+| Body (marketing) | Schibsted Grotesk | 400 | 17 to 18 px / 1.6 |
+| Body (app) | Schibsted Grotesk | 400 | 15 px |
+| Code, DNS records, env vars | IBM Plex Mono | 400 / 500 | 13 to 15 px |
 
-Fonts are self-hosted from `src/fonts` (SIL Open Font License, licences included).
+One family for everything, self-hosted (`src/fonts`, SIL Open Font License). Sentence case everywhere. Never: ALL-CAPS labels above headings, one coloured word inside a headline, "A · B · C" strings, arrows on links.
 
 ## Shape, depth and motion
 
-- Radius: 10 px for inputs and buttons, 16 px for cards, 24 px for hero panels.
-- Depth: one soft shadow (`0 1px 2px rgb(11 16 48 / 6%), 0 8px 24px -12px rgb(11 16 48 / 18%)`). No heavy drop shadows.
-- Signature detail: a faint blue grid + radial "glow" behind hero sections, like light through cobalt glass.
-- Motion: 150–200 ms ease-out for hovers and menus. Respect `prefers-reduced-motion`. No auto-playing carousels.
+- Two radii: 4px for controls, 8px for cards and photographs.
+- No shadow at rest. Structure comes from 1px rules and spacing; a strong Ink rule opens a list, light Stone rules divide it. One shadow (`--shadow-pop`) for menus and toasts.
+- Layout: 12 columns, mostly 4/8 and 5/7 splits, left-aligned. Boldness is spent on solid zaffre bands and photographs; everything else stays quiet.
+- Lists and tables instead of grids of identical cards. No icon-in-a-tinted-square feature grids.
+- Motion (`src/components/motion`): one page-load sequence in the hero, photographs open with a clip reveal and drift slightly on scroll, headings fade up once, the nav rule and toggles slide, buttons press. 120 to 600ms, ease `cubic-bezier(.22,1,.36,1)`. Everything respects `prefers-reduced-motion`.
+
+## Photography
+
+- Registry: `src/config/photos.ts`. Free photos under the Unsplash License, served from Unsplash's image CDN, credited on `/credits`.
+- Subjects: the customer's world (shops, studios, makers), calm desk work, and cobalt craft (glazed tile, blue glass, pottery) for the brand story.
+- Daylight, quiet, people mid-task and not looking at the camera.
+- Banned: handshakes, pointing at screens, server rooms with blue lights, globes, headsets, forced smiles.
+- Never caption a stock person as staff, a client or a testimonial.
+- Product visuals are real screenshots of the demo account (`public/screens`), never drawn mockups.
 
 ## Icon style
 

@@ -33,7 +33,7 @@ export default async function EmailPage() {
         title="Email"
         description="Professional mailboxes on your own domains."
         actions={
-          <a href={adapters.mailboxes.webmailUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-[10px] border border-border bg-surface px-4 text-sm font-medium hover:bg-surface-2">
+          <a href={adapters.mailboxes.webmailUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-[4px] border border-border bg-surface px-4 text-sm font-medium hover:bg-surface-2">
             Open webmail <ExternalLink className="size-4" aria-hidden />
             <span className="sr-only">(opens in a new tab)</span>
           </a>

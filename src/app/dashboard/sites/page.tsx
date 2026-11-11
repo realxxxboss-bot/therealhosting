@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { requestTime } from "@/lib/request";
 import Link from "next/link";
 import { Server } from "lucide-react";
+import { requestTime } from "@/lib/request";
 import { getViewer } from "@/lib/auth/viewer";
 import { listSites, listSubscriptions, getServer } from "@/lib/data/client";
 import { getPlan } from "@/config/plans";
@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ButtonLink } from "@/components/ui/button";
 import { SiteStatusBadge } from "@/components/app/status";
-import { SiteTypeIcon, siteTypeLabel } from "@/components/app/site-type";
+import { siteTypeLabel } from "@/components/app/site-type";
 import { formatRelative } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Sites" };
@@ -29,46 +29,51 @@ export default async function SitesPage() {
       />
       {sites.length === 0 ? (
         <Card>
-          <EmptyState icon={Server} title="No sites yet" body="Ask us to add or migrate a site. We'll set it up and let you know when it's live." action={<ButtonLink href="/dashboard/support/new">Contact support</ButtonLink>} />
+          <EmptyState icon={Server} title="No sites yet" body="Ask us to add or migrate a site. We set it up and tell you when it is live." action={<ButtonLink href="/dashboard/support/new">Contact support</ButtonLink>} />
         </Card>
       ) : (
-        <ul className="grid gap-4 md:grid-cols-2">
-          {sites.map((s) => {
-            const plan = getPlan(subs.find((x) => x.id === s.subscriptionId)?.planId ?? "");
-            const server = getServer(s.serverId);
-            return (
-              <li key={s.id}>
-                <Link href={`/dashboard/sites/${s.id}`} className="block rounded-[16px] border border-border bg-surface p-5 shadow-[var(--shadow-soft)] transition-colors hover:border-primary">
-                  <div className="flex items-start gap-3">
-                    <SiteTypeIcon type={s.type} />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate font-semibold">{s.name}</p>
-                      <p className="truncate text-sm text-muted">{s.primaryDomain}</p>
-                    </div>
-                    <SiteStatusBadge status={s.status} />
-                  </div>
-                  <dl className="mt-5 grid grid-cols-3 gap-3 text-sm">
-                    <div>
-                      <dt className="text-xs text-muted">Response</dt>
-                      <dd className="font-medium">{s.responseMs} ms</dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs text-muted">Uptime 30d</dt>
-                      <dd className="font-medium">{s.uptime30d.toFixed(2)}%</dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs text-muted">Last deploy</dt>
-                      <dd className="font-medium">{formatRelative(s.lastDeployAt, now)}</dd>
-                    </div>
-                  </dl>
-                  <p className="mt-4 border-t border-border pt-3 text-xs text-muted">
-                    {siteTypeLabel(s.type)} · {plan?.name} · {server?.region}
-                  </p>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="overflow-x-auto border-t border-foreground">
+          <table className="w-full text-left text-[0.9375rem]">
+            <thead className="text-[0.8125rem] text-muted">
+              <tr className="border-b border-border">
+                <th scope="col" className="py-2.5 pr-4 font-medium">Site</th>
+                <th scope="col" className="hidden py-2.5 pr-4 font-medium md:table-cell">Type and plan</th>
+                <th scope="col" className="hidden py-2.5 pr-4 font-medium xl:table-cell">Region</th>
+                <th scope="col" className="hidden py-2.5 pr-4 text-right font-medium sm:table-cell">Response</th>
+                <th scope="col" className="hidden py-2.5 pr-4 text-right font-medium lg:table-cell">Uptime, 30 days</th>
+                <th scope="col" className="hidden py-2.5 pr-4 text-right font-medium lg:table-cell">Last deploy</th>
+                <th scope="col" className="py-2.5 text-right font-medium">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sites.map((s) => {
+                const plan = getPlan(subs.find((x) => x.id === s.subscriptionId)?.planId ?? "");
+                const server = getServer(s.serverId);
+                return (
+                  <tr key={s.id} className="group border-b border-border transition-colors duration-150 hover:bg-surface-2/70">
+                    <th scope="row" className="py-4 pr-4 font-normal">
+                      <Link href={`/dashboard/sites/${s.id}`} className="block">
+                        <span className="block text-base font-medium underline decoration-transparent underline-offset-4 transition-colors duration-150 group-hover:decoration-current">{s.name}</span>
+                        <span className="block text-sm text-muted">{s.primaryDomain}</span>
+                      </Link>
+                    </th>
+                    <td className="hidden py-4 pr-4 md:table-cell">
+                      <span className="block">{siteTypeLabel(s.type)}</span>
+                      <span className="block text-sm text-muted">{plan?.name}</span>
+                    </td>
+                    <td className="hidden py-4 pr-4 text-muted xl:table-cell">{server?.region}</td>
+                    <td className="hidden py-4 pr-4 text-right tabular-nums sm:table-cell">{s.responseMs} ms</td>
+                    <td className="hidden py-4 pr-4 text-right tabular-nums lg:table-cell">{s.uptime30d.toFixed(2)}%</td>
+                    <td className="hidden py-4 pr-4 text-right text-muted lg:table-cell">{formatRelative(s.lastDeployAt, now)}</td>
+                    <td className="py-4 text-right">
+                      <SiteStatusBadge status={s.status} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );

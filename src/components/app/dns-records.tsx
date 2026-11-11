@@ -3,7 +3,7 @@ import { CopyButton } from "@/components/ui/copy-button";
 
 export function DnsRecordsTable({ records, status }: { records: DnsRecord[]; status?: boolean[] }) {
   return (
-    <div className="overflow-x-auto rounded-[12px] border border-border">
+    <div className="overflow-x-auto rounded-[8px] border border-border">
       <table className="w-full min-w-[560px] text-sm">
         <thead className="bg-surface-2 text-left text-xs text-muted">
           <tr>

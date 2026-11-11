@@ -57,7 +57,7 @@ export default async function TemplatesPage() {
             ) : (
               <ol className="grid gap-3">
                 {outbox.map((m) => (
-                  <li key={m.id} className="rounded-[12px] border border-border p-3 text-sm">
+                  <li key={m.id} className="rounded-[8px] border border-border p-3 text-sm">
                     <div className="flex items-center justify-between gap-2">
                       <StatusBadge tone="primary" label={m.channel === "email" ? "Email" : "WhatsApp"} />
                       <span className="text-xs text-muted">{formatRelative(m.at, now)}</span>
