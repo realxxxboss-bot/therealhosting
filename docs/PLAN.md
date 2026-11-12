@@ -44,7 +44,8 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 - [x] First admin created from `ADMIN_EMAIL` on an empty database
 - [ ] Connect a real database to the deployment (OWNER-ACTIONS #9)
 - [ ] Email notifications for site events and per-user notification preferences applied to sending (needs real uptime and deploy events, Phase 3)
-- [ ] Admin screens for adding servers and editing plans in the database
+- [x] Admin screen for adding, editing and removing servers
+- [x] Plans stay in code, not in the database (D-015)
 
 ## Phase 3: Infrastructure integration
 

@@ -209,3 +209,11 @@ R2 with signed links was the original plan. It needs the Cloudflare account, whi
 A site is linked to its Coolify application by uuid (`sites.deploy_ref`, set on the admin Sites page). Linking also creates its UptimeRobot monitor (`sites.monitor_ref`). Custom hostname ids are kept on `domains.provider_ref`. Status page services use monitors named `zaffre:<service>` (for example `zaffre:dashboard`); a service without one shows "no data".
 
 The Cloudflare and UptimeRobot calls follow their public API references. The Coolify v4 deploy call is from its reference; the restart, env var and log endpoints follow the v4 API but could not be read in full from the build environment, so the first live connection is checked by hand before clients use it (RUNBOOK-SERVER, Hissa G). Provider errors are logged without tokens and shown to users as plain messages.
+
+## D-015 List prices stay in code; servers are managed in the admin
+
+**Date:** 2026-11-12
+
+Servers are now added, edited and removed on the admin Servers page. A server with sites on it can't be removed until they are moved. Usage meters show only in demo mode; in live mode the page says usage is not measured yet, until real server metrics are connected.
+
+Plans and list prices stay in `src/config/plans.ts` instead of moving to the database. The pricing page, the dashboard and invoices all read that one file, so they can never disagree, and the public pricing page stays a fast static page. List prices change rarely, and a change never touches existing clients, whose price is saved on their package. Per-client deals are already set in the admin on each client's packages. To change a list price, the owner asks for it and it ships as a reviewed change.

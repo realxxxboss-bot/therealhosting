@@ -111,3 +111,25 @@ test("the password reset form gives the same answer for any email", async ({ pag
   await page.click("button[type=submit]");
   await expect(page.getByText(/if an account exists/i)).toBeVisible();
 });
+
+test("admin adds a server, then removes it", async ({ page }) => {
+  await signInAsAdmin(page);
+  await page.goto("/admin/fleet");
+  const add = page.locator("form").filter({ has: page.getByRole("button", { name: "Add server" }) });
+  await add.locator("#ip-new").fill("not an ip");
+  await add.getByRole("button", { name: "Add server" }).click();
+  await expect(page.getByText("Enter the server's public IP address.").first()).toBeVisible();
+  await add.locator("#name-new").fill("zaffre-test-9");
+  await add.locator("#region-new").fill("Nuremberg, Germany");
+  await add.locator("#ip-new").fill("203.0.113.9");
+  await add.locator("#vcpu-new").fill("4");
+  await add.locator("#ram-new").fill("16");
+  await add.locator("#disk-new").fill("160");
+  await add.getByRole("button", { name: "Add server" }).click();
+  await expect(page.getByText("zaffre-test-9 added.")).toBeVisible();
+  await page.reload();
+  await page.getByText("Edit zaffre-test-9").click();
+  await page.getByRole("button", { name: "Remove zaffre-test-9" }).click();
+  // The card itself disappears once the server is gone.
+  await expect(page.getByText("Edit zaffre-test-9")).toHaveCount(0);
+});
