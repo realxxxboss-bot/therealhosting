@@ -206,6 +206,58 @@ export async function moveSite(_prev: FormState, formData: FormData): Promise<Fo
   return { ok: true, message: `${site.name} will move to ${server.name} on its next deploy.` };
 }
 
+// ---------- Servers ----------
+
+const serverSchema = z.object({
+  serverId: z.string().max(64).optional(),
+  name: z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9][a-z0-9-]{1,39}$/, "Use lowercase letters, numbers and dashes, e.g. zaffre-eu-1."),
+  region: z.string().trim().min(2, "Enter where the server is, e.g. Falkenstein, Germany.").max(60),
+  provider: z.enum(["vps", "proxmox"]),
+  ip: z.union([z.ipv4(), z.ipv6()], { error: "Enter the server's public IP address." }),
+  vcpu: z.coerce.number().int().min(1, "At least 1.").max(512),
+  ramGb: z.coerce.number().int().min(1, "At least 1.").max(4096),
+  diskGb: z.coerce.number().int().min(10, "At least 10.").max(100_000),
+});
+
+/** Adds a server, or edits one when serverId is set. Usage numbers are not set here; they come from monitoring. */
+export async function saveServer(_prev: FormState, formData: FormData): Promise<FormState> {
+  const admin = await getAdmin();
+  const parsed = serverSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error) };
+  const { serverId, ...d } = parsed.data;
+  const db = await getDb();
+  const [sameName] = await db.select({ id: t.servers.id }).from(t.servers).where(eq(t.servers.name, d.name));
+  if (sameName && sameName.id !== serverId) return { ok: false, errors: { name: "Another server already has this name." } };
+  if (serverId) {
+    const updated = await db.update(t.servers).set(d).where(eq(t.servers.id, serverId)).returning({ id: t.servers.id });
+    if (updated.length === 0) return { ok: false, message: "Server not found." };
+    await audit(adminActor(admin), "admin.server_update", d.name);
+  } else {
+    await db.insert(t.servers).values({ id: newId("srv"), ...d });
+    await audit(adminActor(admin), "admin.server_add", `${d.name} (${d.region})`);
+  }
+  refresh();
+  return { ok: true, message: serverId ? `${d.name} saved.` : `${d.name} added. You can now place sites on it.` };
+}
+
+/** Removes a server from the list. Only allowed when no site is placed on it. */
+export async function removeServer(_prev: FormState, formData: FormData): Promise<FormState> {
+  const admin = await getAdmin();
+  const db = await getDb();
+  const serverId = String(formData.get("serverId") ?? "");
+  const [server] = await db.select().from(t.servers).where(eq(t.servers.id, serverId));
+  if (!server) return { ok: false, message: "Server not found." };
+  const [{ n } = { n: 0 }] = await db.select({ n: count() }).from(t.sites).where(eq(t.sites.serverId, serverId));
+  if (n > 0) return { ok: false, message: `Move its ${n} site${n === 1 ? "" : "s"} to another server first.` };
+  await db.delete(t.servers).where(eq(t.servers.id, serverId));
+  await audit(adminActor(admin), "admin.server_remove", server.name);
+  refresh();
+  return { ok: true, message: `${server.name} removed.` };
+}
+
 const deployRefSchema = z
   .string()
   .trim()
