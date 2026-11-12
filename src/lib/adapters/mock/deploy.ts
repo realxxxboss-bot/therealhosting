@@ -15,8 +15,8 @@ const runtimeMessages: Omit<LogLine, "at">[] = [
 
 export const mockDeployAdapter: DeployAdapter = {
   name: "Mock Coolify",
-  async redeploy(appId) {
-    return { deploymentId: `dep_${appId}_${Math.random().toString(36).slice(2, 8)}`, status: "queued" };
+  async redeploy(site) {
+    return { deploymentId: `dep_${site.id}_${Math.random().toString(36).slice(2, 8)}`, status: "queued" };
   },
   async restart() {
     return { ok: true };
@@ -24,8 +24,11 @@ export const mockDeployAdapter: DeployAdapter = {
   async setEnv() {
     return { ok: true };
   },
-  async logs(appId, { limit, now }) {
-    const rand = seededRandom(appId);
+  async deleteEnv() {
+    return { ok: true };
+  },
+  async logs(site, { limit, now }) {
+    const rand = seededRandom(site.id);
     const lines: LogLine[] = [];
     let t = now;
     for (let i = 0; i < limit; i++) {

@@ -2,7 +2,7 @@
 
 Living plan. Updated at the end of every work session.
 
-**Current status (2026-11-12):** Phases 0 and 1 and the design overhaul are merged, and the owner approved the design. Phase 2 (real backend) is built and in review: Postgres schema and migrations, database-backed data access, real sign-in, password reset, 2FA, invites, invoice PDFs, private uploads and email through Resend. The preview keeps running on the built-in sample database until a real database is connected (OWNER-ACTIONS #9). Next is Phase 3 (infrastructure), which needs the server (OWNER-ACTIONS #3) and the domain (#1).
+**Current status (2026-11-12):** Phases 0 and 1 and the design overhaul are merged, and the owner approved the design. Phase 2 (real backend) is built and in review: Postgres schema and migrations, database-backed data access, real sign-in, password reset, 2FA, invites, invoice PDFs, private uploads and email through Resend. The preview keeps running on the built-in sample database until a real database is connected (OWNER-ACTIONS #9). Phase 3 prep is in review: the server runbook and the Coolify, Cloudflare and UptimeRobot connections, switched off until the server (OWNER-ACTIONS #3) and domain (#1) exist.
 
 Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 
@@ -48,11 +48,15 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 
 ## Phase 3: Infrastructure integration
 
-- [ ] Real Coolify adapter (apps, deploys, restart, env vars, logs, servers)
-- [ ] Real Cloudflare adapters: DNS, Custom Hostnames (SSL), R2 backups, cache rules
-- [ ] Domain-connect flow end to end
-- [ ] Uptime (UptimeRobot) adapter, status page from real data
-- [ ] `docs/RUNBOOK-SERVER.md` (VPS + Coolify + Cloudflare + backups, copy-paste steps)
+- [x] `docs/RUNBOOK-SERVER.md` (VPS + Coolify + Cloudflare + backups, copy-paste steps)
+- [x] Coolify adapter: deploy, restart, env vars, logs, written and unit tested, switched off until configured (D-014)
+- [x] Cloudflare custom hostnames adapter (domains and HTTPS), written and unit tested, switched off until configured
+- [x] UptimeRobot adapter: site uptime and status page from real monitors
+- [x] Admin: link a site to its Coolify app, connections overview
+- [ ] Server bought and set up by the owner (OWNER-ACTIONS #3, runbook)
+- [ ] First live check of each connection against the real server
+- [ ] Domain-connect flow end to end on a real domain
+- [ ] R2 for backups list and uploads, Coolify server list on the fleet page, cache rules
 
 ## Phase 4: First client migration
 

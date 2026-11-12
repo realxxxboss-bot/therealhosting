@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { requestTime } from "@/lib/request";
-import { getAdapters } from "@/lib/adapters";
+import { getAdapters, providerMessage } from "@/lib/adapters";
+import { uptimeNotConnected } from "@/lib/adapters/live/not-connected";
 import type { ServiceStatus } from "@/lib/adapters/types";
 import { site } from "@/config/site";
 import { PageHero, Section, SectionHeading } from "@/components/marketing/section";
@@ -65,7 +66,11 @@ export default function StatusPage() {
 async function LiveStatus() {
   const now = await requestTime();
   const uptime = getAdapters().uptime;
-  const services = await uptime.platformStatus({ now });
+  // If the monitor can't be reached, show "no data" rather than an error page or a guess.
+  const services = await uptime.platformStatus({ now }).catch((e: unknown) => {
+    if (!providerMessage(e)) throw e;
+    return uptimeNotConnected.platformStatus({ now });
+  });
   const measured = services.some((s) => s.history.some((h) => h !== "nodata"));
   const worst = services.some((s) => s.status === "outage") ? "outage" : services.some((s) => s.status === "degraded") ? "degraded" : "operational";
   const headline = !measured ? "Monitoring is not connected yet" : worst === "operational" ? "All systems operational" : "Some systems are affected";

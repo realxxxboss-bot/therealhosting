@@ -5,7 +5,7 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getPlan, plans } from "@/config/plans";
-import { getAdapters } from "@/lib/adapters";
+import { getAdapters, providerMessage } from "@/lib/adapters";
 import { createPasswordLink, WELCOME_LINK_DAYS } from "@/lib/auth/links";
 import { readSession, updateSession } from "@/lib/auth/session";
 import { getAdmin } from "@/lib/auth/viewer";
@@ -204,6 +204,42 @@ export async function moveSite(_prev: FormState, formData: FormData): Promise<Fo
   await audit(adminActor(admin, site.accountId), "admin.site_move", `${site.name} → ${server.name}`);
   refresh();
   return { ok: true, message: `${site.name} will move to ${server.name} on its next deploy.` };
+}
+
+const deployRefSchema = z
+  .string()
+  .trim()
+  .max(64)
+  .regex(/^[A-Za-z0-9_-]*$/, "Paste the application uuid from Coolify (letters, numbers and dashes).");
+
+/**
+ * Links a site to its application in Coolify, and makes sure its domain is monitored.
+ * An empty value unlinks it. Monitoring is best effort: if the uptime service isn't
+ * connected yet, the link is still saved.
+ */
+export async function linkSite(_prev: FormState, formData: FormData): Promise<FormState> {
+  const admin = await getAdmin();
+  const parsed = deployRefSchema.safeParse(formData.get("deployRef") ?? "");
+  if (!parsed.success) return { ok: false, errors: { deployRef: parsed.error.issues[0]?.message ?? "Invalid value." } };
+  const db = await getDb();
+  const [site] = await db.select().from(t.sites).where(eq(t.sites.id, String(formData.get("siteId") ?? "")));
+  if (!site) return { ok: false, message: "Site not found." };
+  const deployRef = parsed.data || null;
+  let monitorRef = site.monitorRef;
+  let monitorNote = "";
+  if (deployRef && !monitorRef) {
+    try {
+      monitorRef = (await getAdapters().uptime.ensureMonitor({ id: site.id, primaryDomain: site.primaryDomain })).monitorRef;
+    } catch (e) {
+      const message = providerMessage(e);
+      if (!message) throw e;
+      monitorNote = ` Monitoring was not set up: ${message}`;
+    }
+  }
+  await db.update(t.sites).set({ deployRef, monitorRef }).where(eq(t.sites.id, site.id));
+  await audit(adminActor(admin, site.accountId), "admin.site_link", `${site.name} → ${deployRef ?? "unlinked"}`);
+  refresh();
+  return { ok: true, message: deployRef ? `${site.name} is linked.${monitorNote}` : `${site.name} is unlinked.` };
 }
 
 export async function upsertPackage(_prev: FormState, formData: FormData): Promise<FormState> {

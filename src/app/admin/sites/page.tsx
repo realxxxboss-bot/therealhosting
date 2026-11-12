@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAdmin } from "@/lib/auth/viewer";
 import { loadAdminStore } from "@/lib/data/admin";
-import { createSite, moveSite } from "@/app/actions/admin";
+import { createSite, linkSite, moveSite } from "@/app/actions/admin";
 import { getPlan } from "@/config/plans";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -34,6 +34,7 @@ export default async function AdminSitesPage() {
                 <TH>Package</TH>
                 <TH>Status</TH>
                 <TH>Server</TH>
+                <TH>Server app</TH>
               </tr>
             </THead>
             <tbody>
@@ -68,6 +69,21 @@ export default async function AdminSitesPage() {
                             </option>
                           ))}
                         </select>
+                      </FormShell>
+                    </TD>
+                    <TD>
+                      <FormShell action={linkSite} submitLabel="Link" variant="secondary" className="flex flex-nowrap items-center gap-2">
+                        <input type="hidden" name="siteId" value={s.id} />
+                        <label htmlFor={`app-${s.id}`} className="sr-only">
+                          Coolify application uuid for {s.name}
+                        </label>
+                        <input
+                          id={`app-${s.id}`}
+                          name="deployRef"
+                          defaultValue={s.deployRef ?? ""}
+                          placeholder="Coolify app uuid"
+                          className="w-40 rounded-[8px] border border-border bg-surface px-2 py-1 font-mono text-xs"
+                        />
                       </FormShell>
                     </TD>
                   </TR>

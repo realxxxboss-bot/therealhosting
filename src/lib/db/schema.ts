@@ -146,6 +146,10 @@ export const sites = pgTable(
     framework: text("framework").notNull(),
     repo: text("repo"),
     branch: text("branch"),
+    /** Application uuid in Coolify. */
+    deployRef: text("deploy_ref"),
+    /** Monitor id in the uptime service. */
+    monitorRef: text("monitor_ref"),
     createdAt: createdAt(),
     lastDeployAt: ts("last_deploy_at").notNull(),
     uptime30d: doublePrecision("uptime_30d").notNull().default(100),
@@ -166,6 +170,8 @@ export const domains = pgTable(
     redirectTo: text("redirect_to"),
     registrar: text("registrar"),
     expiresAt: ts("expires_at"),
+    /** Custom hostname id at Cloudflare. */
+    providerRef: text("provider_ref"),
     createdAt: createdAt(),
   },
   (t) => [uniqueIndex("domains_hostname_key").on(t.hostname), index("domains_account_idx").on(t.accountId)],

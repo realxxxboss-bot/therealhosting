@@ -4,7 +4,7 @@ import { and, eq, isNull, ne } from "drizzle-orm";
 import { refresh } from "next/cache";
 import { z } from "zod";
 import { site } from "@/config/site";
-import { getAdapters } from "@/lib/adapters";
+import { getAdapters, providerMessage } from "@/lib/adapters";
 import { hashPassword, MIN_PASSWORD_LENGTH, verifyPassword } from "@/lib/auth/password";
 import { decrypt, encrypt, hashToken } from "@/lib/auth/secrets";
 import { deleteUserSessions, readSession } from "@/lib/auth/session";
@@ -158,6 +158,8 @@ export async function createMailbox(_prev: FormState, formData: FormData): Promi
     return { ok: true, message: `${address} created. We've emailed you a link to set its password.` };
   } catch (e) {
     if (e instanceof ForbiddenError) return { ok: false, message: e.message };
+    const message = providerMessage(e);
+    if (message) return { ok: false, message };
     throw e;
   }
 }
@@ -179,6 +181,8 @@ export async function resetMailboxPassword(_prev: FormState, formData: FormData)
     return { ok: true, message: `A password reset link for ${mailbox.address} was sent to ${viewer.user.email}.` };
   } catch (e) {
     if (e instanceof ForbiddenError) return { ok: false, message: e.message };
+    const message = providerMessage(e);
+    if (message) return { ok: false, message };
     throw e;
   }
 }

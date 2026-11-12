@@ -199,3 +199,13 @@ Payment proofs and ticket attachments (PNG, JPG, WebP, PDF, up to 5 MB) are stor
 
 R2 with signed links was the original plan. It needs the Cloudflare account, which arrives in Phase 3, and at our volume (a few small files per invoice) Postgres is simpler and is backed up together with the rest of the data. `src/lib/files.ts` is the only code that touches storage, so moving to R2 later is a contained change.
 
+
+## D-014 Live infrastructure adapters switch on one provider at a time
+
+**Date:** 2026-11-12
+
+`ADAPTER_MODE=live` now builds real clients for Coolify (deploy, restart, env vars, logs), Cloudflare for SaaS (custom hostnames and their certificates) and UptimeRobot (site uptime and the status page). Each one switches on when its settings are present. A provider without settings, and the parts not built yet (backups list, analytics, mailboxes, domain search), answer "not connected" or show empty charts. Live mode never falls back to demo data, because a real client must never see invented numbers.
+
+A site is linked to its Coolify application by uuid (`sites.deploy_ref`, set on the admin Sites page). Linking also creates its UptimeRobot monitor (`sites.monitor_ref`). Custom hostname ids are kept on `domains.provider_ref`. Status page services use monitors named `zaffre:<service>` (for example `zaffre:dashboard`); a service without one shows "no data".
+
+The Cloudflare and UptimeRobot calls follow their public API references. The Coolify v4 deploy call is from its reference; the restart, env var and log endpoints follow the v4 API but could not be read in full from the build environment, so the first live connection is checked by hand before clients use it (RUNBOOK-SERVER, Hissa G). Provider errors are logged without tokens and shown to users as plain messages.

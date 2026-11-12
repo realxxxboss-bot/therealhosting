@@ -14,7 +14,7 @@ export default async function LogsPage({ params }: PageProps<"/dashboard/sites/[
   const viewer = await getViewer();
   const site = await getSite(viewer, siteId);
   if (!site) notFound();
-  const lines = await getAdapters().deploy.logs(site.id, { limit: 60, now });
+  const lines = await getAdapters().deploy.logs(site, { limit: 60, now });
   return (
     <Card className="overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-5 py-3">

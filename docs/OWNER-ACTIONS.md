@@ -48,9 +48,9 @@ Agar list mein Vercel nahi hai: **https://github.com/apps/vercel** kholein → *
 
 **Kyun:** Clients ki sites isi server par chalengi. Monthly billing taake koi lambi commitment na ho. Recommendation: **Hetzner Cloud**, **dedicated vCPU (CCX line)**, location **Germany** (Falkenstein ya Nuremberg). Wajah: UK client ke qareeb, EU GDPR ke under, achi price/performance. ([DECISIONS.md D-008](./DECISIONS.md))
 
-**Abhi zaroori nahi** — Phase 2 tak demo mock data par chalta hai. Jab Phase 3 shuru ho, main yaad dilaunga. Steps tab [RUNBOOK-SERVER.md] mein copy-paste form mein honge.
+**Kaise:** Saare steps [RUNBOOK-SERVER.md](./RUNBOOK-SERVER.md) mein copy-paste form mein hain (Hissa A se G, 60 se 90 minute). Pehle domain (#1) le lein, kyun ke Hissa D aur G ko domain chahiye.
 
-**Mujhe bhejein (tab):** Server ki location aur plan ka naam.
+**Mujhe bhejein:** Har hisse ke aakhir mein jo "Mujhe bhejein" likha hai. Koi token ya password chat mein nahi.
 
 ---
 

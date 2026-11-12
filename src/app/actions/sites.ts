@@ -9,7 +9,7 @@ import { site as siteConfig } from "@/config/site";
 import { encrypt } from "@/lib/auth/secrets";
 import { getDb, schema as t } from "@/lib/db";
 import { newId } from "@/lib/db/ids";
-import { getAdapters } from "@/lib/adapters";
+import { getAdapters, providerMessage } from "@/lib/adapters";
 import { fieldErrors, type FormState } from "@/lib/forms";
 import { rateLimit } from "@/lib/rate-limit";
 
@@ -22,6 +22,8 @@ async function siteContext(formData: FormData) {
 
 function failure(error: unknown): FormState {
   if (error instanceof ForbiddenError) return { ok: false, message: error.message };
+  const message = providerMessage(error);
+  if (message) return { ok: false, message };
   throw error;
 }
 
@@ -29,7 +31,7 @@ export async function redeploySite(_prev: FormState, formData: FormData): Promis
   try {
     const { viewer, site } = await siteContext(formData);
     if (!(await rateLimit(`deploy:${site.id}`, 5, 60_000)).ok) return { ok: false, message: "Please wait a minute before deploying again." };
-    const { deploymentId } = await getAdapters().deploy.redeploy(site.id);
+    const { deploymentId } = await getAdapters().deploy.redeploy(site);
     const db = await getDb();
     await db
       .insert(t.deployments)
@@ -47,7 +49,7 @@ export async function restartSite(_prev: FormState, formData: FormData): Promise
   try {
     const { viewer, site } = await siteContext(formData);
     if (!(await rateLimit(`restart:${site.id}`, 5, 60_000)).ok) return { ok: false, message: "Please wait a minute before restarting again." };
-    await getAdapters().deploy.restart(site.id);
+    await getAdapters().deploy.restart(site);
     await audit(viewer, "site.restart", site.name);
     return { ok: true, message: "Restarted. Your site may be slow for a few seconds." };
   } catch (e) {
@@ -76,8 +78,16 @@ export async function addDomain(_prev: FormState, formData: FormData): Promise<F
       .values({ id: newId("dom"), accountId: viewer.account.id, siteId: site.id, hostname, status: "pending_dns", ssl: "pending" })
       .onConflictDoNothing()
       .returning({ id: t.domains.id });
-    if (inserted.length === 0) return { ok: false, errors: { form: "That domain is already connected to a site." } };
-    await getAdapters().hostnames.create(hostname);
+    const domainId = inserted[0]?.id;
+    if (!domainId) return { ok: false, errors: { form: "That domain is already connected to a site." } };
+    try {
+      const { id: providerRef } = await getAdapters().hostnames.create(hostname);
+      await db.update(t.domains).set({ providerRef }).where(eq(t.domains.id, domainId));
+    } catch (e) {
+      // The edge never accepted it, so don't keep a domain the client can't finish setting up.
+      await db.delete(t.domains).where(eq(t.domains.id, domainId));
+      throw e;
+    }
     await audit(viewer, "domain.add", `${hostname} → ${site.name}`);
     refresh();
     return { ok: true, message: `${hostname} added. Add the DNS records below, then press Check now.` };
@@ -138,6 +148,7 @@ export async function removeDomain(_prev: FormState, formData: FormData): Promis
       .where(and(eq(t.domains.id, String(formData.get("domainId") ?? "")), eq(t.domains.siteId, site.id)));
     if (!domain) return { ok: false, message: "Domain not found." };
     if (domain.hostname === site.primaryDomain) return { ok: false, message: "This is the primary domain. Set another primary domain first." };
+    if (domain.providerRef) await getAdapters().hostnames.remove(domain.hostname);
     await db.delete(t.domains).where(and(eq(t.domains.id, domain.id), ne(t.domains.hostname, site.primaryDomain)));
     await audit(viewer, "domain.remove", domain.hostname);
     refresh();
@@ -161,6 +172,8 @@ export async function upsertEnvVar(_prev: FormState, formData: FormData): Promis
       .safeParse(Object.fromEntries(formData));
     if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error) };
     const { key, value, target } = parsed.data;
+    // The server gets the value first, so a failure there leaves nothing half-saved.
+    await getAdapters().deploy.setEnv(site, [{ key, value }]);
     const db = await getDb();
     const now = new Date().toISOString();
     // Values are encrypted before they are stored. One row per key and site.
@@ -171,7 +184,6 @@ export async function upsertEnvVar(_prev: FormState, formData: FormData): Promis
       .where(and(eq(t.envVars.siteId, site.id), eq(t.envVars.key, key)));
     if (existing) await db.update(t.envVars).set({ value: sealed, target, updatedAt: now }).where(eq(t.envVars.id, existing.id));
     else await db.insert(t.envVars).values({ id: newId("env"), siteId: site.id, key, value: sealed, target, updatedAt: now });
-    await getAdapters().deploy.setEnv(site.id, [{ key, value }]);
     await audit(viewer, "env.update", `${site.name}: ${key}`);
     refresh();
     return { ok: true, message: `${key} saved. Redeploy to apply it.` };
@@ -184,10 +196,11 @@ export async function deleteEnvVar(_prev: FormState, formData: FormData): Promis
   try {
     const { viewer, site } = await siteContext(formData);
     const db = await getDb();
-    const [env] = await db
-      .delete(t.envVars)
-      .where(and(eq(t.envVars.id, String(formData.get("envId") ?? "")), eq(t.envVars.siteId, site.id)))
-      .returning({ key: t.envVars.key });
+    const where = and(eq(t.envVars.id, String(formData.get("envId") ?? "")), eq(t.envVars.siteId, site.id));
+    const [found] = await db.select({ key: t.envVars.key }).from(t.envVars).where(where);
+    if (!found) return { ok: false, message: "Variable not found." };
+    await getAdapters().deploy.deleteEnv(site, found.key);
+    const [env] = await db.delete(t.envVars).where(where).returning({ key: t.envVars.key });
     if (!env) return { ok: false, message: "Variable not found." };
     await audit(viewer, "env.delete", `${site.name}: ${env.key}`);
     refresh();
