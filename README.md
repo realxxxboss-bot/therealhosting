@@ -47,7 +47,7 @@ Decisions and their reasons: [docs/DECISIONS.md](docs/DECISIONS.md). Product spe
 
 ## Deploy
 
-- **Preview:** Vercel, with `SESSION_SECRET` and `ADAPTER_MODE=mock` set in the project's environment settings.
+- **Preview:** Vercel. The sample-data preview runs without any settings. `SESSION_SECRET` is required as soon as `ADAPTER_MODE=live`.
 - **Self-hosted:** `docker build -t zaffre .` then run with `-e SESSION_SECRET=… -p 3000:3000`. The image uses Next.js standalone output.
 
 ## Security
