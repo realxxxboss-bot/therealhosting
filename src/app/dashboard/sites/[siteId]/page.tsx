@@ -16,7 +16,7 @@ export default async function SiteOverview({ params }: PageProps<"/dashboard/sit
   const viewer = await getViewer();
   const site = await getSite(viewer, siteId);
   if (!site) notFound();
-  const series = await getAdapters().uptime.siteSeries(site.id, { hours: 24, now });
+  const series = await getAdapters().uptime.siteSeries(site, { hours: 24, now });
   const lastDeploy = site.type === "wordpress" ? undefined : (await listDeployments(viewer, site.id))[0];
   const domains = await listSiteDomains(viewer, site.id);
   const lastBackup = (await listBackups(viewer, site.id)).find((b) => b.status === "completed");

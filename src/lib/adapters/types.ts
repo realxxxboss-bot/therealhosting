@@ -1,8 +1,27 @@
 /**
  * Infrastructure adapter contracts. The UI and server actions only talk to these interfaces.
- * Each adapter has a mock (demo data) implementation now and a real one in Phase 3.
+ * Each adapter has a mock (demo data) implementation and, where the provider exists, a live one.
  * See docs/DECISIONS.md D-004.
  */
+
+/** What an adapter needs to know about a site. `deployRef` and `monitorRef` are the ids in Coolify and the uptime monitor. */
+export interface SiteRef {
+  id: string;
+  primaryDomain: string;
+  deployRef?: string;
+  monitorRef?: string;
+}
+
+/**
+ * Thrown by a live adapter when the provider is not configured yet, or the site is not
+ * linked to it. Actions show the message to the user instead of a generic error.
+ */
+export class NotConnectedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "NotConnectedError";
+  }
+}
 
 // ---------- Deploys (Coolify) ----------
 export interface DeployResult {
@@ -19,10 +38,11 @@ export interface LogLine {
 
 export interface DeployAdapter {
   readonly name: string;
-  redeploy(appId: string): Promise<DeployResult>;
-  restart(appId: string): Promise<{ ok: true }>;
-  setEnv(appId: string, vars: { key: string; value: string }[]): Promise<{ ok: true }>;
-  logs(appId: string, opts: { limit: number; now: number }): Promise<LogLine[]>;
+  redeploy(site: SiteRef): Promise<DeployResult>;
+  restart(site: SiteRef): Promise<{ ok: true }>;
+  setEnv(site: SiteRef, vars: { key: string; value: string }[]): Promise<{ ok: true }>;
+  deleteEnv(site: SiteRef, key: string): Promise<{ ok: true }>;
+  logs(site: SiteRef, opts: { limit: number; now: number }): Promise<LogLine[]>;
 }
 
 // ---------- DNS + custom hostnames (Cloudflare) ----------
@@ -49,6 +69,7 @@ export interface CustomHostnameAdapter {
   requiredRecords(hostname: string): DnsRecord[];
   create(hostname: string): Promise<{ id: string }>;
   check(hostname: string): Promise<HostnameCheck>;
+  remove(hostname: string): Promise<{ ok: true }>;
 }
 
 // ---------- Backups (R2) ----------
@@ -76,7 +97,9 @@ export interface ServiceStatus {
 
 export interface UptimeAdapter {
   readonly name: string;
-  siteSeries(siteId: string, opts: { hours: number; now: number }): Promise<UptimePoint[]>;
+  siteSeries(site: SiteRef, opts: { hours: number; now: number }): Promise<UptimePoint[]>;
+  /** Makes sure the site's address is monitored. Returns the monitor id to store on the site. */
+  ensureMonitor(site: SiteRef): Promise<{ monitorRef: string }>;
   platformStatus(opts: { now: number }): Promise<ServiceStatus[]>;
 }
 

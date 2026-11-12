@@ -88,6 +88,10 @@ export interface Site {
   framework: string;
   repo?: string;
   branch?: string;
+  /** Application uuid in Coolify. Set by an admin when the site is linked. */
+  deployRef?: string;
+  /** Monitor id in the uptime service. */
+  monitorRef?: string;
   createdAt: string;
   lastDeployAt: string;
   uptime30d: number;
@@ -104,6 +108,8 @@ export interface Domain {
   redirectTo?: string;
   registrar?: string;
   expiresAt?: string;
+  /** Custom hostname id at Cloudflare. */
+  providerRef?: string;
   createdAt: string;
 }
 

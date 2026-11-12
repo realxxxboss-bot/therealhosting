@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requestTime } from "@/lib/request";
 import { getAdmin } from "@/lib/auth/viewer";
 import { loadAdminStore } from "@/lib/data/admin";
+import { adapterMode, liveConnections } from "@/lib/adapters";
 import { invoiceTotalCents, isOverdue } from "@/lib/billing";
 import { PageHeader } from "@/components/ui/page-header";
 import { ButtonLink } from "@/components/ui/button";
@@ -59,6 +60,15 @@ export default async function AdminOverview() {
     { label: "Open tickets", value: String(openTickets.length), hint: "Waiting on us" },
     { label: "Overdue invoices", value: String(overdue.length), hint: overdue.length ? formatCents(overdue.reduce((s, i) => s + invoiceTotalCents(i), 0)) : "None" },
     { label: "Servers", value: String(store.servers.length), hint: `${store.servers.filter((s) => s.status !== "healthy").length} need a look` },
+  ];
+
+  const mode = adapterMode();
+  const links = liveConnections();
+  const connections = [
+    { name: "Coolify", job: "Deploys, restarts, logs", on: links.coolify, needs: "COOLIFY_API_URL, COOLIFY_API_TOKEN" },
+    { name: "Cloudflare", job: "Client domains and HTTPS", on: links.cloudflare, needs: "CLOUDFLARE_API_TOKEN, CLOUDFLARE_ZONE_ID, EDGE_HOSTNAME" },
+    { name: "UptimeRobot", job: "Uptime and status page", on: links.uptimerobot, needs: "UPTIMEROBOT_API_KEY" },
+    { name: "Resend", job: "Emails to clients", on: links.resend, needs: "RESEND_API_KEY" },
   ];
 
   return (
@@ -119,6 +129,27 @@ export default async function AdminOverview() {
           </div>
         ))}
       </dl>
+
+      <section className="mt-12" aria-labelledby="connections-heading">
+        <div className="flex items-baseline justify-between gap-4 border-b border-foreground pb-3">
+          <h2 id="connections-heading" className="text-lg font-semibold tracking-[-0.02em]">
+            Connections
+          </h2>
+          <p className="text-sm text-muted">{mode === "live" ? "Live mode" : "Demo mode: clients see sample data"}</p>
+        </div>
+        <ul>
+          {connections.map((c) => (
+            <li key={c.name} className="grid grid-cols-[8rem_1fr_auto] items-baseline gap-x-4 border-b border-border py-3 text-[0.9375rem]">
+              <span className="font-medium">{c.name}</span>
+              <span className="min-w-0 text-muted">
+                {c.job}
+                {c.on ? null : <span className="block font-mono text-[0.8125rem]">Needs {c.needs}</span>}
+              </span>
+              <StatusBadge tone={c.on ? "success" : "neutral"} label={c.on ? "Connected" : "Not connected"} />
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="mt-12" aria-labelledby="activity-heading">
         <div className="flex items-baseline justify-between gap-4 border-b border-foreground pb-3">

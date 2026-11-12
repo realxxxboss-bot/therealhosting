@@ -19,6 +19,23 @@ import { mockMailboxAdapter } from "./mock/mail";
 import { mockEmailAdapter, mockWhatsAppAdapter } from "./mock/messages";
 import { mockRegistrarAdapter } from "./mock/registrar";
 import { createResendAdapter } from "./live/resend";
+import { createCoolifyAdapter } from "./live/coolify";
+import { createCloudflareAdapter } from "./live/cloudflare";
+import { createUptimeRobotAdapter } from "./live/uptimerobot";
+import {
+  analyticsNotConnected,
+  backupsNotConnected,
+  deployNotConnected,
+  hostnamesNotConnected,
+  mailboxesNotConnected,
+  registrarNotConnected,
+  uptimeNotConnected,
+  whatsappNotConnected,
+} from "./live/not-connected";
+
+export { NotConnectedError } from "./types";
+export { ProviderError, providerMessage } from "./live/http";
+export type { SiteRef } from "./types";
 
 export interface Adapters {
   deploy: DeployAdapter;
@@ -49,25 +66,60 @@ const mockAdapters: Adapters = {
 };
 
 let resend: MessageAdapter | undefined;
+let live: { key: string; adapters: Adapters } | undefined;
 
 export function adapterMode(): "mock" | "live" {
   return process.env.ADAPTER_MODE === "live" ? "live" : "mock";
 }
 
+function emailAdapter(): MessageAdapter {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return mockEmailAdapter;
+  resend ??= createResendAdapter(key);
+  return resend;
+}
+
+const env = (name: string) => process.env[name] || undefined;
+
+/** Which live providers have their settings filled in. Shown on the admin overview. */
+export function liveConnections() {
+  return {
+    coolify: Boolean(env("COOLIFY_API_URL") && env("COOLIFY_API_TOKEN")),
+    cloudflare: Boolean(env("CLOUDFLARE_API_TOKEN") && env("CLOUDFLARE_ZONE_ID") && env("EDGE_HOSTNAME")),
+    uptimerobot: Boolean(env("UPTIMEROBOT_API_KEY")),
+    resend: Boolean(env("RESEND_API_KEY")),
+  };
+}
+
+function buildLiveAdapters(): Adapters {
+  const c = liveConnections();
+  return {
+    deploy: c.coolify ? createCoolifyAdapter(env("COOLIFY_API_URL")!, env("COOLIFY_API_TOKEN")!) : deployNotConnected,
+    hostnames: c.cloudflare ? createCloudflareAdapter(env("CLOUDFLARE_API_TOKEN")!, env("CLOUDFLARE_ZONE_ID")!, env("EDGE_HOSTNAME")!, env("EDGE_APEX_IP")) : hostnamesNotConnected,
+    uptime: c.uptimerobot ? createUptimeRobotAdapter(env("UPTIMEROBOT_API_KEY")!) : uptimeNotConnected,
+    // Not built yet. In live mode these show "not connected" instead of demo data.
+    backups: backupsNotConnected,
+    analytics: analyticsNotConnected,
+    mailboxes: mailboxesNotConnected,
+    registrar: registrarNotConnected,
+    whatsapp: whatsappNotConnected,
+    email: emailAdapter(),
+    payments: [manualPayments],
+  };
+}
+
 /**
  * Returns the adapter set for this environment.
- * Live infrastructure adapters (Coolify, Cloudflare, R2, UptimeRobot, Migadu) arrive in Phase 3;
- * until then "live" mode refuses to start rather than silently using demo data.
+ * - mock (default): demo data everywhere, email through Resend when a key is set.
+ * - live: real Coolify, Cloudflare and UptimeRobot clients for each provider whose settings
+ *   are present. A provider without settings answers "not connected"; it never falls back to demo data.
  */
 export function getAdapters(): Adapters {
   if (adapterMode() === "live") {
-    throw new Error("ADAPTER_MODE=live is not available yet. Live adapters ship in Phase 3. Use ADAPTER_MODE=mock.");
+    const key = JSON.stringify(liveConnections());
+    if (!live || live.key !== key) live = { key, adapters: buildLiveAdapters() };
+    return live.adapters;
   }
-  // Email is the first adapter with a real implementation: it switches on as soon as a key is present.
-  const resendKey = process.env.RESEND_API_KEY;
-  if (resendKey) {
-    resend ??= createResendAdapter(resendKey);
-    return { ...mockAdapters, email: resend };
-  }
-  return mockAdapters;
+  const email = emailAdapter();
+  return email === mockEmailAdapter ? mockAdapters : { ...mockAdapters, email };
 }

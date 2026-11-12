@@ -36,6 +36,9 @@ export const mockCustomHostnameAdapter: CustomHostnameAdapter = {
   async create(hostname) {
     return { id: `ch_${hostname.replace(/\W/g, "")}` };
   },
+  async remove() {
+    return { ok: true };
+  },
   async check(hostname) {
     // Demo rule: hostnames containing "new" or "pending" are not pointed yet.
     const pointed = !/new|pending/.test(hostname);

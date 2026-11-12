@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { getAdapters } from "@/lib/adapters";
+import { getAdapters, providerMessage } from "@/lib/adapters";
 import type { DomainAvailability } from "@/lib/adapters/types";
 import { fieldErrors, type FormState } from "@/lib/forms";
 import { rateLimit } from "@/lib/rate-limit";
@@ -23,8 +23,14 @@ export async function searchDomains(_prev: DomainSearchState, formData: FormData
   if (!parsed.success) return { query: raw, results: [], error: parsed.error.issues[0]?.message };
   const limit = await rateLimit(`domain:${await clientIp()}`, 30, 60_000);
   if (!limit.ok) return { query: raw, results: [], error: `Too many searches. Try again in ${limit.retryAfterSec} seconds.` };
-  const results = await getAdapters().registrar.search(parsed.data);
-  return { query: raw, results };
+  try {
+    const results = await getAdapters().registrar.search(parsed.data);
+    return { query: raw, results };
+  } catch (e) {
+    const message = providerMessage(e);
+    if (message) return { query: raw, results: [], error: "Domain search is not available right now. Contact us and we'll check a name for you." };
+    throw e;
+  }
 }
 
 const contactSchema = z.object({

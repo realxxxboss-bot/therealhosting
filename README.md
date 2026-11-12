@@ -38,7 +38,7 @@ Open http://localhost:3000 and sign in from `/sign-in`. The demo accounts are li
 ## How it is built
 
 - **Next.js (App Router), TypeScript strict, Tailwind CSS.** Brand tokens and rules: [docs/BRAND.md](docs/BRAND.md).
-- **Adapters** (`src/lib/adapters`): every piece of infrastructure (deploys, DNS, backups, uptime, mail, messages, registrar) sits behind an interface with a mock today and a real provider later. `ADAPTER_MODE=live` refuses to start until real adapters exist.
+- **Adapters** (`src/lib/adapters`): every piece of infrastructure (deploys, DNS, backups, uptime, mail, messages, registrar) sits behind an interface with a mock for the demo. `ADAPTER_MODE=live` uses the real Coolify, Cloudflare and UptimeRobot clients for each provider whose settings are present, and shows "not connected" for the rest; it never shows demo data (DECISIONS D-014, server setup in `docs/RUNBOOK-SERVER.md`).
 - **Tenant isolation** (`src/lib/data/client.ts`): every client query is scoped to the signed-in account and the member's role. Covered by unit and browser tests.
 - **Payments:** manual bank transfer and Wise with proof upload and staff verification. Card payments come later.
 - **Audit log:** sensitive actions by clients and staff, including "sign in as client", are recorded.
