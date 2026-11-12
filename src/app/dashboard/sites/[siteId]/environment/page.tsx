@@ -11,9 +11,9 @@ import { EnvForm, MaskedValue } from "./env-form";
 export default async function EnvironmentPage({ params }: PageProps<"/dashboard/sites/[siteId]/environment">) {
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site || site.type !== "nextjs") notFound();
-  const vars = listEnvVars(viewer, site.id);
+  const vars = await listEnvVars(viewer, site.id);
   const canManage = hasCapability(viewer, "sites:manage");
   return (
     <div className="grid gap-6">

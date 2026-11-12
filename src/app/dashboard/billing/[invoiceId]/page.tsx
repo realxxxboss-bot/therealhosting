@@ -22,10 +22,10 @@ export default async function InvoicePage({ params, searchParams }: PageProps<"/
   const { invoiceId } = await params;
   const submitted = (await searchParams).submitted === "1";
   const viewer = await getViewer();
-  const invoice = getInvoice(viewer, invoiceId);
+  const invoice = await getInvoice(viewer, invoiceId);
   if (!invoice) notFound();
   const total = invoiceTotalCents(invoice);
-  const payment = listPayments(viewer).find((p) => p.invoiceId === invoice.id);
+  const payment = (await listPayments(viewer)).find((p) => p.invoiceId === invoice.id);
 
   return (
     <>
@@ -59,6 +59,11 @@ export default async function InvoicePage({ params, searchParams }: PageProps<"/
             <div className="text-right">
               <h1 className="text-2xl font-semibold">Invoice</h1>
               <p className="font-mono text-sm">{invoice.number}</p>
+              <p className="mt-1 text-sm print:hidden">
+                <a href={`/dashboard/billing/${invoice.id}/pdf`} className="link">
+                  Download PDF
+                </a>
+              </p>
               <div className="mt-2">
                 <InvoiceStatusBadge status={invoice.status} overdue={isOverdue(invoice, now)} />
               </div>

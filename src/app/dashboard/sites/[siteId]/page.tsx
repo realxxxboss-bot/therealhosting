@@ -14,13 +14,13 @@ export default async function SiteOverview({ params }: PageProps<"/dashboard/sit
   const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
   const series = await getAdapters().uptime.siteSeries(site.id, { hours: 24, now });
-  const lastDeploy = site.type === "wordpress" ? undefined : listDeployments(viewer, site.id)[0];
-  const domains = listSiteDomains(viewer, site.id);
-  const lastBackup = listBackups(viewer, site.id).find((b) => b.status === "completed");
-  const server = getServer(site.serverId);
+  const lastDeploy = site.type === "wordpress" ? undefined : (await listDeployments(viewer, site.id))[0];
+  const domains = await listSiteDomains(viewer, site.id);
+  const lastBackup = (await listBackups(viewer, site.id)).find((b) => b.status === "completed");
+  const server = await getServer(site.serverId);
   const downHours = series.filter((p) => !p.up).length;
 
   return (

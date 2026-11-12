@@ -12,7 +12,7 @@ export default async function LogsPage({ params }: PageProps<"/dashboard/sites/[
   const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
   const lines = await getAdapters().deploy.logs(site.id, { limit: 60, now });
   return (

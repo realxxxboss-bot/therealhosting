@@ -22,7 +22,7 @@ export default function SiteLayout({ children, params }: LayoutProps<"/dashboard
 async function SiteFrame({ children, params }: { children: ReactNode; params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
   const base = `/dashboard/sites/${site.id}`;
   const canManage = hasCapability(viewer, "sites:manage");

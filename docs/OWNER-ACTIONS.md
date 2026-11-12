@@ -77,7 +77,7 @@ Agar list mein Vercel nahi hai: **https://github.com/apps/vercel** kholein → *
 
 **Kyun:** Clients invoice pay karte waqt yeh details dekhenge.
 
-**Steps (Phase 2 ke baad, jab login asli ho):**
+**Steps (step 9 ke baad, jab database jur jaye):**
 1. `https://<aapka-domain>/admin/payment-methods` kholein.
 2. **Add method** → "Wise" ya "Bank transfer" chunein.
 3. Account name, IBAN / account number, SWIFT ya Wise email bharein → **Save**.
@@ -128,13 +128,49 @@ Demo mein abhi sample (fake) details hain jo "DEMO" likhe hue hain.
 
 ---
 
+## 9. ⏳ Asli database jorein  (blocks: pehla asli client)
+
+**Kyun:** Abhi preview "sample data" par chalta hai jo har restart par reset ho jata hai. Yeh demo ke liye theek hai. Asli client ka data rakhne ke liye ek asli Postgres database chahiye. **Yeh abhi zaroori nahi.** Jab aap asli client lana chahein tab karein. Domain (step 1) pehle le lein to email bhi sath chal jayegi.
+
+**Steps (Vercel par, 5 minute):**
+
+1. **https://vercel.com** par sign in karein aur `therealhosting` project kholein.
+2. Upar **Storage** tab → **Create Database** → **Neon** (Postgres) chunein.
+3. Region mein **Frankfurt (EU)** chunein, kyun ke hamari Privacy Policy mein likha hai ke data EU mein hai. Free plan theek hai.
+4. **Connect to Project** par `therealhosting` chunein. Vercel `DATABASE_URL` khud daal dega. Aap ko koi password copy nahi karna.
+5. Ab **Settings → Environment Variables** mein yeh do cheezen khud add karein:
+   - `SESSION_SECRET`: koi bhi lamba random text, kam az kam 40 characters. Kisi password generator se bana lein. Isay kahin aur use na karein.
+   - `ADMIN_EMAIL`: woh email jis se aap admin panel mein sign in karenge.
+6. **Deployments** tab → sab se upar wali deployment ke saamne teen dots → **Redeploy**.
+7. Pehli dafa chalne par system aap ka admin account banata hai aur "password chunein" ka link bhejta hai. Jab tak email (Resend) set nahi hai, yeh link Vercel ke **Logs** tab mein milega: search mein `[setup]` likhein, link khol kar password chunein. Link sirf ek dafa chalta hai.
+
+**Mujhe bhejein:** "Database jor diya" — bas. `DATABASE_URL` ya `SESSION_SECRET` chat mein na bhejein.
+
+**Note:** Database jorne ke baad sample accounts (demo/123456) khatam ho jate hain. Sirf asli accounts chalenge.
+
+---
+
+## 10. ⏳ Resend account (asli emails)  (blocks: password reset aur invite emails)
+
+**Kyun:** Password reset, team invite aur invoice ki emails Resend ke zariye jati hain. Is ke liye domain chahiye (step 1), is liye pehle domain lein.
+
+**Steps:**
+
+1. **https://resend.com/signup** par account banayein.
+2. **Domains → Add Domain** mein apna domain likhein. Resend jo DNS records dikhaye woh Cloudflare ke DNS mein add karein, phir **Verify** dabayein.
+3. **API Keys → Create API Key** (permission: Sending access). Key copy karein.
+4. Vercel → **Settings → Environment Variables** mein add karein: `RESEND_API_KEY` (woh key) aur `EMAIL_FROM` (misal: `Zaffre <no-reply@zaffrehost.com>`). Phir Redeploy.
+
+**Mujhe bhejein:** "Resend set ho gaya" — key chat mein na bhejein.
+
+---
+
 ## Baad mein (abhi kuch nahi karna)
 
 Yeh Phase 2–3 mein aayenge. Har ek ke poore steps tab yahan add honge:
 
 - Cloudflare API token (DNS + Custom Hostnames + R2)
-- Resend account (platform emails) + domain verify
 - Migadu account (client mailboxes)
 - UptimeRobot account (monitoring)
-- Postgres database (Coolify par ya managed)
+- Postgres ko apne server (Coolify) par le jana
 - WhatsApp provider (alerts)

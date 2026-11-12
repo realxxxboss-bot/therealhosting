@@ -186,6 +186,8 @@ export interface Payment {
   proofFileName: string;
   proofMime: string;
   proofSize: number;
+  /** Stored proof file, when one was kept. */
+  proofFileId?: string;
   status: PaymentStatus;
   submittedAt: string;
   submittedBy: string;
@@ -209,7 +211,7 @@ export interface TicketMessage {
   authorName: string;
   fromStaff: boolean;
   body: string;
-  attachments: { name: string; size: number }[];
+  attachments: { name: string; size: number; fileId?: string }[];
   createdAt: string;
 }
 

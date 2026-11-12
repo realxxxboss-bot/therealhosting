@@ -96,7 +96,7 @@ Review prices every 6 months, or before any big marketing push.
 | Unit tests | **Vitest 5** | Fast, native ESM/TS. |
 | E2E + a11y | **Playwright** + **axe-core** | Real browser tests and automated WCAG checks. |
 | Database (Phase 2) | **Postgres + Drizzle ORM** | Typed SQL, plain migrations, light runtime, works on Vercel and Coolify. |
-| Auth (Phase 2) | **Better Auth** | Self-hosted, supports email/password, 2FA (TOTP), sessions list, organisations and roles, Drizzle adapter. No per-user fees. |
+| Auth (Phase 2) | Own implementation on `node:crypto` (see D-012) | Originally planned as Better Auth. Email/password, 2FA (TOTP), session list and roles, with no extra schema or per-user fees. |
 | Transactional email | **Resend** | Simple API, good deliverability, React email templates. |
 | Client mailboxes | **Migadu** (white-label, priced per account not per mailbox) | We never self-host mail. Migadu suits a reseller: unlimited domains and mailboxes per account. |
 | Uptime | **UptimeRobot** first (off-site, no server to run), adapter also ready for **Uptime Kuma** later on a separate small server | Monitoring must run outside our own servers. |
@@ -117,7 +117,7 @@ The UI never talks to infrastructure. Every outside system sits behind a TypeScr
 
 - All reads go through `src/lib/data/*` functions that take the **current session** and filter by `accountId`. Pages never query raw tables.
 - Admin-only functions live in `src/lib/data/admin.ts` and check `role === "admin"` on the server first.
-- Phase 1 uses an in-memory seeded store (`src/lib/data/store.ts`); Phase 2 swaps it for Drizzle with the same function signatures.
+- Phase 1 used an in-memory seeded store. Since Phase 2 the same functions run SQL through Drizzle, with the account filter in the query itself (D-011).
 
 ## D-006 Payments
 
@@ -162,4 +162,40 @@ GitHub Actions on every push and PR: install → secret scan (gitleaks) → lint
 - **Content**: every public page was extended with real, checkable content. No testimonials, logos or numbers were invented. Legal pages no longer print `TODO(confirm)` placeholders; they show a clear draft notice instead.
 
 **Known limit.** The build environment cannot reach `images.unsplash.com`, so the photographs were chosen from their descriptions and have not been looked at. The owner should review them on the first live preview (OWNER-ACTIONS).
+
+---
+
+## D-011 Database: Postgres, Drizzle, and one code path for the demo
+
+**Date:** 2026-11-12
+
+- **Postgres + Drizzle.** The schema is `src/lib/db/schema.ts`; SQL migrations are generated into `drizzle/` and committed. The app applies pending migrations when it starts, under a Postgres advisory lock, so several copies starting together are safe.
+- **No `DATABASE_URL` means the sample database.** The app then runs on PGlite (Postgres compiled to WebAssembly, in the same process), migrated and filled with the sample data on first use. The preview, local development and the tests use it. This keeps one code path: the demo runs the same queries as production, and nothing in the app checks "is this the demo" to pick a data source.
+- **Sample data never reaches a real database.** Seeding only happens in the in-process database. A real, empty database gets the email templates and the first admin (`ADMIN_EMAIL`), nothing else.
+- **Admin lists** read whole tables in one round of queries (`loadAdminStore`), with long tables capped. That is right for tens of clients; each screen gets its own paged query when volumes grow.
+- Ids are prefixed random strings (`site_…`). Invoice numbers come from a database sequence and ticket numbers from a serial column, so two requests can never get the same number.
+
+## D-012 Authentication: built on Node's crypto, not Better Auth
+
+**Date:** 2026-11-12 · Replaces the Better Auth row in D-003.
+
+What we need is small and standard: password hashing, a session cookie, one-time links, TOTP. We build it on `node:crypto`:
+
+- Passwords: scrypt (N=32768), salted, in a self-describing format so the cost can be raised later.
+- Sessions: a random token in an HMAC-signed, httpOnly cookie; the database stores only its SHA-256. Deleting the row signs that device out at once. A password change or reset ends every other session.
+- Emailed links (reset, first password, invite): random 256-bit tokens, stored as hashes, single use, time limited. Links are built from configuration (`APP_URL`), never from the request's Host header.
+- 2FA: TOTP (RFC 6238), checked against the RFC test vectors. Secrets are encrypted with AES-256-GCM using a key derived from `SESSION_SECRET`.
+- Sign-in gives the same answer and takes the same time for an unknown email and a wrong password, and is rate limited per IP and per email.
+
+**Why not Better Auth.** It would add a second schema and session model next to ours, and the sample-data preview (which can run as several short-lived copies with separate in-process databases) needs a stateless fallback that is simple with our own cookie and awkward with a library. The trade-off: we own this code, so it is covered by unit tests and listed for the Phase 5 security review. Passkeys or social sign-in would be a reason to revisit.
+
+**Sample accounts.** Only in the sample database: password `demo`, and accounts with two-factor accept the code `123456`. With a real database neither exists and the sign-in page does not show them.
+
+## D-013 Uploaded files live in Postgres for now
+
+**Date:** 2026-11-12
+
+Payment proofs and ticket attachments (PNG, JPG, WebP, PDF, up to 5 MB) are stored in a `files` table and served only by a route that checks the viewer: admins, or members of the owning account (payment proofs need billing access). They are always sent as downloads, never rendered inline.
+
+R2 with signed links was the original plan. It needs the Cloudflare account, which arrives in Phase 3, and at our volume (a few small files per invoice) Postgres is simpler and is backed up together with the rest of the data. `src/lib/files.ts` is the only code that touches storage, so moving to R2 later is a contained change.
 

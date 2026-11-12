@@ -16,9 +16,9 @@ export const metadata: Metadata = { title: "Ticket" };
 export default async function TicketPage({ params }: PageProps<"/dashboard/support/[ticketId]">) {
   const { ticketId } = await params;
   const viewer = await getViewer();
-  const ticket = getTicket(viewer, ticketId);
+  const ticket = await getTicket(viewer, ticketId);
   if (!ticket) notFound();
-  const site = ticket.siteId ? getSite(viewer, ticket.siteId) : null;
+  const site = ticket.siteId ? await getSite(viewer, ticket.siteId) : null;
   return (
     <>
       <Link href="/dashboard/support" className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground">
@@ -53,7 +53,7 @@ export default async function TicketPage({ params }: PageProps<"/dashboard/suppo
                   <ul className="mt-3 flex flex-wrap gap-2">
                     {m.attachments.map((a) => (
                       <li key={a.name} className="inline-flex items-center gap-1 rounded-[4px] border border-border bg-surface px-2 py-1 text-xs">
-                        <Paperclip className="size-3" aria-hidden /> {a.name} <span className="text-muted">({formatBytes(a.size)})</span>
+                        <Paperclip className="size-3" aria-hidden /> {a.fileId ? <a href={`/files/${a.fileId}`} className="link">{a.name}</a> : a.name} <span className="text-muted">({formatBytes(a.size)})</span>
                       </li>
                     ))}
                   </ul>

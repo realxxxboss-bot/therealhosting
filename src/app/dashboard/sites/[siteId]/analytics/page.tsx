@@ -11,7 +11,7 @@ export default async function AnalyticsPage({ params }: PageProps<"/dashboard/si
   const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
   const traffic = await getAdapters().analytics.traffic(site.id, { days: 30, now });
   const visitors = traffic.reduce((s, p) => s + p.visitors, 0);

@@ -2,7 +2,7 @@
 
 Living plan. Updated at the end of every work session.
 
-**Current status (2026-11-11):** Phase 0 and Phase 1 are merged. The design overhaul ([DESIGN-PLAN.md](./DESIGN-PLAN.md), DECISIONS D-006) is in review on branch `claude/project-thread-izox2i`. Phase 2 (real backend) starts only after the owner approves the design. Preview deploy still waits on OWNER-ACTIONS #2 (Vercel repo access).
+**Current status (2026-11-12):** Phases 0 and 1 and the design overhaul are merged, and the owner approved the design. Phase 2 (real backend) is built and in review: Postgres schema and migrations, database-backed data access, real sign-in, password reset, 2FA, invites, invoice PDFs, private uploads and email through Resend. The preview keeps running on the built-in sample database until a real database is connected (OWNER-ACTIONS #9). Next is Phase 3 (infrastructure), which needs the server (OWNER-ACTIONS #3) and the domain (#1).
 
 Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 
@@ -27,19 +27,24 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started
 - [x] Unit tests (Vitest, 35) and e2e + accessibility tests (Playwright + axe, 22 incl. every dashboard and admin screen)
 - [x] CI: secret scan, lint, typecheck, unit, build, e2e
 - [x] Dockerfile (Coolify) + Vercel compatible
-- [~] Preview deployment link shared with owner (blocked: Vercel needs GitHub access to the repo, OWNER-ACTIONS #2; screenshots shared meanwhile)
+- [x] Preview deployment on Vercel
 
 ## Phase 2: Real backend
 
-- [ ] Postgres + Drizzle schema and migrations (accounts, users, memberships, sites, servers, plans, subscriptions, invoices, payments, tickets, notifications, audit log)
-- [ ] Better Auth: email/password, reset, optional TOTP 2FA, session list, roles (admin / owner / developer / billing)
-- [ ] Replace in-memory store with Drizzle repositories, same function signatures
-- [ ] Invoice PDF generation
-- [ ] Payment proof upload to private storage (R2, signed URLs), type + size limits
-- [ ] Team invites by email, per-site permissions
-- [ ] Email notifications via Resend
-- [ ] Rate limiting + Zod validation on every action
-- [ ] Audit log persisted
+- [x] Postgres + Drizzle schema and first migration (accounts, users, memberships, invites, sites, servers, subscriptions, domains, invoices, payments, tickets, notifications, sessions, files, audit log, rate limits)
+- [x] In-process sample database (PGlite) for the preview, local work and tests, running the same SQL as production
+- [x] Sign-in with scrypt password hashes, password reset and first-password links, TOTP 2FA, session list with remote sign-out, roles (admin / owner / developer / billing). Built on Node's crypto instead of Better Auth, see DECISIONS D-012
+- [x] In-memory store replaced with Drizzle queries behind the same data-access functions
+- [x] Invoice PDF download (client and admin)
+- [x] Payment proofs and ticket attachments stored privately, with type and size limits and access-checked downloads (in Postgres for now, R2 in Phase 3, see D-013)
+- [x] Team invites by email with one-time links, per-site permissions
+- [x] Email through Resend when `RESEND_API_KEY` is set
+- [x] Rate limiting in the database and Zod validation on every action
+- [x] Audit log persisted, with IP address
+- [x] First admin created from `ADMIN_EMAIL` on an empty database
+- [ ] Connect a real database to the deployment (OWNER-ACTIONS #9)
+- [ ] Email notifications for site events and per-user notification preferences applied to sending (needs real uptime and deploy events, Phase 3)
+- [ ] Admin screens for adding servers and editing plans in the database
 
 ## Phase 3: Infrastructure integration
 

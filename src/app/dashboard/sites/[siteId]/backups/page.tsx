@@ -13,11 +13,11 @@ import { RestoreForm } from "./restore-form";
 export default async function BackupsPage({ params }: PageProps<"/dashboard/sites/[siteId]/backups">) {
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
-  const backups = listBackups(viewer, site.id);
-  const requests = listRestoreRequests(viewer, site.id);
-  const plan = getPlan(listSubscriptions(viewer).find((s) => s.id === site.subscriptionId)?.planId ?? "");
+  const backups = await listBackups(viewer, site.id);
+  const requests = await listRestoreRequests(viewer, site.id);
+  const plan = getPlan((await listSubscriptions(viewer)).find((s) => s.id === site.subscriptionId)?.planId ?? "");
   const canManage = hasCapability(viewer, "sites:manage");
 
   return (

@@ -15,8 +15,8 @@ export const metadata: Metadata = { title: "Domains" };
 
 export default async function DomainsPage() {
   const viewer = await getViewer();
-  const domains = listDomains(viewer);
-  const sites = new Map(listSites(viewer).map((s) => [s.id, s]));
+  const domains = await listDomains(viewer);
+  const sites = new Map((await listSites(viewer)).map((s) => [s.id, s]));
   return (
     <>
       <PageHeader title="Domains" description="Every domain connected to your account. Domains stay registered in your name." actions={<ButtonLink href="/domains" variant="secondary">Search for a domain</ButtonLink>} />

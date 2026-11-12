@@ -4,7 +4,7 @@ import { UserMenu } from "@/components/app/user-menu";
 import { DemoBanner } from "@/components/app/banners";
 import type { NavItem } from "@/components/app/nav-icons";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { adapterMode } from "@/lib/adapters";
 
 export const instant = false;
@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
 async function AdminFrame({ children }: { children: ReactNode }) {
   const admin = await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const pendingPayments = store.payments.filter((p) => p.status === "pending_verification").length;
   const openTickets = store.tickets.filter((t) => t.status === "open").length;
   const restores = store.restoreRequests.filter((r) => r.status !== "done").length;

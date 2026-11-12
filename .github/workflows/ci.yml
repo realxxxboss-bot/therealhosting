@@ -28,9 +28,24 @@ jobs:
   checks:
     name: Lint, types, unit tests, build, e2e
     runs-on: ubuntu-latest
+    services:
+      # Throwaway database for the tests that run the schema on a real Postgres server.
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: ci-only
+          POSTGRES_DB: zaffre_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
-      # Test-only value. Real secrets live in the hosting platform's settings, never in the repo.
+      # Test-only values. Real secrets live in the hosting platform's settings, never in the repo.
       SESSION_SECRET: ci-only-session-secret-not-used-anywhere-else
+      TEST_DATABASE_URL: postgres://postgres:ci-only@localhost:5432/zaffre_test
       ADAPTER_MODE: mock
       NEXT_TELEMETRY_DISABLED: "1"
     steps:

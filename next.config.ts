@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   poweredByHeader: false,
+  // The in-process sample database ships WebAssembly files that must not be bundled.
+  serverExternalPackages: ["@electric-sql/pglite"],
+  // SQL migrations and the sample database's data files are read from disk at run time.
+  outputFileTracingIncludes: { "/**": ["./drizzle/**/*", "./node_modules/@electric-sql/pglite/dist/**/*"] },
   images: {
     loader: "custom",
     loaderFile: "./src/lib/image-loader.ts",

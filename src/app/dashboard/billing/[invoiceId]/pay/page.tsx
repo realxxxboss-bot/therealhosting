@@ -19,11 +19,11 @@ export default async function PayInvoicePage({ params }: PageProps<"/dashboard/b
   const { invoiceId } = await params;
   const viewer = await getViewer();
   if (!hasCapability(viewer, "billing:pay")) notFound();
-  const invoice = getInvoice(viewer, invoiceId);
+  const invoice = await getInvoice(viewer, invoiceId);
   if (!invoice) notFound();
   if (invoice.status !== "unpaid") redirect(`/dashboard/billing/${invoice.id}`);
   const total = invoiceTotalCents(invoice);
-  const methods = listPaymentMethods();
+  const methods = await listPaymentMethods();
 
   return (
     <>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requestTime } from "@/lib/request";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { outbox } from "@/lib/adapters/mock/messages";
 import { saveEmailTemplate } from "@/app/actions/admin";
 import { PageHeader } from "@/components/ui/page-header";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Email templates" };
 export default async function TemplatesPage() {
   const now = await requestTime();
   await getAdmin();
-  const templates = db().emailTemplates;
+  const templates = (await loadAdminStore()).emailTemplates;
   return (
     <>
       <PageHeader title="Email templates" description="Words used in automatic emails. Use {{placeholders}} like {{user.name}} or {{invoice.number}}." />

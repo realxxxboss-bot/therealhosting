@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { readPendingTwoFactor } from "@/lib/auth/session";
-import { db } from "@/lib/data/store";
+import { findUser, readPendingTwoFactor } from "@/lib/auth/session";
 import { TwoFactorForm } from "./two-factor-form";
 
 export const metadata: Metadata = { title: "Two-factor check", robots: { index: false } };
@@ -15,7 +14,7 @@ function maskEmail(email: string): string {
 
 async function SigningInAs() {
   const uid = await readPendingTwoFactor();
-  const user = uid ? db().users.find((u) => u.id === uid) : undefined;
+  const user = uid ? await findUser(uid) : null;
   if (!user) return null;
   return (
     <p className="mt-6 border-y border-border py-3 text-[0.9375rem]">

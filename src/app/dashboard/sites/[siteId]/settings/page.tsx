@@ -10,11 +10,11 @@ import { SettingsForm } from "./settings-form";
 export default async function SiteSettingsPage({ params }: PageProps<"/dashboard/sites/[siteId]/settings">) {
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site || !hasCapability(viewer, "sites:manage")) notFound();
-  const domains = listSiteDomains(viewer, site.id).filter((d) => !d.redirectTo).map((d) => d.hostname);
-  const plan = getPlan(listSubscriptions(viewer).find((s) => s.id === site.subscriptionId)?.planId ?? "");
-  const server = getServer(site.serverId);
+  const domains = (await listSiteDomains(viewer, site.id)).filter((d) => !d.redirectTo).map((d) => d.hostname);
+  const plan = getPlan((await listSubscriptions(viewer)).find((s) => s.id === site.subscriptionId)?.planId ?? "");
+  const server = await getServer(site.serverId);
   return (
     <div className="grid gap-6">
       <Card>
