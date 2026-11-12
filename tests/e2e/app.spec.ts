@@ -76,3 +76,38 @@ test("every client screen passes axe", async ({ page }) => {
     await expectNoA11yViolations(page);
   }
 });
+
+test("a client can download an invoice as a PDF, and only their own", async ({ page }) => {
+  await signIn(page, "owner@ukclient.example");
+  await page.waitForURL("**/dashboard");
+  await page.goto("/dashboard/billing");
+  const href = await page.locator('a[href^="/dashboard/billing/inv_"]').first().getAttribute("href");
+  expect(href).toBeTruthy();
+  const pdf = await page.request.get(`${href}/pdf`);
+  expect(pdf.status()).toBe(200);
+  expect(pdf.headers()["content-type"]).toBe("application/pdf");
+  expect((await pdf.body()).subarray(0, 5).toString()).toBe("%PDF-");
+  // An id that is not theirs (or does not exist) is a plain 404.
+  expect((await page.request.get("/dashboard/billing/inv_does_not_exist/pdf")).status()).toBe(404);
+  expect((await page.request.get("/files/file_does_not_exist")).status()).toBe(404);
+});
+
+test("private files and PDFs need a sign-in", async ({ request }) => {
+  expect((await request.get("/files/file_anything", { maxRedirects: 0 })).status()).toBe(401);
+  const pdf = await request.get("/dashboard/billing/inv_1/pdf", { maxRedirects: 0 });
+  expect([302, 303, 307]).toContain(pdf.status());
+});
+
+test("used or made-up password and invite links say so", async ({ page }) => {
+  await page.goto("/reset-password/this-link-was-never-issued-0000000000");
+  await expect(page.getByText(/expired or was already used/i)).toBeVisible();
+  await page.goto("/invite/this-invite-was-never-issued-0000000000");
+  await expect(page.getByRole("heading", { name: /no longer valid/i })).toBeVisible();
+});
+
+test("the password reset form gives the same answer for any email", async ({ page }) => {
+  await page.goto("/reset-password");
+  await page.fill("#email", "nobody-here@example.com");
+  await page.click("button[type=submit]");
+  await expect(page.getByText(/if an account exists/i)).toBeVisible();
+});

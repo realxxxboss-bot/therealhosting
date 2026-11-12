@@ -21,7 +21,7 @@ export async function searchDomains(_prev: DomainSearchState, formData: FormData
   const raw = String(formData.get("q") ?? "");
   const parsed = domainQuery.safeParse(raw);
   if (!parsed.success) return { query: raw, results: [], error: parsed.error.issues[0]?.message };
-  const limit = rateLimit(`domain:${await clientIp()}`, 30, 60_000);
+  const limit = await rateLimit(`domain:${await clientIp()}`, 30, 60_000);
   if (!limit.ok) return { query: raw, results: [], error: `Too many searches. Try again in ${limit.retryAfterSec} seconds.` };
   const results = await getAdapters().registrar.search(parsed.data);
   return { query: raw, results };
@@ -41,7 +41,7 @@ const contactSchema = z.object({
 export async function submitContact(_prev: FormState, formData: FormData): Promise<FormState> {
   const parsed = contactSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error), message: "Please check the highlighted fields." };
-  const limit = rateLimit(`contact:${await clientIp()}`, 5, 10 * 60_000);
+  const limit = await rateLimit(`contact:${await clientIp()}`, 5, 10 * 60_000);
   if (!limit.ok) return { ok: false, message: "You've sent several messages already. Please try again in a few minutes." };
   const { name, email, company, topic, sites, message } = parsed.data;
   await getAdapters().email.send({

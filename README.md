@@ -47,11 +47,14 @@ Decisions and their reasons: [docs/DECISIONS.md](docs/DECISIONS.md). Product spe
 
 ## Deploy
 
-- **Preview:** Vercel. The sample-data preview runs without any settings. `SESSION_SECRET` is required as soon as `ADAPTER_MODE=live`.
-- **Self-hosted:** `docker build -t zaffre .` then run with `-e SESSION_SECRET=… -p 3000:3000`. The image uses Next.js standalone output.
+- **Database:** Postgres through Drizzle (`src/lib/db`). Without `DATABASE_URL` the app runs on an in-process sample database that resets on restart, which is what the preview, local development and the tests use. With `DATABASE_URL` it applies pending migrations from `drizzle/` at start, and on an empty database creates the first admin for `ADMIN_EMAIL`.
+- **Preview:** Vercel. The sample-data preview runs without any settings. A real database needs `DATABASE_URL`, `SESSION_SECRET` and `ADMIN_EMAIL` (steps in [docs/OWNER-ACTIONS.md](docs/OWNER-ACTIONS.md)).
+- **Self-hosted:** `docker build -t zaffre .` then run with `-e SESSION_SECRET=… -e DATABASE_URL=… -p 3000:3000`. The image uses Next.js standalone output.
+- **Schema changes:** edit `src/lib/db/schema.ts`, run `npm run db:generate`, commit the new file in `drizzle/`.
 
 ## Security
 
 - Never commit secrets. Only `.env.example` (placeholders) is tracked; CI runs a gitleaks secret scan on every push.
-- Session cookies are HMAC-signed, `httpOnly`, `SameSite=Lax`. Server actions re-check permissions on every call.
-- Uploads are limited to PNG, JPG, WebP and PDF up to 5 MB, checked by content (magic bytes), not just the file name.
+- Passwords are hashed with scrypt. Sessions are rows in the database (signing out or changing a password ends them at once) behind an HMAC-signed, `httpOnly`, `SameSite=Lax` cookie. Two-factor is standard TOTP; its secrets and site environment variables are encrypted at rest. Emailed links (reset, invite) work once and are stored only as hashes.
+- Server actions re-check permissions, validate input with Zod and are rate limited in the database.
+- Uploads are limited to PNG, JPG, WebP and PDF up to 5 MB, checked by content (magic bytes), stored privately and only served to the owning account and to admins.

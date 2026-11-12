@@ -18,8 +18,10 @@ export const metadata: Metadata = { title: "Sites" };
 export default async function SitesPage() {
   const now = await requestTime();
   const viewer = await getViewer();
-  const sites = listSites(viewer);
-  const subs = listSubscriptions(viewer);
+  const sites = await listSites(viewer);
+  const subs = await listSubscriptions(viewer);
+  const serverIds = [...new Set(sites.map((s) => s.serverId))];
+  const servers = new Map(await Promise.all(serverIds.map(async (id) => [id, await getServer(id)] as const)));
   return (
     <>
       <PageHeader
@@ -48,7 +50,7 @@ export default async function SitesPage() {
             <tbody>
               {sites.map((s) => {
                 const plan = getPlan(subs.find((x) => x.id === s.subscriptionId)?.planId ?? "");
-                const server = getServer(s.serverId);
+                const server = servers.get(s.serverId) ?? null;
                 return (
                   <tr key={s.id} className="group border-b border-border transition-colors duration-150 hover:bg-surface-2/70">
                     <th scope="row" className="py-4 pr-4 font-normal">

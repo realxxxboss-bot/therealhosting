@@ -19,10 +19,10 @@ export const metadata: Metadata = { title: "Email" };
 export default async function EmailPage() {
   const viewer = await getViewer();
   if (!hasCapability(viewer, "email:manage")) notFound();
-  const mailboxes = listMailboxes(viewer);
+  const mailboxes = await listMailboxes(viewer);
   const adapters = getAdapters();
   const mailDomains = [...new Set(mailboxes.map((m) => m.domain))];
-  const domainOptions = listDomains(viewer)
+  const domainOptions = (await listDomains(viewer))
     .filter((d) => d.status === "active" && !d.redirectTo)
     .map((d) => d.hostname);
   const dnsByDomain = await Promise.all(mailDomains.map(async (d) => ({ domain: d, checks: await adapters.mailboxes.dnsStatus(d) })));

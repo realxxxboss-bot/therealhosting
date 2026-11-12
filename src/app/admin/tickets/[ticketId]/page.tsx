@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Paperclip } from "lucide-react";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { setTicketStatus, staffReply } from "@/app/actions/admin";
 import { Card, CardContent } from "@/components/ui/card";
 import { TicketStatusBadge } from "@/components/app/status";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Ticket" };
 export default async function AdminTicketPage({ params }: PageProps<"/admin/tickets/[ticketId]">) {
   const { ticketId } = await params;
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const ticket = store.tickets.find((t) => t.id === ticketId);
   if (!ticket) notFound();
   const account = store.accounts.find((a) => a.id === ticket.accountId);
@@ -61,7 +61,7 @@ export default async function AdminTicketPage({ params }: PageProps<"/admin/tick
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {m.attachments.map((a) => (
                     <li key={a.name} className="inline-flex items-center gap-1 rounded-full bg-surface px-2.5 py-1 text-xs">
-                      <Paperclip className="size-3" aria-hidden /> {a.name} ({formatBytes(a.size)})
+                      <Paperclip className="size-3" aria-hidden /> {a.fileId ? <a href={`/files/${a.fileId}`} className="link">{a.name}</a> : a.name} ({formatBytes(a.size)})
                     </li>
                   ))}
                 </ul>

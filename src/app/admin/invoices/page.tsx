@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requestTime } from "@/lib/request";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { createInvoice, runRecurringBilling, setInvoiceStatus } from "@/app/actions/admin";
 import { invoiceTotalCents, isOverdue } from "@/lib/billing";
 import { PageHeader } from "@/components/ui/page-header";
@@ -18,7 +18,7 @@ export const metadata: Metadata = { title: "Invoices" };
 export default async function AdminInvoicesPage() {
   const now = await requestTime();
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
   const invoices = [...store.invoices].sort((a, b) => b.issuedAt.localeCompare(a.issuedAt));
 
@@ -48,7 +48,9 @@ export default async function AdminInvoicesPage() {
               {invoices.map((i) => (
                 <TR key={i.id}>
                   <TD className="font-mono text-xs font-semibold">
-                    {i.number}
+                    <a href={`/admin/invoices/${i.id}/pdf`} className="link" title="Download PDF">
+                      {i.number}
+                    </a>
                     {i.recurring ? <span className="block font-sans font-normal text-muted">Renewal</span> : null}
                   </TD>
                   <TD>{accounts.get(i.accountId)}</TD>

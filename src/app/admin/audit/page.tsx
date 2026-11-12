@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/admin/audi
   await getAdmin();
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.trim().toLowerCase() : "";
-  const store = db();
+  const store = await loadAdminStore();
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
   const users = new Map(store.users.map((u) => [u.id, u.name]));
   // Newest first. Seeded and live events are appended in different orders, so sort explicitly.

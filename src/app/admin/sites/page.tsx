@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { createSite, moveSite } from "@/app/actions/admin";
 import { getPlan } from "@/config/plans";
 import { PageHeader } from "@/components/ui/page-header";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Sites" };
 
 export default async function AdminSitesPage() {
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const accounts = new Map(store.accounts.map((a) => [a.id, a]));
 
   return (

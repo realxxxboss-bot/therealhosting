@@ -21,11 +21,11 @@ export default async function BillingPage() {
   const now = await requestTime();
   const viewer = await getViewer();
   if (!hasCapability(viewer, "billing:view")) notFound();
-  const subs = listSubscriptions(viewer);
-  const invoices = listInvoices(viewer);
-  const payments = listPayments(viewer);
-  const methods = new Map(listPaymentMethods().map((m) => [m.id, m.label]));
-  const sites = listSites(viewer);
+  const subs = await listSubscriptions(viewer);
+  const invoices = await listInvoices(viewer);
+  const payments = await listPayments(viewer);
+  const methods = new Map((await listPaymentMethods()).map((m) => [m.id, m.label]));
+  const sites = await listSites(viewer);
   const invoiceNumbers = new Map(invoices.map((i) => [i.id, i.number]));
   const overdue = invoices.filter((i) => isOverdue(i, now));
   const monthly = subs.reduce((sum, s) => sum + (s.cycle === "monthly" ? s.priceCents : Math.round(s.priceCents / 12)), 0);

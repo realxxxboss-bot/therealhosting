@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { requestTime } from "@/lib/request";
 import Link from "next/link";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
@@ -18,7 +18,7 @@ const statusOrder = { open: 0, awaiting_client: 1, closed: 2 } as const;
 export default async function AdminTicketsPage() {
   const now = await requestTime();
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
   const tickets = [...store.tickets].sort(
     (a, b) => statusOrder[a.status] - statusOrder[b.status] || priorityOrder[a.priority] - priorityOrder[b.priority] || a.updatedAt.localeCompare(b.updatedAt),

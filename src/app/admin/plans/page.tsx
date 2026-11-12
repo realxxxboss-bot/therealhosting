@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { plans, priceFor, siteTypes } from "@/config/plans";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Plans" };
 
 export default async function PlansPage() {
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   return (
     <>
       <PageHeader title="Plans" description="The public price list. Per-client deals are set on each client's packages." />

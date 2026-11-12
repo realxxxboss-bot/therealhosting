@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { requestTime } from "@/lib/request";
 import { getViewer } from "@/lib/auth/viewer";
 import { listActivity, listSessions } from "@/lib/data/client";
-import { revokeSession, toggleTwoFactor, updateProfile } from "@/app/actions/account";
+import { changePassword, revokeSession, startTwoFactorSetup, toggleTwoFactor, updateProfile } from "@/app/actions/account";
+import { usesSampleDatabase } from "@/lib/db";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { ActionButton } from "@/components/app/action-button";
 import { formatDateTime, formatRelative } from "@/lib/utils";
-import { ProfileForm, TwoFactorToggle } from "./forms";
+import { PasswordForm, ProfileForm, TwoFactorToggle } from "./forms";
 
 export const metadata: Metadata = { title: "Account" };
 
@@ -41,8 +42,8 @@ const actionLabels: Record<string, string> = {
 export default async function AccountPage() {
   const now = await requestTime();
   const viewer = await getViewer();
-  const sessions = listSessions(viewer);
-  const activity = listActivity(viewer).slice(0, 15);
+  const sessions = await listSessions(viewer);
+  const activity = (await listActivity(viewer)).slice(0, 15);
   return (
     <>
       <PageHeader title="Account" description="Your profile, security and recent activity." />
@@ -57,6 +58,14 @@ export default async function AccountPage() {
         </Card>
         <Card>
           <CardHeader>
+            <CardTitle>Password</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <PasswordForm action={changePassword} />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
             <div>
               <CardTitle>Two-factor authentication</CardTitle>
               <CardDescription>Ask for a code from your phone when you sign in. Optional, but we recommend it.</CardDescription>
@@ -64,7 +73,7 @@ export default async function AccountPage() {
             <StatusBadge tone={viewer.user.twoFactorEnabled ? "success" : "neutral"} label={viewer.user.twoFactorEnabled ? "On" : "Off"} />
           </CardHeader>
           <CardContent>
-            <TwoFactorToggle enabled={viewer.user.twoFactorEnabled} action={toggleTwoFactor} />
+            <TwoFactorToggle enabled={viewer.user.twoFactorEnabled} action={toggleTwoFactor} startSetup={startTwoFactorSetup} sampleHint={usesSampleDatabase() && viewer.user.twoFactorEnabled ? "Sample account: the code is 123456." : undefined} />
           </CardContent>
         </Card>
         <Card>
@@ -80,7 +89,7 @@ export default async function AccountPage() {
                       {s.device} {s.current ? <span className="text-xs font-normal text-success">· this device</span> : null}
                     </p>
                     <p className="text-sm text-muted">
-                      {s.location}, active {formatRelative(s.lastActiveAt, now)}
+                      {s.location ? `${s.location}, ` : ""}active {formatRelative(s.lastActiveAt, now)}
                     </p>
                   </div>
                   {!s.current ? <ActionButton action={revokeSession} fields={{ sessionId: s.id }} label="Sign out" variant="ghost" /> : null}

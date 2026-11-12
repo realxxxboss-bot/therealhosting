@@ -18,6 +18,7 @@ import { mockAnalyticsAdapter } from "./mock/analytics";
 import { mockMailboxAdapter } from "./mock/mail";
 import { mockEmailAdapter, mockWhatsAppAdapter } from "./mock/messages";
 import { mockRegistrarAdapter } from "./mock/registrar";
+import { createResendAdapter } from "./live/resend";
 
 export interface Adapters {
   deploy: DeployAdapter;
@@ -47,18 +48,26 @@ const mockAdapters: Adapters = {
   payments: [manualPayments],
 };
 
+let resend: MessageAdapter | undefined;
+
 export function adapterMode(): "mock" | "live" {
   return process.env.ADAPTER_MODE === "live" ? "live" : "mock";
 }
 
 /**
  * Returns the adapter set for this environment.
- * Live adapters (Coolify, Cloudflare, R2, UptimeRobot, Migadu, Resend) arrive in Phase 3;
+ * Live infrastructure adapters (Coolify, Cloudflare, R2, UptimeRobot, Migadu) arrive in Phase 3;
  * until then "live" mode refuses to start rather than silently using demo data.
  */
 export function getAdapters(): Adapters {
   if (adapterMode() === "live") {
     throw new Error("ADAPTER_MODE=live is not available yet. Live adapters ship in Phase 3. Use ADAPTER_MODE=mock.");
+  }
+  // Email is the first adapter with a real implementation: it switches on as soon as a key is present.
+  const resendKey = process.env.RESEND_API_KEY;
+  if (resendKey) {
+    resend ??= createResendAdapter(resendKey);
+    return { ...mockAdapters, email: resend };
   }
   return mockAdapters;
 }

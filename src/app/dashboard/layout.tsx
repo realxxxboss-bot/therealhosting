@@ -22,9 +22,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
 async function DashboardFrame({ children }: { children: ReactNode }) {
   const viewer = await getViewer();
-  const unread = listNotifications(viewer).filter((n) => !n.read).length;
-  const openTickets = listTickets(viewer).filter((t) => t.status === "awaiting_client").length;
-  const announcement = getAnnouncement();
+  const unread = (await listNotifications(viewer)).filter((n) => !n.read).length;
+  const openTickets = (await listTickets(viewer)).filter((t) => t.status === "awaiting_client").length;
+  const announcement = await getAnnouncement();
 
   const nav: NavItem[] = [
     { href: "/dashboard", label: "Overview", icon: "overview", exact: true },

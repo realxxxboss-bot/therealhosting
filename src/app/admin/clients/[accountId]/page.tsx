@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, LogIn } from "lucide-react";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { addAdminNote, impersonateClient, updateClient, upsertPackage } from "@/app/actions/admin";
 import { getPlan, plans } from "@/config/plans";
 import { roleLabels } from "@/lib/auth/permissions";
@@ -21,7 +21,7 @@ export const metadata: Metadata = { title: "Client" };
 export default async function ClientPage({ params }: PageProps<"/admin/clients/[accountId]">) {
   const { accountId } = await params;
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const account = store.accounts.find((a) => a.id === accountId);
   if (!account) notFound();
   const subs = store.subscriptions.filter((s) => s.accountId === account.id);

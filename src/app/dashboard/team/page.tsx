@@ -16,8 +16,8 @@ export const metadata: Metadata = { title: "Team" };
 export default async function TeamPage() {
   const viewer = await getViewer();
   if (!hasCapability(viewer, "team:manage")) notFound();
-  const { members, invites } = listTeam(viewer);
-  const sites = listSites(viewer);
+  const { members, invites } = await listTeam(viewer);
+  const sites = await listSites(viewer);
   const siteName = new Map(sites.map((s) => [s.id, s.name]));
   const scope = (ids: string[] | null) => (ids === null ? "All sites" : ids.map((id) => siteName.get(id) ?? id).join(", "));
 

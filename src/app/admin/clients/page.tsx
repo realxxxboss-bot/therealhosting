@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { createClient } from "@/app/actions/admin";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Clients" };
 
 export default async function ClientsPage() {
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const rows = store.accounts.map((a) => {
     const subs = store.subscriptions.filter((s) => s.accountId === a.id && s.status === "active");
     return {

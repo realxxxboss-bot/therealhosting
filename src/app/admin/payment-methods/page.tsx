@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
+import { usesSampleDatabase } from "@/lib/db";
 import { savePaymentMethod, togglePaymentMethod } from "@/app/actions/admin";
 import type { PaymentMethod } from "@/lib/data/types";
 import { PageHeader } from "@/components/ui/page-header";
@@ -42,13 +43,15 @@ function MethodForm({ method }: { method?: PaymentMethod }) {
 
 export default async function PaymentMethodsPage() {
   await getAdmin();
-  const methods = db().paymentMethods;
+  const methods = (await loadAdminStore()).paymentMethods;
   return (
     <>
       <PageHeader title="Payment methods" description="What clients see on the Pay screen." />
-      <Alert tone="warning" title="Demo values" className="mb-6">
-        These are placeholders. Put your real bank and Wise details here once the accounts are open (see OWNER-ACTIONS). Card payments arrive when a registered company is in place.
-      </Alert>
+      {usesSampleDatabase() ? (
+        <Alert tone="warning" title="Demo values" className="mb-6">
+          These are placeholders. Put your real bank and Wise details here once the accounts are open (see OWNER-ACTIONS). Card payments arrive when a registered company is in place.
+        </Alert>
+      ) : null}
       <div className="grid gap-6">
         {methods.map((m) => (
           <Card key={m.id}>

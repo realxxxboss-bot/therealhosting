@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requestTime } from "@/lib/request";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { getAdapters } from "@/lib/adapters";
 import { updateRestoreRequest } from "@/app/actions/admin";
 import { PageHeader } from "@/components/ui/page-header";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Backups" };
 export default async function AdminBackupsPage() {
   const now = await requestTime();
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const sites = new Map(store.sites.map((s) => [s.id, s]));
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
   const requests = [...store.restoreRequests].sort((a, b) => b.createdAt.localeCompare(a.createdAt));

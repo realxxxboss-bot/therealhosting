@@ -27,8 +27,8 @@ const kindLabels = {
 export default async function NotificationsPage() {
   const now = await requestTime();
   const viewer = await getViewer();
-  const items = listNotifications(viewer);
-  const prefs = getNotificationPrefs(viewer);
+  const items = await listNotifications(viewer);
+  const prefs = await getNotificationPrefs(viewer);
   const unread = items.filter((n) => !n.read).length;
   return (
     <>

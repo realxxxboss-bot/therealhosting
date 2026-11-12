@@ -12,9 +12,9 @@ import { AddDomainForm, RedirectForm } from "./forms";
 export default async function SiteDomainsPage({ params }: PageProps<"/dashboard/sites/[siteId]/domains">) {
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
-  const domains = listSiteDomains(viewer, site.id);
+  const domains = await listSiteDomains(viewer, site.id);
   const canManage = hasCapability(viewer, "domains:manage") && hasCapability(viewer, "sites:manage");
   const adapters = getAdapters();
 

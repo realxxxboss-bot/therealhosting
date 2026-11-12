@@ -13,9 +13,9 @@ export default async function DeploymentsPage({ params }: PageProps<"/dashboard/
   const now = await requestTime();
   const { siteId } = await params;
   const viewer = await getViewer();
-  const site = getSite(viewer, siteId);
+  const site = await getSite(viewer, siteId);
   if (!site) notFound();
-  const deployments = listDeployments(viewer, site.id);
+  const deployments = await listDeployments(viewer, site.id);
   return (
     <Card>
       {deployments.length === 0 ? (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
@@ -25,7 +25,7 @@ function Meter({ label, pct }: { label: string; pct: number }) {
 
 export default async function FleetPage() {
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   return (
     <>
       <PageHeader title="Servers" description="Fleet health. Values come from the monitoring adapter (demo data for now)." />

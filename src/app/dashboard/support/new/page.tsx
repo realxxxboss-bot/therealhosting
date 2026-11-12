@@ -17,7 +17,7 @@ const topicSubjects: Record<string, string> = {
 export default async function NewTicketPage({ searchParams }: PageProps<"/dashboard/support/new">) {
   const sp = await searchParams;
   const viewer = await getViewer();
-  const sites = listSites(viewer).map((s) => ({ id: s.id, name: s.name }));
+  const sites = (await listSites(viewer)).map((s) => ({ id: s.id, name: s.name }));
   const topic = typeof sp.topic === "string" ? sp.topic : "";
   const siteId = typeof sp.site === "string" ? sp.site : "";
   return (

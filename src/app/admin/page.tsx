@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requestTime } from "@/lib/request";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { invoiceTotalCents, isOverdue } from "@/lib/billing";
 import { PageHeader } from "@/components/ui/page-header";
 import { ButtonLink } from "@/components/ui/button";
@@ -25,7 +25,7 @@ interface QueueItem {
 export default async function AdminOverview() {
   const now = await requestTime();
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const activeSubs = store.subscriptions.filter((s) => s.status === "active");
   const mrr = activeSubs.reduce((sum, s) => sum + (s.cycle === "monthly" ? s.priceCents : Math.round(s.priceCents / 12)), 0);
   const pending = store.payments.filter((p) => p.status === "pending_verification");

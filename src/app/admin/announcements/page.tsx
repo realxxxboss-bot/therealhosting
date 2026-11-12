@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { saveAnnouncement } from "@/app/actions/admin";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Announcement" };
 
 export default async function AnnouncementPage() {
   await getAdmin();
-  const a = db().announcement;
+  const a = (await loadAdminStore()).announcement;
   return (
     <>
       <PageHeader title="Announcement" description="A banner at the top of every client dashboard. Use it for planned maintenance or important news." />

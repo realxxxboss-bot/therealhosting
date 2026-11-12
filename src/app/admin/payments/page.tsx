@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { requestTime } from "@/lib/request";
 import { FileCheck2 } from "lucide-react";
 import { getAdmin } from "@/lib/auth/viewer";
-import { db } from "@/lib/data/store";
+import { loadAdminStore } from "@/lib/data/admin";
 import { reviewPayment } from "@/app/actions/admin";
 import { invoiceTotalCents } from "@/lib/billing";
 import { PageHeader } from "@/components/ui/page-header";
@@ -20,7 +20,7 @@ export const metadata: Metadata = { title: "Payment checks" };
 export default async function PaymentsPage() {
   const now = await requestTime();
   await getAdmin();
-  const store = db();
+  const store = await loadAdminStore();
   const accounts = new Map(store.accounts.map((a) => [a.id, a.name]));
   const methods = new Map(store.paymentMethods.map((m) => [m.id, m.label]));
   const users = new Map(store.users.map((u) => [u.id, u.name]));
@@ -65,7 +65,14 @@ export default async function PaymentsPage() {
                     <dd className="font-mono text-xs">{p.reference}</dd>
                     <dt className="text-muted">Proof file</dt>
                     <dd>
-                      {p.proofFileName} <span className="text-muted">({formatBytes(p.proofSize)})</span>
+                      {p.proofFileId ? (
+                        <a href={`/files/${p.proofFileId}`} className="link">
+                          {p.proofFileName}
+                        </a>
+                      ) : (
+                        p.proofFileName
+                      )}{" "}
+                      <span className="text-muted">({formatBytes(p.proofSize)})</span>
                     </dd>
                   </dl>
                   <div className="grid content-start gap-4">

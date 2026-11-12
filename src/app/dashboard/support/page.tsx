@@ -17,8 +17,8 @@ export const metadata: Metadata = { title: "Support" };
 export default async function SupportPage() {
   const now = await requestTime();
   const viewer = await getViewer();
-  const tickets = listTickets(viewer);
-  const sites = new Map(listSites(viewer).map((s) => [s.id, s.name]));
+  const tickets = await listTickets(viewer);
+  const sites = new Map((await listSites(viewer)).map((s) => [s.id, s.name]));
   const wa = whatsappLink(`Hi Zaffre, this is ${viewer.account.name}.`);
   return (
     <>
