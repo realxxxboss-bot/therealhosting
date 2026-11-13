@@ -56,6 +56,8 @@ export const users = pgTable(
     twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
     /** Base32 TOTP secret, encrypted with the app key. Null when 2FA is off. */
     totpSecret: text("totp_secret"),
+    /** Time step of the last accepted code, so the same code can't be used twice. */
+    totpLastStep: integer("totp_last_step"),
     createdAt: createdAt(),
   },
   (t) => [uniqueIndex("users_email_key").on(t.email)],

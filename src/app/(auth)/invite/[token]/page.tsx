@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import { findInvite } from "@/app/actions/team";
+import { findInvite } from "@/lib/data/invites";
 import { roleLabels } from "@/lib/auth/permissions";
 import { AcceptInviteForm } from "./accept-invite-form";
 

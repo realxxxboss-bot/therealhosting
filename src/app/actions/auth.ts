@@ -18,7 +18,7 @@ import {
   setPendingTwoFactor,
   updateSession,
 } from "@/lib/auth/session";
-import { verifyTotp } from "@/lib/auth/totp";
+import { matchTotpStep } from "@/lib/auth/totp";
 import { audit } from "@/lib/data/client";
 import type { User } from "@/lib/data/types";
 import { getDb, schema as t, usesSampleDatabase } from "@/lib/db";
@@ -57,7 +57,11 @@ export async function signIn(_prev: FormState, formData: FormData): Promise<Form
   const [row] = await db.select().from(t.users).where(eq(t.users.email, email));
   const passwordOk = await verifyPassword(parsed.data.password, row?.passwordHash ?? DUMMY_HASH);
   // Same message for unknown email and wrong password, so accounts can't be discovered.
-  if (!row || !passwordOk) return { ok: false, message: "That email and password don't match." };
+  if (!row || !passwordOk) {
+    // Recorded against a known account only, so the log can't be filled with made-up addresses.
+    if (row) await audit({ user: { id: row.id, name: row.name }, impersonator: null }, "auth.sign_in_failed");
+    return { ok: false, message: "That email and password don't match." };
+  }
 
   if (row.twoFactorEnabled) {
     await setPendingTwoFactor(row.id);
@@ -81,8 +85,21 @@ export async function verifyTwoFactor(_prev: FormState, formData: FormData): Pro
   const [row] = await db.select().from(t.users).where(eq(t.users.id, uid));
   if (!row) redirect("/sign-in");
   const secret = row.totpSecret ? decrypt(row.totpSecret) : null;
-  const valid = (secret !== null && verifyTotp(secret, code)) || (usesSampleDatabase() && secret === null && code === SAMPLE_TOTP);
-  if (!valid) return { ok: false, errors: { code: "That code isn't right. Check your authenticator app and try again." } };
+  let valid = false;
+  if (secret === null) {
+    valid = usesSampleDatabase() && code === SAMPLE_TOTP;
+  } else {
+    // A code is accepted once: replaying it within its 90-second window fails.
+    const step = matchTotpStep(secret, code);
+    if (step !== null && (row.totpLastStep === null || step > row.totpLastStep)) {
+      await db.update(t.users).set({ totpLastStep: step }).where(eq(t.users.id, uid));
+      valid = true;
+    }
+  }
+  if (!valid) {
+    await audit({ user: { id: row.id, name: row.name }, impersonator: null }, "auth.2fa_failed");
+    return { ok: false, errors: { code: "That code isn't right. Check your authenticator app and try again." } };
+  }
 
   const user = await findUser(uid);
   if (!user) redirect("/sign-in");

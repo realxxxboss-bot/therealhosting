@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { home, migration } from "@/config/marketing";
@@ -14,6 +15,8 @@ import { HeroIntro } from "@/components/motion/hero-intro";
 import { Photo } from "@/components/motion/photo";
 import { Reveal } from "@/components/motion/reveal";
 import { formatUSD } from "@/lib/utils";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const typeOrder: SiteType[] = ["nextjs", "wordpress", "static"];
 

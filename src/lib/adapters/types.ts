@@ -137,6 +137,8 @@ export interface OutboundMessage {
   to: string;
   subject?: string;
   body: string;
+  /** Email only: where replies go. Defaults to our own public address. */
+  replyTo?: string;
 }
 
 export interface MessageAdapter {

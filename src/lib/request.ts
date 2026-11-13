@@ -2,10 +2,26 @@ import "server-only";
 import { headers } from "next/headers";
 import { connection } from "next/server";
 
-/** Best-effort client IP for rate limiting and audit logs. */
+/**
+ * Client IP for rate limiting, sign-in records and audit logs.
+ *
+ * The left-most `X-Forwarded-For` entry is whatever the visitor sent, so it can be forged.
+ * Each proxy appends the address it saw, so we count from the right instead:
+ * `TRUSTED_PROXY_HOPS` is how many proxies we run in front of the app (default 1:
+ * Vercel's edge, or Traefik on our own server). On Vercel, `x-real-ip` is set by the edge itself.
+ */
+export function ipFromHeaders(h: Pick<Headers, "get">): string {
+  if (process.env.VERCEL && h.get("x-real-ip")) return h.get("x-real-ip")!;
+  const hops = Math.max(1, Number(process.env.TRUSTED_PROXY_HOPS ?? 1) || 1);
+  const chain = (h.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  return chain[chain.length - hops] ?? chain[0] ?? h.get("x-real-ip") ?? "unknown";
+}
+
 export async function clientIp(): Promise<string> {
-  const h = await headers();
-  return h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
+  return ipFromHeaders(await headers());
 }
 
 /**

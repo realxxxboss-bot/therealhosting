@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
+  adapterMode,
   getAdapters,
   liveConnections,
   NotConnectedError,
@@ -277,5 +278,20 @@ describe("live mode registry", () => {
     expect(getAdapters().deploy.name).toMatch(/Mock/);
     expect(providerMessage(new ProviderError("X", 500, "nope"))).toBe("nope");
     expect(providerMessage(new Error("bug"))).toBeNull();
+  });
+
+  it("defaults to live mode when a real database is connected", () => {
+    vi.stubEnv("ADAPTER_MODE", "");
+    vi.stubEnv("DATABASE_URL", "postgres://example");
+    expect(adapterMode()).toBe("live");
+    vi.stubEnv("DATABASE_URL", "");
+    expect(adapterMode()).toBe("mock");
+  });
+
+  it("never sends real email from the sample-data preview", () => {
+    vi.stubEnv("ADAPTER_MODE", "mock");
+    vi.stubEnv("DATABASE_URL", "");
+    vi.stubEnv("RESEND_API_KEY", "re_test");
+    expect(getAdapters().email.name).toBe("Mock Resend");
   });
 });

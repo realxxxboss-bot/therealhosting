@@ -119,19 +119,6 @@ export async function revokeAccess(_prev: FormState, formData: FormData): Promis
   }
 }
 
-/** The pending invite for an emailed token, with the account name, or null. */
-export async function findInvite(token: string) {
-  const db = await getDb();
-  const [row] = await db
-    .select({ invite: t.invites, accountName: t.accounts.name })
-    .from(t.invites)
-    .innerJoin(t.accounts, eq(t.accounts.id, t.invites.accountId))
-    .where(and(eq(t.invites.tokenHash, hashToken(token)), gt(t.invites.expiresAt, new Date().toISOString())));
-  if (!row) return null;
-  const [existing] = await db.select({ id: t.users.id }).from(t.users).where(eq(t.users.email, row.invite.email));
-  return { email: row.invite.email, role: row.invite.role, accountName: row.accountName, hasAccount: Boolean(existing) };
-}
-
 const acceptSchema = z.object({
   token: z.string().min(20).max(200),
   name: z.string().trim().max(80).optional(),

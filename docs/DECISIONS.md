@@ -233,3 +233,16 @@ The handle has two e's while the brand has one. We use the handle exactly as giv
 The owner asked for formal, standard terms, "similar to Hostinger", and confirmed the legal name as Zaffre. The Terms now follow the usual structure for a hosting company: definitions, account, services, fees, responsibilities, IP, data protection, backups, third parties, suspension, termination, warranties, liability cap, indemnity, force majeure, changes, notices, general clauses and governing law. Our own promises are kept: no renewal price increase, notice before suspension for late payment (14 days after the due date), 30 days to take a copy of your data.
 
 Governing law is England and Wales. It is widely used in international hosting contracts, matches the UK GDPR reference in the Privacy Policy, and suits the first client. Consumers keep the mandatory protections of their own country. When a company is registered, the legal name and possibly the governing law should match it; both are one line in `src/config/site.ts`. The documents stay marked as drafts until a lawyer has reviewed them.
+
+## D-018 Production hardening before the first real client
+
+**Date:** 2026-11-13
+
+- **Live mode by default with a real database.** When `ADAPTER_MODE` is not set, a `DATABASE_URL` means live mode. Connecting the database alone can no longer leave real clients looking at demo data and the demo banner. `ADAPTER_MODE=mock` still works on purpose (a staging copy), and the startup check warns about it.
+- **No silent email loss.** The sample-data preview never sends real email, even with a Resend key, because its demo admin login is public. With a real database and no key, the server logs an error at start, and the contact form tells the visitor to email us instead of claiming it has their message. Contact-form emails set reply-to to the visitor.
+- **Admins must use two-factor.** Admin accounts can open every client's data. `requireAdmin` sends an admin without 2FA to `/admin/account` to set it up, and `loadAdminStore` checks for an admin itself. Not enforced on the sample database, so the public demo keeps working. A used code can't be replayed inside its 90-second window (`users.totp_last_step`).
+- **Static Content Security Policy, not nonces.** A nonce needs every page rendered per request, which would throw away the static marketing pages. The policy still blocks framing, plugins, foreign forms, foreign scripts and images except Unsplash's CDN. Inline scripts are allowed (Next's bootstrap, theme, JSON-LD).
+- **Client IP from the right of `X-Forwarded-For`**, counting `TRUSTED_PROXY_HOPS` (default 1). The left-most entry is whatever the visitor sends.
+- **Suspended accounts** can still view, pay and open tickets; changes to sites, domains, mailboxes and team are refused with a clear message. An admin acting as the client can still fix things.
+- **Error pages, health check and startup check.** `error.tsx` in each area and `global-error.tsx` show a reference (the error digest) that matches the server log line written by `onRequestError`. `/api/health` checks the database. `src/lib/env-check.ts` lists missing or half-set settings by name at start, never values.
+- **Migrations on Vercel** run at build time (`npm run db:migrate`) against `DATABASE_URL_UNPOOLED`, with the same advisory lock as the app, and `DATABASE_AUTO_MIGRATE=false`.

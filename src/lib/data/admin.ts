@@ -1,5 +1,7 @@
 import "server-only";
+import { cache } from "react";
 import { desc } from "drizzle-orm";
+import { getAdmin } from "@/lib/auth/viewer";
 import { getDb, schema as t } from "@/lib/db";
 import { withMessages } from "./client";
 import { fromRows, inviteColumns, userColumns } from "./rows";
@@ -55,7 +57,9 @@ const emptyAnnouncement: Announcement = { enabled: false, tone: "info", message:
  * clients, so this is simple and fast enough today. Long tables are capped here
  * (audit log, backups); when volumes grow, each screen gets its own paged query.
  */
-export async function loadAdminStore(): Promise<AdminStore> {
+export const loadAdminStore = cache(async function loadAdminStore(): Promise<AdminStore> {
+  // Holds every client's data, so it checks for a signed-in admin itself instead of trusting the caller.
+  await getAdmin();
   const db = await getDb();
   const [users, accounts, memberships, invites, servers, subscriptions, sites, domains, backups, restoreRequests, invoices, payments, paymentMethods, ticketRows, auditLog, adminNotes, settings, emailTemplates] =
     await Promise.all([
@@ -99,4 +103,4 @@ export async function loadAdminStore(): Promise<AdminStore> {
     announcement,
     emailTemplates,
   };
-}
+});

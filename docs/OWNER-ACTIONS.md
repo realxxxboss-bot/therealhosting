@@ -145,12 +145,19 @@ Website ke footer, Contact aur About page par lag gaye hain. Note: handle mein d
 5. Ab **Settings → Environment Variables** mein yeh do cheezen khud add karein:
    - `SESSION_SECRET`: koi bhi lamba random text, kam az kam 40 characters. Kisi password generator se bana lein. Isay kahin aur use na karein.
    - `ADMIN_EMAIL`: woh email jis se aap admin panel mein sign in karenge.
+   - `DATABASE_AUTO_MIGRATE` = `false` (database update har deploy par build ke waqt hoga, neeche step dekhein).
+   - `NEXT_PUBLIC_SITE_URL` = `https://zaffrehost.com`
+5b. **Settings → General → Build Command** mein yeh likhein: `npm run db:migrate && npm run build`. (Neon `DATABASE_URL_UNPOOLED` bhi khud daalta hai; migration usi se chalti hai.)
 6. **Deployments** tab → sab se upar wali deployment ke saamne teen dots → **Redeploy**.
 7. Pehli dafa chalne par system aap ka admin account banata hai aur "password chunein" ka link bhejta hai. Jab tak email (Resend) set nahi hai, yeh link Vercel ke **Logs** tab mein milega: search mein `[setup]` likhein, link khol kar password chunein. Link sirf ek dafa chalta hai.
 
 **Mujhe bhejein:** "Database jor diya" — bas. `DATABASE_URL` ya `SESSION_SECRET` chat mein na bhejein.
 
 **Note:** Database jorne ke baad sample accounts (demo/123456) khatam ho jate hain. Sirf asli accounts chalenge.
+
+**Note 2:** Database jurte hi site khud "live mode" mein chali jati hai: demo banner aur nakli data band. `ADAPTER_MODE` set karne ki zaroorat nahi. Admin panel kholne se pehle aap se **two-factor (authenticator app)** on karwaya jayega — admin ke liye yeh zaroori hai.
+
+**Note 3:** Resend (step 10) ke baghair contact form ke messages aur password emails nahi jayenge. Isliye step 10 bhi sath hi kar lein.
 
 ---
 

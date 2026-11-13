@@ -133,3 +133,39 @@ test("admin adds a server, then removes it", async ({ page }) => {
   // The card itself disappears once the server is gone.
   await expect(page.getByText("Edit zaffre-test-9")).toHaveCount(0);
 });
+
+test("the contact form confirms a sent message", async ({ page }) => {
+  await page.goto("/contact");
+  await page.fill("#name", "Test Visitor");
+  await page.fill("#email", "visitor@example.com");
+  await page.fill("#message", "I would like to move two WordPress sites to you.");
+  await page.getByRole("button", { name: "Send message" }).click();
+  await expect(page.getByText(/we have your message/i)).toBeVisible();
+});
+
+test("a ticket accepts a 3 MB attachment", async ({ page }) => {
+  await signIn(page, "owner@ukclient.example");
+  await page.waitForURL("**/dashboard");
+  await page.goto("/dashboard/support/new");
+  await page.fill("#subject", "Large screenshot attached");
+  await page.fill("#body", "Here is a full-page screenshot of the problem.");
+  // A real PNG header followed by padding: 3 MB, above Next's 1 MB default for server actions.
+  const png = Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]), Buffer.alloc(3 * 1024 * 1024)]);
+  await page.setInputFiles("#attachments", { name: "screenshot.png", mimeType: "image/png", buffer: png });
+  await page.getByRole("button", { name: "Open ticket" }).click();
+  await page.waitForURL(/\/dashboard\/support\/tkt_/);
+  await expect(page.getByText("screenshot.png")).toBeVisible();
+});
+
+test("health check reports the database is reachable", async ({ request }) => {
+  const response = await request.get("/api/health");
+  expect(response.status()).toBe(200);
+  expect(await response.json()).toEqual({ ok: true });
+});
+
+test("pages send a content security policy", async ({ request }) => {
+  const response = await request.get("/");
+  const csp = response.headers()["content-security-policy"] ?? "";
+  expect(csp).toContain("frame-ancestors 'none'");
+  expect(csp).toContain("object-src 'none'");
+});

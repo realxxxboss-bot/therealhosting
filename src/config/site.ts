@@ -32,7 +32,7 @@ export const site = {
     salesEmail: "info@zaffrehost.com",
     /** E.164 number without "+" for wa.me links. Empty until the owner confirms. TODO(confirm). */
     whatsappNumber: "",
-    supportHours: "Every day, replies within business hours",
+    supportHours: "Every day, with a reply within 24 hours",
   },
   /** Confirmed by the owner on 2026-11-13. The handle is "zaffreehost" (two e's) on every network. */
   social: {

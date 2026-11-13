@@ -45,8 +45,15 @@ export class ForbiddenError extends Error {
   }
 }
 
+/** What a suspended account can still do: see things, pay invoices and talk to us. */
+const allowedWhileSuspended: Capability[] = ["sites:view", "billing:view", "billing:pay", "support:use"];
+
 export function assertCan(viewer: Viewer, capability: Capability): void {
   if (!can(viewer.membership, capability)) throw new ForbiddenError();
+  // An admin acting as the client can still fix things on a suspended account.
+  if (viewer.account.status === "suspended" && !viewer.impersonator && !allowedWhileSuspended.includes(capability)) {
+    throw new ForbiddenError("This account is suspended, so changes are paused. Open a support ticket or pay any open invoice, and we will restore it.");
+  }
 }
 
 export function hasCapability(viewer: Viewer, capability: Capability): boolean {

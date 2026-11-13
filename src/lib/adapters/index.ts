@@ -68,13 +68,30 @@ const mockAdapters: Adapters = {
 let resend: MessageAdapter | undefined;
 let live: { key: string; adapters: Adapters } | undefined;
 
+/**
+ * `ADAPTER_MODE` decides when it is set. When it is not, a real database means live mode,
+ * so connecting `DATABASE_URL` alone can never leave real clients looking at demo data.
+ */
 export function adapterMode(): "mock" | "live" {
-  return process.env.ADAPTER_MODE === "live" ? "live" : "mock";
+  const mode = process.env.ADAPTER_MODE;
+  if (mode === "live" || mode === "mock") return mode;
+  return process.env.DATABASE_URL ? "live" : "mock";
 }
+
+let warnedNoEmail = false;
 
 function emailAdapter(): MessageAdapter {
   const key = process.env.RESEND_API_KEY;
-  if (!key) return mockEmailAdapter;
+  // The public sample-data preview never sends real email, even with a key set: anyone can
+  // sign in to it as the demo admin and invite any address.
+  if (!process.env.DATABASE_URL) return mockEmailAdapter;
+  if (!key) {
+    if (!warnedNoEmail && process.env.NODE_ENV === "production") {
+      warnedNoEmail = true;
+      console.error("[email] RESEND_API_KEY is not set. Emails are recorded in the admin outbox and NOT sent.");
+    }
+    return mockEmailAdapter;
+  }
   resend ??= createResendAdapter(key);
   return resend;
 }
