@@ -27,7 +27,22 @@ For the websites and data you host with us, you are the controller and we are yo
 
 ## Service providers
 
-We use carefully chosen providers, for example: server hosting, Cloudflare (DNS, SSL, CDN and backup storage), a transactional email provider, an email hosting provider for mailboxes, and an uptime monitoring service. We will list current providers on request.
+We share personal data only with the providers we need to run the Services, and only what each one needs.
+
+| Provider | What they do for us | Where |
+| --- | --- | --- |
+| Hetzner | The servers your websites run on | Germany |
+| Cloudflare | DNS, SSL certificates, content delivery and backup storage (R2) | Global network; backups in the EU jurisdiction |
+| Vercel | Runs this website and the client dashboard | Global network |
+| Neon | The database behind the dashboard (accounts, invoices, tickets) | Frankfurt, Germany |
+| Resend | Sends account emails, such as password resets and invoices | United States |
+| UptimeRobot | Checks from outside whether websites are up | Checks from several countries; no personal data beyond site addresses |
+
+If we add or replace a provider, we update this table before the change takes effect.
+
+## International transfers
+
+Most data stays in the EU. Where a provider above processes data outside the UK or EU (for example, email sending), we rely on appropriate safeguards such as the UK International Data Transfer Addendum and the EU Standard Contractual Clauses.
 
 ## How long we keep data
 
@@ -38,12 +53,30 @@ We use carefully chosen providers, for example: server hosting, Cloudflare (DNS,
 
 ## Your rights
 
-You can ask to access, correct, delete, restrict or move your personal data, and object to processing. Write to <a href={"mailto:" + site.contact.supportEmail}>{site.contact.supportEmail}</a>. You can also complain to your data protection authority, for example the UK ICO.
+You can ask to access, correct, delete, restrict or move your personal data, and object to processing. Write to <a href={"mailto:" + site.contact.email}>{site.contact.email}</a>. You can also complain to your data protection authority, for example the UK ICO.
 
 ## Cookies
 
-We use only the cookies needed to sign you in and keep your session secure, and to remember your light or dark theme. We do not use advertising cookies.
+We use only what is strictly needed, so we do not show a cookie banner. We do not use advertising or analytics cookies.
+
+| Name | Purpose | How long |
+| --- | --- | --- |
+| `zf_session` | Keeps you signed in to the dashboard | Up to 7 days, or until you sign out |
+| `zf_2fa` | Remembers the first sign-in step while you enter your two-factor code | 10 minutes |
+| `theme` (browser storage, not a cookie) | Remembers whether you chose the light or dark theme | Until you clear it |
+
+## Security
+
+Passwords are stored as one-way hashes, and secrets such as two-factor keys are encrypted. Access to client data is limited to the staff who need it, and admin actions are recorded in an audit log. If a breach affects your personal data, we tell you and the relevant authority without undue delay.
+
+## Children
+
+Our Services are for businesses. We do not knowingly collect personal data from children under 16.
+
+## Changes to this policy
+
+When we make a material change, we update the date at the top and tell account holders by email.
 
 ## Contact
 
-{legalEntity}, <a href={"mailto:" + site.contact.supportEmail}>{site.contact.supportEmail}</a>.
+{legalEntity}, <a href={"mailto:" + site.contact.email}>{site.contact.email}</a>.

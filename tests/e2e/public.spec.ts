@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { expectNoA11yViolations } from "./helpers";
 
-const pages = ["/", "/pricing", "/features", "/hosting/nextjs", "/migration", "/domains", "/status", "/contact", "/about", "/blog", "/legal/privacy", "/sign-in", "/credits", "/hosting/wordpress", "/blog/renewal-prices-explained"];
+const pages = ["/", "/pricing", "/features", "/hosting/nextjs", "/migration", "/domains", "/status", "/contact", "/about", "/blog", "/legal/privacy", "/legal/terms", "/sign-in", "/credits", "/hosting/wordpress", "/blog/renewal-prices-explained"];
 
 for (const path of pages) {
   test(`${path} renders and passes axe`, async ({ page }) => {
@@ -24,5 +24,25 @@ test("never shows fabricated trust claims", async ({ page }) => {
     const text = (await page.locator("body").innerText()).toLowerCase();
     expect(text).not.toContain("trusted by");
     expect(text).not.toMatch(/99\.\d+% uptime last/);
+  }
+});
+
+test("footer shows the email and social profiles", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.locator("footer");
+  await expect(footer.locator('a[href="mailto:info@zaffrehost.com"]').first()).toBeVisible();
+  const profiles: [string, string][] = [
+    ["Instagram", "https://www.instagram.com/zaffreehost"],
+    ["Facebook", "https://www.facebook.com/zaffreehost"],
+    ["Threads", "https://www.threads.com/@zaffreehost"],
+  ];
+  for (const [name, href] of profiles) {
+    await expect(footer.getByRole("link", { name: `Zaffre on ${name}` })).toHaveAttribute("href", href);
+  }
+  for (const path of ["/", "/contact", "/legal/privacy", "/about"]) {
+    await page.goto(path);
+    const text = await page.locator("body").innerText();
+    expect(text).not.toMatch(/(support|hello)@zaffrehost\.com/);
+    expect(text).not.toContain("TODO(confirm)");
   }
 });

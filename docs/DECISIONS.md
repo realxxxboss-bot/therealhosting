@@ -217,3 +217,19 @@ The Cloudflare and UptimeRobot calls follow their public API references. The Coo
 Servers are now added, edited and removed on the admin Servers page. A server with sites on it can't be removed until they are moved. Usage meters show only in demo mode; in live mode the page says usage is not measured yet, until real server metrics are connected.
 
 Plans and list prices stay in `src/config/plans.ts` instead of moving to the database. The pricing page, the dashboard and invoices all read that one file, so they can never disagree, and the public pricing page stays a fast static page. List prices change rarely, and a change never touches existing clients, whose price is saved on their package. Per-client deals are already set in the admin on each client's packages. To change a list price, the owner asks for it and it ships as a reviewed change.
+
+## D-016 One public email and the social handles
+
+**Date:** 2026-11-13
+
+The owner confirmed the domain `zaffrehost.com`, a single public email `info@zaffrehost.com`, and the handle `@zaffreehost` on Instagram, Facebook and Threads. All public contact points (footer, contact page, About, legal pages, invoices, email reply-to) use info@. The code keeps `supportEmail` and `salesEmail` as names for the two jobs, so they can be split into separate inboxes later by changing one line in `src/config/site.ts`. Social links are plain text links with accessible names, not logo icons.
+
+The handle has two e's while the brand has one. We use the handle exactly as given.
+
+## D-017 Formal Terms of Service, under the laws of England and Wales
+
+**Date:** 2026-11-13
+
+The owner asked for formal, standard terms, "similar to Hostinger", and confirmed the legal name as Zaffre. The Terms now follow the usual structure for a hosting company: definitions, account, services, fees, responsibilities, IP, data protection, backups, third parties, suspension, termination, warranties, liability cap, indemnity, force majeure, changes, notices, general clauses and governing law. Our own promises are kept: no renewal price increase, notice before suspension for late payment (14 days after the due date), 30 days to take a copy of your data.
+
+Governing law is England and Wales. It is widely used in international hosting contracts, matches the UK GDPR reference in the Privacy Policy, and suits the first client. Consumers keep the mandatory protections of their own country. When a company is registered, the legal name and possibly the governing law should match it; both are one line in `src/config/site.ts`. The documents stay marked as drafts until a lawyer has reviewed them.
