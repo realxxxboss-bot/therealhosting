@@ -1,17 +1,19 @@
 import { site, legalEntity, isConfirmed } from "@/config/site";
+import { OperatorIdentity } from "@/components/marketing/operator";
 
 These Terms of Service (the "Terms") form a binding agreement between {legalEntity} ("{site.name}", "we", "us" or "our") and the person or organisation that creates an account or orders our services ("you" or "your"). By creating an account, placing an order or using the Services, you confirm that you have read and accept these Terms, together with the policies they refer to.
 
 ## 1. Definitions
 
-- **"Services"** means the website hosting, management, migration, domain connection, backup, monitoring, email and support services we provide, and the client dashboard used to manage them.
+- **"Services"** means the website hosting, management, migration, domain connection, backup, monitoring and support services we provide, transactional email sending, mailboxes where you order them, and the client dashboard used to manage them.
+- **"Consumer"** means an individual using the Services wholly or mainly outside their trade, business, craft or profession. Where a section treats consumers differently, it says so.
 - **"Package"** means the plan you have ordered, including its price, billing cycle and resource allowances, as shown on our [pricing page](/pricing) or agreed in writing.
 - **"Your Content"** means all websites, files, code, databases, emails and other material that you or your users store or process using the Services.
 - **"Policies"** means our [Privacy Policy](/legal/privacy), [Acceptable Use Policy](/legal/acceptable-use), [Refund Policy](/legal/refund) and [Service Levels](/legal/sla), each of which forms part of these Terms.
 
 ## 2. Eligibility and your account
 
-2.1. You must be at least 18 years old and able to enter into a binding contract. If you accept these Terms on behalf of an organisation, you confirm that you are authorised to bind it.
+2.1. You must be at least 18 years old and able to enter into a binding contract. You may use the Services as a business or as a consumer. If you accept these Terms on behalf of an organisation, you confirm that you are authorised to bind it.
 
 2.2. You must provide accurate, complete and current information, including a working email address, and keep it up to date.
 
@@ -27,11 +29,11 @@ These Terms of Service (the "Terms") form a binding agreement between {legalEnti
 
 3.3. We may update the technology we use to provide the Services (for example server software, data centres or providers) to keep them secure and reliable. We will not reduce the resources or features included in your Package during a period you have paid for.
 
-3.4. Free migration of existing sites is provided on a reasonable-efforts basis. We will agree the scope and timing with you before we start.
+3.4. Free migration of existing sites is provided on a reasonable-efforts basis. We will agree the scope and timing with you before we start. Sites that are compromised, very large or need changes to work on our platform may need extra work, which we quote before doing.
 
 ## 4. Orders, fees and payment
 
-4.1. All prices are stated in US dollars (USD). Prices exclude any taxes, duties or bank charges that apply to you, which are your responsibility.
+4.1. All prices are stated in US dollars (USD). For business customers, prices exclude any taxes, duties or bank charges that apply to you, which are your responsibility. If you are a consumer and VAT or a similar tax applies to you, we tell you the total price including that tax before you order.
 
 4.2. Packages are billed in advance, monthly or yearly, as chosen when ordered. Invoices are due by the date shown on them.
 
@@ -39,9 +41,19 @@ These Terms of Service (the "Terms") form a binding agreement between {legalEnti
 
 4.4. **Your price does not increase at renewal.** If our list prices change, an active Package keeps the price it started on for as long as it is renewed without a break.
 
-4.5. If an invoice is unpaid by its due date, we will send reminders. If it remains unpaid 14 days after the due date, we may suspend the Services under section 10 after giving you notice. We restore suspended Services promptly once the balance is paid.
+4.5. If an invoice is unpaid by its due date, we will send reminders. If it remains unpaid 14 days after the due date, we may suspend the Services under section 10 after giving you at least 7 days' notice by email. We restore suspended Services promptly once the balance is paid. While suspended, you can still sign in to pay invoices and contact support.
 
 4.6. Refunds are handled under our [Refund Policy](/legal/refund).
+
+## 4A. Consumers: your right to cancel
+
+4A.1. If you are a consumer in the UK or the EU, you have the right to cancel a new Package within 14 days of the day the contract is made, without giving a reason.
+
+4A.2. To cancel, tell us clearly within that period, for example by email to <a href={"mailto:" + site.contact.email}>{site.contact.email}</a>, by opening a ticket, or by using the [model cancellation form](/legal/cancellation). You do not have to use the form.
+
+4A.3. We start the Services straight away only if you expressly ask us to when you order. If you then cancel within the 14 days, we refund what you paid minus a proportionate amount for the Services provided up to the time you told us you were cancelling. Migration work already completed counts as Services provided.
+
+4A.4. We refund you within 14 days of being told, by the same method you used to pay, unless we agree otherwise. You will not pay any fee for the refund.
 
 ## 5. Your responsibilities
 
@@ -65,7 +77,7 @@ These Terms of Service (the "Terms") form a binding agreement between {legalEnti
 
 7.1. We handle personal data about you as described in our [Privacy Policy](/legal/privacy).
 
-7.2. For personal data contained in Your Content, you are the controller and we act as your processor. We process it only to provide the Services and on your documented instructions. A data processing agreement is available on request.
+7.2. For personal data contained in Your Content, you are the controller and we act as your processor. Our [Data Processing Agreement](/legal/dpa) sets out how we handle it and forms part of these Terms.
 
 ## 8. Backups and data loss
 
@@ -92,7 +104,7 @@ The Services rely on third-party providers (such as data centres, DNS, email del
 
 11.1. These Terms start when you create an account and continue until all your Packages have ended and your account is closed.
 
-11.2. You may cancel a Package at any time from your dashboard or by contacting us. Cancellation takes effect at the end of the paid period unless the Refund Policy provides otherwise.
+11.2. You may cancel a Package at any time from your dashboard or by contacting us. Cancellation takes effect at the end of the paid period, unless section 4A or the Refund Policy provides otherwise. If a pro-rata refund is paid, the Package ends on the date of cancellation.
 
 11.3. We may end the Services:
 
@@ -115,9 +127,11 @@ The Services rely on third-party providers (such as data centres, DNS, email del
 
 13.3. Subject to section 13.1, our total liability arising out of or in connection with these Terms in any 12-month period is limited to the total fees you paid us for the Services in that period.
 
+13.4. If you are a consumer, sections 13.2 and 13.3 do not apply. We are responsible for loss or damage you suffer that is a foreseeable result of our breach of these Terms or our failure to use reasonable care and skill. Nothing in these Terms affects your statutory rights, for example under the Consumer Rights Act 2015. We are not responsible for business losses, because the consumer Services are for domestic and private use.
+
 ## 14. Indemnity
 
-You agree to compensate us for reasonable losses, costs and expenses (including reasonable legal fees) arising from a third-party claim that Your Content, or your use of the Services in breach of these Terms, infringes their rights or breaks the law.
+If you are a business customer, you agree to compensate us for reasonable losses, costs and expenses (including reasonable legal fees) arising from a third-party claim that Your Content, or your use of the Services in breach of these Terms, infringes their rights or breaks the law.
 
 ## 15. Events outside our control
 
@@ -143,6 +157,8 @@ We send notices to the email address on your account. You can send notices to us
 
 {isConfirmed(site.governingLaw) ? <p>These Terms and any dispute arising out of or in connection with them are governed by {site.governingLaw}. The courts of England and Wales have exclusive jurisdiction, except that if you are a consumer you may also bring proceedings in the courts of the country where you live, and you keep the protection of the mandatory laws of that country. Before going to court, we both agree to try to resolve any dispute in good faith by contacting each other in writing.</p> : <p>The governing law for these Terms is being confirmed and will be added here before the service launches.</p>}
 
-## 20. Contact
+## 20. Who we are and how to contact us
 
-{legalEntity}, <a href={"mailto:" + site.contact.email}>{site.contact.email}</a>.
+<OperatorIdentity />
+
+If you are unhappy with the Services, our [complaints procedure](/legal/complaints) explains how we handle it.

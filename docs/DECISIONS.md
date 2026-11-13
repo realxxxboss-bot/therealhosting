@@ -246,3 +246,16 @@ Governing law is England and Wales. It is widely used in international hosting c
 - **Suspended accounts** can still view, pay and open tickets; changes to sites, domains, mailboxes and team are refused with a clear message. An admin acting as the client can still fix things.
 - **Error pages, health check and startup check.** `error.tsx` in each area and `global-error.tsx` show a reference (the error digest) that matches the server log line written by `onRequestError`. `/api/health` checks the database. `src/lib/env-check.ts` lists missing or half-set settings by name at start, never values.
 - **Migrations on Vercel** run at build time (`npm run db:migrate`) against `DATABASE_URL_UNPOOLED`, with the same advisory lock as the app, and `DATABASE_AUTO_MIGRATE=false`.
+
+## D-019 Legal set for businesses and consumers
+
+**Date:** 2026-11-13
+
+The owner chose to sell to both businesses and consumers. So the Terms now have a consumer cancellation right (section 4A: 14 days, with an express request to start early and a pro-rata deduction), consumer wording on liability (13.4) and VAT (4.1), and a model [cancellation form](/legal/cancellation). Business customers keep the liability cap and indemnity.
+
+- **Identity.** UK law requires the business name and a postal address before selling online. `site.legalAddress`, `site.operatorCountry` and `site.companyRegistration` are `TODO(confirm)`. Until the address is set, the legal pages say it will be published before the first paid order; they never show a placeholder. `operatorStatement()` builds the sentence.
+- **Providers have a status.** `src/config/providers.ts` is the one list for the Privacy Policy and the sub-processor page, and marks each provider "In use", "From launch" or "If you connect it", because the VPS and database are not live yet. Unsplash is listed because photos load from its CDN.
+- **New documents:** Data Processing Agreement (Art 28, 48-hour breach notice, 30 days' notice of new sub-processors with a right to object), sub-processor list, cancellation form, complaints procedure (2 business days to acknowledge, 14 days to reply), notice-and-takedown in the AUP, and a `/security` page that states only what the code does.
+- **Fixes:** refund maths (yearly price minus the monthly price per started month, never negative), 7 days' email notice before suspension for late payment, support "every day, within 24 hours" everywhere, maintenance announced on the status page and by email, "service credit" replaced by a plain outage review.
+
+All documents stay marked as drafts (`legalDraft = true`) until a lawyer has reviewed them.

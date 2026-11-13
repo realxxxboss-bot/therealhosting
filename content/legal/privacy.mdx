@@ -1,59 +1,64 @@
 import { site, legalEntity } from "@/config/site";
+import { OperatorIdentity } from "@/components/marketing/operator";
+import { ProvidersTable } from "@/components/marketing/providers-table";
 
-This policy explains what personal data {legalEntity} ("we") collects, why, and your rights. We aim to comply with the UK GDPR and the EU GDPR.
+This policy explains what personal data {legalEntity} ("we") collects, why, how long we keep it, and your rights. We aim to comply with the UK GDPR, the Data Protection Act 2018 and the EU GDPR.
+
+## Who we are
+
+<OperatorIdentity />
+
+For the data described in this policy (our customers, people who contact us and visitors to this website), we are the controller. For the websites and data you host with us, you are the controller and we are your processor (see [Data you host with us](#data-you-host-with-us)).
 
 ## Where your data is stored
 
-- **Websites, databases and dashboard data:** {site.dataRegions.join("; ")}.
-- **Backups:** {site.backupRegions.join("; ")}.
-- Some service providers listed below may process limited data in other regions. Where they do, we rely on appropriate safeguards such as Standard Contractual Clauses.
+- **Client websites and their databases:** from launch, on servers in {site.dataRegions.join("; ")}.
+- **Off-site backups:** {site.backupRegions.join("; ")}.
+- **Dashboard records** (accounts, invoices, tickets): from launch, in a database in Frankfurt, Germany (EU). This website and the dashboard are served through a global network, so requests may pass through other regions.
 
 ## What we collect
 
 | Data | Why | Legal basis |
 | --- | --- | --- |
 | Name, email, company, billing details | To run your account and send invoices | Contract |
-| Payment references and proof of payment you upload | To confirm payments | Contract, legal obligation |
+| Payment references and proof of payment you upload | To confirm payments and keep tax records | Contract, legal obligation |
 | Support messages and attachments | To help you | Contract |
-| Sign-in records (time, device, approximate location from IP) | To keep your account secure | Legitimate interest |
-| Website visitor logs for sites we host | To run, secure and troubleshoot the site | Legitimate interest (as your processor) |
-| Contact form messages | To reply to you | Legitimate interest |
+| Sign-in records (time, IP address, device and browser) | To keep your account secure and spot misuse | Legitimate interest |
+| Audit log of actions in the dashboard | To show you and us who changed what | Legitimate interest |
+| Website visitor logs for sites we host | To run, secure and troubleshoot the site | Your instructions (we are your processor) |
+| Contact form messages | To reply to you | Legitimate interest, or steps before a contract |
 
-We do not sell personal data. We do not use advertising trackers on our website.
+We do not sell personal data. We do not use advertising or analytics trackers on this website.
 
 ## Data you host with us
 
-For the websites and data you host with us, you are the controller and we are your processor. We process it only to provide the Services and on your instructions. A data processing agreement is available on request.
+For the websites and data you host with us, you are the controller and we are your processor. We process it only to provide the Services and on your documented instructions, under our [Data Processing Agreement](/legal/dpa), which forms part of our Terms.
 
 ## Service providers
 
-We share personal data only with the providers we need to run the Services, and only what each one needs.
+We share personal data only with the providers we need to run the Services, and only what each one needs. The same list is published as our [sub-processor list](/legal/subprocessors).
 
-| Provider | What they do for us | Where |
-| --- | --- | --- |
-| Hetzner | The servers your websites run on | Germany |
-| Cloudflare | DNS, SSL certificates, content delivery and backup storage (R2) | Global network; backups in the EU jurisdiction |
-| Vercel | Runs this website and the client dashboard | Global network |
-| Neon | The database behind the dashboard (accounts, invoices, tickets) | Frankfurt, Germany |
-| Resend | Sends account emails, such as password resets and invoices | United States |
-| UptimeRobot | Checks from outside whether websites are up | Checks from several countries; no personal data beyond site addresses |
+<ProvidersTable />
 
-If we add or replace a provider, we update this table before the change takes effect.
+Before we add or replace a provider that processes the content of client websites, we email account holders at least 30 days ahead. You can object, and if we can't resolve it, cancel with a refund of any unused prepaid fees. For other providers, we update this table before the change takes effect.
 
 ## International transfers
 
-Most data stays in the EU. Where a provider above processes data outside the UK or EU (for example, email sending), we rely on appropriate safeguards such as the UK International Data Transfer Addendum and the EU Standard Contractual Clauses.
+Most data stays in the EU. Where a provider above processes data outside the UK or EU (for example, email sending in the United States), we rely on appropriate safeguards: the provider's certification under the EU–US Data Privacy Framework and its UK extension where it has one, or the EU Standard Contractual Clauses with the UK International Data Transfer Addendum.
 
 ## How long we keep data
 
-- Account and billing records: as long as your account is active, then as long as tax law requires.
-- Support tickets: up to 3 years after closing.
-- Backups: as long as your plan says (7 to 30 days), then deleted automatically.
-- Sign-in records: 12 months.
+- **Account and billing records:** while your account is active, then for as long as tax law requires (usually 6 years).
+- **Support tickets:** up to 3 years after they are closed.
+- **Backups:** for the number of days in your plan (7 to 30), then deleted.
+- **Sign-in records and audit log:** up to 12 months.
+- **Contact form messages that don't lead to an account:** up to 12 months.
+
+We review stored data regularly and delete what has passed these periods.
 
 ## Your rights
 
-You can ask to access, correct, delete, restrict or move your personal data, and object to processing. Write to <a href={"mailto:" + site.contact.email}>{site.contact.email}</a>. You can also complain to your data protection authority, for example the UK ICO.
+You can ask to access, correct, delete, restrict or move your personal data, and object to processing based on legitimate interest. Write to <a href={"mailto:" + site.contact.email}>{site.contact.email}</a>. We reply within one month. You can also complain to a data protection authority, for example the UK Information Commissioner's Office (ico.org.uk) or the authority where you live.
 
 ## Cookies
 
@@ -61,21 +66,21 @@ We use only what is strictly needed, so we do not show a cookie banner. We do no
 
 | Name | Purpose | How long |
 | --- | --- | --- |
-| `zf_session` | Keeps you signed in to the dashboard | Up to 7 days, or until you sign out |
+| `zf_session` | Keeps you signed in to the dashboard and remembers which account you are viewing | Up to 7 days, or until you sign out |
 | `zf_2fa` | Remembers the first sign-in step while you enter your two-factor code | 10 minutes |
 | `theme` (browser storage, not a cookie) | Remembers whether you chose the light or dark theme | Until you clear it |
 
 ## Security
 
-Passwords are stored as one-way hashes, and secrets such as two-factor keys are encrypted. Access to client data is limited to the staff who need it, and admin actions are recorded in an audit log. If a breach affects your personal data, we tell you and the relevant authority without undue delay.
+Passwords are hashed with scrypt and never stored in readable form. Two-factor keys are encrypted with AES-256-GCM. Emailed links are stored only as hashes and expire. Admin accounts must use two-factor authentication, and admin actions are recorded in an audit log. If a breach affects your personal data, we tell you and the relevant authority without undue delay. More on our [security page](/security).
 
 ## Children
 
-Our Services are for businesses. We do not knowingly collect personal data from children under 16.
+Our Services are for adults. We do not knowingly collect personal data from children under 16.
 
 ## Changes to this policy
 
-When we make a material change, we update the date at the top and tell account holders by email.
+When we make a material change, we update the date at the top and tell account holders by email before it takes effect.
 
 ## Contact
 

@@ -3,7 +3,7 @@ import { posts } from "@content/blog/posts";
 import { legalDocs } from "@content/legal/docs";
 import { absoluteUrl } from "@/config/site";
 
-const staticPaths = ["/", "/pricing", "/features", "/hosting/nextjs", "/hosting/wordpress", "/hosting/static", "/migration", "/domains", "/status", "/blog", "/contact", "/about", "/credits"];
+const staticPaths = ["/", "/pricing", "/features", "/hosting/nextjs", "/hosting/wordpress", "/hosting/static", "/migration", "/domains", "/status", "/blog", "/contact", "/about", "/security", "/credits"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

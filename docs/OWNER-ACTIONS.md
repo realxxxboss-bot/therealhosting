@@ -61,7 +61,9 @@ Agar list mein Vercel nahi hai: **https://github.com/apps/vercel** kholein → *
 | Field | Kahan use hota hai | Abhi kya hai |
 | --- | --- | --- |
 | Company ka legal naam | Terms, Privacy, footer | ✅ `Zaffre` (company register hone par update) |
-| Business address | Contact, legal pages | Nahi dikhaya (jab tak company register na ho) |
+| Business address | Terms, Privacy, DPA, footer | `TODO(confirm)` — **zaroori**: UK qanoon ke mutabiq online bechne se pehle naam aur pata dikhana lazmi hai. Ghar ka pata na dein; virtual office / registered office address theek hai |
+| Kis mulk se business chalta hai | Privacy Policy "Who we are" | `TODO(confirm)` |
+| Company number (register hone ke baad) | Terms, footer | `TODO(confirm)` |
 | Email | Contact, footer, legal pages, invoices | ✅ `info@zaffrehost.com` |
 | WhatsApp business number | Contact page, dashboard | `TODO(confirm)` — button disabled |
 | Governing law (kis mulk ka qanoon) | Terms of Service | ✅ England and Wales (D-017) |

@@ -160,7 +160,7 @@ export const home = {
     { q: "Is the migration really free?", a: "Yes, on every plan. We copy your sites, test them on a private link and switch DNS only when you approve. Your old host keeps running until the new one is confirmed." },
     { q: "What does \"package\" mean?", a: "A package covers several sites of one type. For example, Next.js Business covers up to 5 Next.js apps. You can hold more than one package, for example one for Next.js and one for WordPress, on one bill." },
     { q: "How do I pay?", a: "Today we accept bank transfer and Wise. You upload proof of payment in the dashboard and we confirm it. Card payments are coming." },
-    { q: "Where is my data stored?", a: "Client sites and their backups are stored in the EU. The Privacy Policy names the exact region, and we tell you before that ever changes." },
+    { q: "Where is my data stored?", a: "From launch, client sites run on servers in Germany and their backups are stored in the EU. The Privacy Policy names every provider and where it is, and we email you before that changes." },
     { q: "What if I go over my plan's limits?", a: "We contact you first. There are no automatic overage charges and no usage meter running in the background." },
     { q: "Can I leave?", a: "Yes, any time. Your content is yours, and we give you a copy of your files and database when you go." },
   ] satisfies FaqItem[],

@@ -72,7 +72,7 @@ export default function AboutPage() {
             <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-muted">{about.where.body}</p>
             <dl className="mt-8 border-t border-foreground">
               <div className="border-b border-border py-4">
-                <dt className="text-[0.9375rem] text-muted">Websites, databases and dashboard data</dt>
+                <dt className="text-[0.9375rem] text-muted">Client websites and databases, from launch</dt>
                 <dd className="mt-1 text-lg">{site.dataRegions.join("; ")}</dd>
               </div>
               <div className="border-b border-border py-4">

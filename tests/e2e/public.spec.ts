@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { expectNoA11yViolations } from "./helpers";
 
-const pages = ["/", "/pricing", "/features", "/hosting/nextjs", "/migration", "/domains", "/status", "/contact", "/about", "/blog", "/legal/privacy", "/legal/terms", "/sign-in", "/credits", "/hosting/wordpress", "/blog/renewal-prices-explained"];
+const pages = ["/", "/pricing", "/features", "/hosting/nextjs", "/migration", "/domains", "/status", "/contact", "/about", "/blog", "/legal/privacy", "/legal/terms", "/legal/dpa", "/legal/subprocessors", "/legal/cancellation", "/legal/complaints", "/legal/refund", "/legal/sla", "/legal/acceptable-use", "/security", "/sign-in", "/credits", "/hosting/wordpress", "/blog/renewal-prices-explained"];
 
 for (const path of pages) {
   test(`${path} renders and passes axe`, async ({ page }) => {
@@ -39,7 +39,7 @@ test("footer shows the email and social profiles", async ({ page }) => {
   for (const [name, href] of profiles) {
     await expect(footer.getByRole("link", { name: `Zaffre on ${name}` })).toHaveAttribute("href", href);
   }
-  for (const path of ["/", "/contact", "/legal/privacy", "/about"]) {
+  for (const path of ["/", "/contact", "/legal/privacy", "/legal/terms", "/legal/dpa", "/about", "/security"]) {
     await page.goto(path);
     const text = await page.locator("body").innerText();
     expect(text).not.toMatch(/(support|hello)@zaffrehost\.com/);
