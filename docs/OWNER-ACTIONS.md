@@ -7,6 +7,24 @@ Har item mein: **kyun zaroori hai**, **steps (click-by-click)**, aur **mujhe wap
 
 Status: ⏳ = baaki, ✅ = ho gaya. Sab se zaroori upar hain.
 
+## Launch se pehle: aap ki list (2026-11-13 ke audit ke baad)
+
+Code ki taraf se site launch ke liye tayyar hai (D-018 se D-020). Yeh kaam sirf aap kar sakte hain, is tarteeb se:
+
+1. **Business ka naam aur pata** (#4) — UK qanoon ke mutabiq online bechne se pehle zaroori. Jab tak nahi milta, legal pages par likha hai ke "pehle paid order se pehle shaya kiya jayega".
+2. **Kis mulk se business chalta hai** (#4) — Privacy Policy ke liye. Agar UK/EU se bahar hai to GDPR ke liye UK aur EU "representative" bhi chahiye hoga; batayein, main samjha dunga.
+3. **Refund window** (#4) — abhi 14 din likha hai. Confirm karein.
+4. **VPS rent karein** (#3) — Hetzner, Germany. Tab tak privacy table mein "From launch" likha hai.
+5. **Asli database + Resend** (#9, #10) — dono sath karein. Database jurte hi site live mode mein chali jati hai, aur Resend ke baghair emails nahi jayengi.
+6. **Admin ke liye authenticator app** — pehli dafa admin kholne par two-factor on karna hoga (Google Authenticator, 1Password, ya koi bhi).
+7. **Payment details** (#5) — bank / Wise, admin panel mein.
+8. **WhatsApp number** (#4) — jab tak nahi, site par WhatsApp ka zikr nahi hai.
+9. **Lawyer review** — saare legal documents par abhi "draft" likha hai. Ek lawyer se dekhwa lein, phir main draft hata dunga.
+10. **Error reporting account (optional)** — Sentry ya Vercel log drain. Abhi errors server logs mein ek line mein likhe jate hain.
+11. **`zaffrehost` handle (ek "e" wala)** — agar mil jaye to le lein.
+
+Naye pages jo ab live hain: `/security`, `/legal/dpa`, `/legal/subprocessors`, `/legal/cancellation`, `/legal/complaints`. Tasveerein badal di gayi hain (#8): ek nazar dekh lein.
+
 ---
 
 ## 1. ✅ Domain: `zaffrehost.com`  (owner ne 2026-11-13 ko confirm kiya)
