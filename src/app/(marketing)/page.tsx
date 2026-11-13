@@ -11,6 +11,7 @@ import { LineList, PhotoRow, RuledList, TextLink } from "@/components/marketing/
 import { FaqSection } from "@/components/marketing/faq";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { JsonLd } from "@/components/marketing/json-ld";
+import { VisualRow } from "@/components/marketing/product-visual";
 import { HeroIntro } from "@/components/motion/hero-intro";
 import { Photo } from "@/components/motion/photo";
 import { Reveal } from "@/components/motion/reveal";
@@ -131,7 +132,7 @@ export default function HomePage() {
         <SectionHeading title="Three kinds of site, each hosted properly." body="Most businesses end up with a mix. One account and one bill covers all of it." />
         <div className="mt-14 grid gap-20 sm:mt-20 lg:gap-28">
           {home.types.map((item, i) => (
-            <PhotoRow key={item.type} photo={photos[item.photo]} flip={i % 2 === 1}>
+            <VisualRow key={item.type} type={item.type} flip={i % 2 === 1}>
               <h3 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] sm:text-[2rem]">{item.title}</h3>
               <p className="mt-4 text-lg leading-relaxed text-muted">{item.body}</p>
               <LineList items={item.points} className="mt-7 text-[0.9375rem]" />
@@ -139,7 +140,7 @@ export default function HomePage() {
                 <span className="text-lg font-semibold">From {fromPrice(item.type)} a month</span>
                 <TextLink href={`/hosting/${item.type}`}>More about {siteTypes[item.type].label}</TextLink>
               </p>
-            </PhotoRow>
+            </VisualRow>
           ))}
         </div>
       </Section>

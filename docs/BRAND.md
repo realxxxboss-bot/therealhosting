@@ -69,7 +69,9 @@ One family for everything, self-hosted (`src/fonts`, SIL Open Font License). Sen
 ## Photography
 
 - Registry: `src/config/photos.ts`. Free photos under the Unsplash License, served from Unsplash's image CDN, credited on `/credits`.
-- Subjects: the customer's world (shops, studios, makers), calm desk work, and cobalt craft (glazed tile, blue glass, pottery) for the brand story.
+- Subjects must be about what we do: people doing web work (a developer at an editor or terminal, a small-business owner updating their site, someone replying to a message, a small team on a call), real hardware in daylight, and our own dashboard. The one exception is the blue-and-white tile on About's "Why the name" section.
+- Not allowed: unrelated craft or still life (pottery, florists, glass bottles, cafés) used as decoration. A photo a visitor can't connect to hosting in two seconds does not belong.
+- Where a photo would only decorate, use a product visual instead (`src/components/marketing/product-visual.tsx`: a deploy log, an update log, DNS records) or no image.
 - Daylight, quiet, people mid-task and not looking at the camera.
 - Banned: handshakes, pointing at screens, server rooms with blue lights, globes, headsets, forced smiles.
 - Never caption a stock person as staff, a client or a testimonial.
@@ -79,7 +81,6 @@ One family for everything, self-hosted (`src/fonts`, SIL Open Font License). Sen
 
 - **lucide** line icons, 1.75 px stroke, rounded caps and joins, 20 px default (16 px in dense tables).
 - Icons inherit text colour. Status uses a filled 8 px dot (success / warning / danger), never icon colour alone; there is always a text label too.
-- Feature icons sit in a 40 px rounded-square tile with `zaffre-50` fill (dark: `zaffre-950`) and `primary` icon colour.
 
 ## Voice and tone
 

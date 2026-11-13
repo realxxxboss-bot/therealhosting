@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { contact } from "@/config/marketing";
-import { photos } from "@/config/photos";
 import { site, whatsappLink } from "@/config/site";
 import { SocialLinks } from "@/components/marketing/social-links";
 import { Container, PageHero, Section, SectionHeading } from "@/components/marketing/section";
 import { LineList, TextLink } from "@/components/marketing/blocks";
-import { Photo } from "@/components/motion/photo";
 import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
@@ -27,8 +25,7 @@ export default function ContactPage() {
           </Suspense>
         </div>
         <aside className="lg:col-span-4 lg:col-start-9">
-          <Photo photo={photos.contact} sizes="(min-width: 1024px) 33vw, 100vw" className="aspect-[4/3]" />
-          <dl className="mt-8 border-t border-foreground">
+          <dl className="border-t border-foreground">
             <div className="border-b border-border py-4">
               <dt className="text-[0.9375rem] text-muted">Email, for new sites and existing clients</dt>
               <dd className="mt-1 text-lg">

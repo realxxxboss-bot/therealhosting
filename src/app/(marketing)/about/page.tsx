@@ -6,7 +6,7 @@ import { site } from "@/config/site";
 import { SocialLinks } from "@/components/marketing/social-links";
 import { photos } from "@/config/photos";
 import { PageHero, Section, SectionHeading } from "@/components/marketing/section";
-import { PhotoRow, RuledList, Split } from "@/components/marketing/blocks";
+import { RuledList, Split } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { Photo } from "@/components/motion/photo";
 import { Reveal } from "@/components/motion/reveal";
@@ -101,10 +101,10 @@ export default function AboutPage() {
       </Section>
 
       <Section tone="sunk">
-        <PhotoRow photo={photos.cobalt} flip>
+        <div className="max-w-3xl">
           <h2 className="text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[2.5rem]">{about.paid.title}</h2>
-          <p className="mt-5 text-lg leading-relaxed text-muted">{about.paid.body}</p>
-        </PhotoRow>
+          <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{about.paid.body}</p>
+        </div>
       </Section>
 
       <CtaBand />

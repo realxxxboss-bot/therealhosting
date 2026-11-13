@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function FeaturesPage() {
   return (
     <>
-      <PageHero title={features.title} lines={features.lines} body={features.intro} photo={photos.support} />
+      <PageHero title={features.title} lines={features.lines} body={features.intro} photo={photos.features} />
 
       {features.groups.map((group, i) => (
         <Section key={group.id} id={group.id} tone={i % 2 === 1 ? "sunk" : "plain"} className="scroll-mt-20">
