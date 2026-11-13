@@ -15,6 +15,7 @@ import { HeroIntro } from "@/components/motion/hero-intro";
 import { Photo } from "@/components/motion/photo";
 import { Reveal } from "@/components/motion/reveal";
 import { formatUSD } from "@/lib/utils";
+import { usesSampleDatabase } from "@/lib/db";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -197,9 +198,16 @@ export default function HomePage() {
           <div className="lg:col-span-5">
             <SectionHeading title={home.dashboard.title} body={home.dashboard.body} />
             <p className="mt-8">
-              <ButtonLink href="/sign-in" size="lg">
-                Open the demo dashboard
-              </ButtonLink>
+              {/* The public demo logins exist only on the sample database; with real data, offer a walkthrough instead. */}
+              {usesSampleDatabase() ? (
+                <ButtonLink href="/sign-in" size="lg">
+                  Open the demo dashboard
+                </ButtonLink>
+              ) : (
+                <ButtonLink href="/contact?topic=sales" size="lg">
+                  Ask for a walkthrough
+                </ButtonLink>
+              )}
             </p>
           </div>
           <RuledList items={home.dashboard.points} stacked className="lg:col-span-7" />
@@ -208,7 +216,7 @@ export default function HomePage() {
           <Image src="/screens/dashboard-light.webp" alt="The Zaffre client dashboard showing a list of sites with their status, last deploy and last backup" width={2400} height={1500} unoptimized className="h-auto w-full dark:hidden" />
           <Image src="/screens/dashboard-dark.webp" alt="" width={2400} height={1500} unoptimized className="hidden h-auto w-full dark:block" />
         </Reveal>
-        <p className="mt-3 text-sm text-muted">A screenshot of the demo account. The sites in it are sample data.</p>
+        <p className="mt-3 text-sm text-muted">A screenshot of the dashboard with sample data.</p>
       </Section>
 
       <Section>

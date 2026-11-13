@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { acceptInvite } from "@/app/actions/team";
 import { Alert } from "@/components/ui/alert";
@@ -28,6 +29,17 @@ export function AcceptInviteForm({ token, hasAccount }: { token: string; hasAcco
       <Button type="submit" size="lg" disabled={pending}>
         {pending ? "Joining…" : "Accept invite"}
       </Button>
+      <p className="text-sm text-muted">
+        By accepting, you agree to our{" "}
+        <Link href="/legal/terms" className="underline underline-offset-4">
+          Terms of Service
+        </Link>{" "}
+        and confirm you have read our{" "}
+        <Link href="/legal/privacy" className="underline underline-offset-4">
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </form>
   );
 }

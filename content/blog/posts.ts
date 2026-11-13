@@ -30,7 +30,7 @@ const all: Post[] = [
   {
     slug: "nextjs-migration-checklist",
     title: "Moving a Next.js app to a new host: a practical checklist",
-    description: "Environment variables, cron jobs, ISR cache, images and DNS: what to collect before moving a Next.js app, and how to switch with no downtime.",
+    description: "Environment variables, cron jobs, ISR cache, images and DNS: what to collect before moving a Next.js app, and how to plan the switch to avoid downtime.",
     date: "2026-11-04",
     readingMinutes: 6,
     topic: "Next.js",

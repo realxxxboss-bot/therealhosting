@@ -74,7 +74,7 @@ export const includedInEveryPlan = [
   "Daily off-site backups",
   "Updates and security patches done for you",
   "Uptime monitoring with alerts",
-  "Human support by ticket and WhatsApp",
+  "Human support by ticket and email, every day",
   "Team access for developers at no extra cost",
   "Same price on renewal",
 ];

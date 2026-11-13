@@ -19,7 +19,7 @@ export default function ContactPage() {
   const wa = whatsappLink("Hi Zaffre, I'd like to talk about hosting.");
   return (
     <>
-      <PageHero title="Contact" lines={["Talk to", "a person."]} body="Tell us about your sites and what you need. We reply by email, usually within one business day." />
+      <PageHero title="Contact" lines={["Talk to", "a person."]} body="Tell us about your sites and what you need. We reply by email every day, within 24 hours." />
       <Container className="grid gap-14 py-14 sm:py-20 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-7">
           <Suspense fallback={null}>
@@ -36,7 +36,7 @@ export default function ContactPage() {
               </dd>
             </div>
             <div className="border-b border-border py-4">
-              <dt className="text-[0.9375rem] text-muted">Follow us, @{site.social.handle}</dt>
+              <dt className="text-[0.9375rem] text-muted">Social media: @{site.social.handle}</dt>
               <dd className="mt-2">
                 <SocialLinks />
               </dd>

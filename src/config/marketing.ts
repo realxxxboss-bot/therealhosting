@@ -107,7 +107,7 @@ export const home = {
       photo: "wordpress",
       title: "WordPress, kept fast and patched",
       body: "The shop, the booking site, the blog that brings in the enquiries. We keep WordPress quick and safe in the background, and you keep full admin access.",
-      points: ["Core, theme and plugin updates applied and checked", "A backup every day, stored away from the server", "A firewall and malware scans in front of your login page", "Room for WooCommerce on Business and Pro"],
+      points: ["Core, theme and plugin updates applied and checked", "A backup every day, stored away from the server", "Login protection and security filtering in front of your site", "Room for WooCommerce on Business and Pro"],
     },
     {
       type: "static",
@@ -139,7 +139,7 @@ export const home = {
   ],
   dashboard: {
     title: "Everything in one calm place.",
-    body: "One dashboard for every site, deploy, backup, invoice and support ticket. This is the real thing, not a drawing. You can open the demo and click around.",
+    body: "One dashboard for every site, deploy, backup, invoice and support ticket. This is the real thing, not a drawing.",
     points: [
       { title: "Every site at a glance", body: "Status, last deploy and last backup for each site, with anything that needs you at the top." },
       { title: "Access for your people", body: "Invite a developer to only the sites they work on, and your accountant to billing only. Remove access with one click." },
@@ -152,17 +152,15 @@ export const home = {
   },
   support: {
     title: "When you write, a person answers.",
-    body: "Support is handled by the people who run the servers, so you never explain the problem twice. Open a ticket from your dashboard or send us an email. We say what happened, what we did, and whether you need to do anything.",
+    body: "The person who answers can see your servers and fix things, so you never explain the problem twice. Open a ticket from your dashboard or send us an email. We say what happened, what we did, and whether you need to do anything.",
   },
   faq: [
     { q: "Will my price go up when I renew?", a: "No. The price you sign up at is the price you renew at. If we ever change list prices, existing packages keep their price." },
     { q: "I am not technical. Can I still use Zaffre?", a: "Yes. That is who it is for. You tell us what you need in normal words and we do the hosting work. If you have a developer, they get their own free login." },
-    { q: "Is the migration really free?", a: "Yes, on every plan. We copy your sites, test them on a private link and switch DNS only when you approve. Your old host keeps running until the new one is confirmed." },
-    { q: "What does \"package\" mean?", a: "A package covers several sites of one type. For example, Next.js Business covers up to 5 Next.js apps. You can hold more than one package, for example one for Next.js and one for WordPress, on one bill." },
-    { q: "How do I pay?", a: "Today we accept bank transfer and Wise. You upload proof of payment in the dashboard and we confirm it. Card payments are coming." },
+    { q: "Is the migration really free?", a: "Yes, on every plan. We agree the scope with you, copy your sites, test them on a private link and switch DNS only when you approve. Your old host keeps running until the new one is confirmed. Hacked or unusually large sites may need extra work, which we quote first." },
+    { q: "How quickly do you reply?", a: "Every day, including weekends, within 24 hours, and faster when a site is down. A real person answers, by ticket or email." },
     { q: "Where is my data stored?", a: "From launch, client sites run on servers in Germany and their backups are stored in the EU. The Privacy Policy names every provider and where it is, and we email you before that changes." },
-    { q: "What if I go over my plan's limits?", a: "We contact you first. There are no automatic overage charges and no usage meter running in the background." },
-    { q: "Can I leave?", a: "Yes, any time. Your content is yours, and we give you a copy of your files and database when you go." },
+    { q: "Can I leave?", a: "Yes, any time. Your content is yours. We give you a copy of your files and databases when you go, and you can ask for one for 30 days after." },
   ] satisfies FaqItem[],
   cta: {
     title: "Ready to stop worrying about hosting?",
@@ -191,7 +189,7 @@ export const features = {
       title: "Built to stay fast",
       body: "Speed comes from having room, not from tricks. Every package has its own allowance.",
       items: [
-        { title: "Reserved CPU and memory", body: "Each package has its own resource allowance on modern NVMe servers, so a busy neighbour cannot slow your site down." },
+        { title: "Its own CPU and memory", body: "Each package has its own CPU, memory and storage limits on NVMe servers, so one busy site has far less effect on the others." },
         { title: "Global CDN and free SSL", body: "Static files are cached close to your visitors. Certificates are issued and renewed automatically for every domain." },
         { title: "Caching that understands Next.js", body: "ISR, image optimisation and the data cache use persistent storage, so a restart does not throw your cache away." },
         { title: "Monitoring from outside", body: "We check your sites from outside our own network. If a server has a problem, we hear about it even when that server cannot tell us." },
@@ -204,8 +202,8 @@ export const features = {
       items: [
         { title: "No renewal jump", body: "Your price on day one is your price at renewal. You do not need to prepay years ahead to get it." },
         { title: "Free team seats", body: "Invite developers and your accountant with their own roles. No per-seat fees, and you can limit a developer to the sites they work on." },
-        { title: "Honest about your data", body: "We tell you which region your data lives in. You own your content and can take a full copy with you at any time." },
-        { title: "People, not scripts", body: "Support is handled by the people who run the servers. You get an answer in plain words." },
+        { title: "Honest about your data", body: "We tell you which region your data lives in. You own your content and can take a full copy at any time, and for 30 days after you leave." },
+        { title: "People, not scripts", body: "A real person answers, every day, within 24 hours. You get an answer in plain words." },
       ],
     },
   ],
@@ -264,7 +262,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
     lines: ["Next.js hosting,", "without the meter."],
     metaTitle: "Managed Next.js hosting with ISR, cron and caching",
     metaDescription:
-      "Run Next.js with API routes, ISR, cron and image optimisation on reserved resources. Fixed price, free migration from other platforms, real people on support.",
+      "Run Next.js with API routes, ISR, cron and image optimisation on dedicated resources. Fixed price, free migration from other platforms, real people on support.",
     intro:
       "Your Next.js apps run as full Node.js servers with a persistent cache, background jobs and preview deployments. We handle the platform so your developers can ship.",
     features: [
@@ -273,7 +271,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
       { title: "Cron jobs", body: "Schedule route handlers the way you would on other platforms. We call them on time and log the result." },
       { title: "Image optimisation", body: "next/image works out of the box, with caching so each image is only processed once." },
       { title: "Environment variables", body: "Per-site secrets, masked in the dashboard and never written to logs." },
-      { title: "Instant rollback", body: "Every deploy is kept. Go back to any recent version in seconds." },
+      { title: "Instant rollback", body: "Recent deploys are kept, so you can go back to an earlier version quickly." },
     ],
     sections: [
       {
@@ -283,7 +281,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
           { title: "Push", body: "A commit lands on your branch. We pick it up straight away." },
           { title: "Build", body: "We install, build and run your checks. If the build fails, the live site is not touched." },
           { title: "Preview", body: "Branches get a private link so you can look before anyone else does." },
-          { title: "Go live", body: "The new version takes traffic with no downtime. The old one is kept." },
+          { title: "Go live", body: "The new version takes traffic once it is ready, so visitors are not left on a broken page. The old one is kept." },
           { title: "Roll back", body: "If something is wrong, one click returns to the previous version." },
         ],
       },
@@ -294,7 +292,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
           "We copy your environment variables and keep them masked",
           "We recreate your cron schedules and check that each one fires",
           "We test ISR, image optimisation and API routes on a private link",
-          "We move your domains with no downtime, and keep the old platform running until you approve",
+          "We move your domains planning for no downtime, and keep the old platform running until you approve",
         ],
       },
       {
@@ -303,7 +301,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
       },
     ],
     faq: [
-      { q: "Can you move my app from another Next.js platform?", a: "Yes, for free. We copy your environment variables, cron schedules and domains, test on a private link, then switch DNS with no downtime." },
+      { q: "Can you move my app from another Next.js platform?", a: "Yes, for free. We copy your environment variables, cron schedules and domains, test on a private link, then switch DNS in a way planned to avoid downtime." },
       { q: "Which Next.js versions do you support?", a: "Current and previous major versions. We tell you before a version reaches end of life and can help you upgrade." },
       { q: "Is there a usage meter?", a: "No. Your plan has fair resource limits and a bandwidth allowance. If you outgrow it, we talk to you first. No surprise bills." },
       { q: "Do you support middleware and streaming?", a: "Yes. Proxy (middleware), route handlers, streaming and Server Actions all run on the Node.js runtime." },
@@ -319,7 +317,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
     lines: ["WordPress hosting", "you never have", "to think about."],
     metaTitle: "Managed WordPress hosting with updates and daily backups",
     metaDescription:
-      "Fast, secure WordPress on reserved resources. We handle updates, backups, SSL and security. Fixed price with no renewal jump and free migration.",
+      "Fast, secure WordPress on dedicated resources. We handle updates, backups, SSL and security. Fixed price with no renewal jump and free migration.",
     intro:
       "We keep WordPress fast and safe: server-level caching, tested updates, daily backups and a firewall. You keep full admin access and get on with the business.",
     features: [
@@ -347,7 +345,7 @@ export const hostingPages: Record<SiteType, HostingPage> = {
         lines: [
           "We copy your files and database, including uploads",
           "We test the site on a private link, checkout and forms included",
-          "We switch DNS when you approve, with no downtime",
+          "We switch DNS when you approve, planned to avoid downtime",
           "Your domain stays registered in your name, where it is today",
         ],
       },
@@ -410,10 +408,10 @@ export const pricingFaq: FaqItem[] = [
   { q: "Will my price go up when I renew?", a: "No. The price you sign up at is the price you renew at. If we ever change list prices, existing packages keep their price." },
   { q: "What does \"package\" mean?", a: "A package covers several sites of one type. For example, Next.js Business covers up to 5 Next.js apps. You can hold more than one package, for example one for Next.js and one for WordPress, on one bill." },
   { q: "What counts as a site?", a: "One website with its own main domain. Extra domains that point to the same site, such as the www version, do not count again." },
-  { q: "Is migration really free?", a: "Yes, for every plan. We move your sites, test them on a private link and switch DNS when you approve." },
+  { q: "Is migration really free?", a: "Yes, for every plan. We agree the scope, move your sites, test them on a private link and switch DNS when you approve. Hacked or unusually large sites may need extra work, which we quote first." },
   { q: "How do I pay?", a: "Today we accept bank transfer and Wise. You upload proof of payment in the dashboard and we confirm it. Card payments are coming." },
   { q: "Can I get an invoice for my company?", a: "Yes. Every payment has an invoice in your dashboard that you can print or save as a PDF." },
-  { q: "Can I cancel?", a: "Yes, any time. Monthly packages stop at the end of the month. See the Refund Policy for yearly packages." },
+  { q: "Can I cancel?", a: "Yes, any time. Monthly packages stop at the end of the month. Yearly packages have a full refund window, then a pro-rata refund. Consumers in the UK and EU can also cancel a new package within 14 days. See the Refund Policy." },
   { q: "What if I go over my limits?", a: "We contact you first. There are no automatic overage charges." },
   { q: "Can I change plan later?", a: "Yes. Tell us and we move you up or down. Your sites stay online while we do it." },
   { q: "Do my developers need their own paid seats?", a: "No. Team access is free. Invite developers with access to only the sites they work on." },
@@ -457,7 +455,7 @@ export const migration = {
     { title: "Share access", body: "Tell us which sites to move and give temporary access to your current host, or invite us to your Git repository.", note: "You, about ten minutes" },
     { title: "We copy and test", body: "We build each site on Zaffre, copy databases and files, and send you a private preview link.", note: "Us" },
     { title: "You approve", body: "Click through your site on the preview link. If anything looks different, we fix it before going live.", note: "You, whenever you are ready" },
-    { title: "The switch, with no downtime", body: "We lower DNS TTLs in advance, switch the records, and watch traffic until the old host is idle.", note: "Us" },
+    { title: "The switch, planned for no downtime", body: "We lower DNS TTLs in advance, switch the records, and watch traffic until the old host is idle.", note: "Us" },
     { title: "Clean up", body: "We confirm everything works and remove the temporary access. Then you cancel your old host.", note: "Us, then you" },
   ],
   from: [
@@ -494,7 +492,7 @@ export const about = {
   intro: "Zaffre is a managed hosting company for businesses that want their websites to simply work.",
   story: [
     "We started Zaffre because hosting had split into two bad choices. On one side, cheap shared plans that double in price at renewal and leave the work to you. On the other, developer platforms that bill by the request and charge for every seat.",
-    "We think there is a better middle: reserved cloud resources, a fair price that stays fair, and engineers who actually look after your sites. We deploy, update, back up and fix. When something needs your attention, a person tells you in plain words.",
+    "We think there is a better middle: dedicated cloud resources, a fair price that stays fair, and real people who actually look after your sites. We deploy, update, back up and fix. When something needs your attention, a person tells you in plain words.",
     "Good hosting is the kind you do not think about. The site is up, the bill is the number you expected, and when you write to us someone who knows your setup writes back.",
   ],
   name: {
@@ -520,7 +518,7 @@ export const about = {
   },
   talk: {
     title: "Talk to us",
-    body: "One inbox, read by the people who run the servers. Write about a new site, a move from another host, or a problem with an existing one.",
+    body: "One inbox, read by a real person. Write about a new site, a move from another host, or a problem with an existing one.",
   },
   paid: {
     title: "How we make money",
@@ -549,7 +547,7 @@ export const domains = {
 
 export const contact = {
   next: [
-    { title: "A person reads it", body: "Your message goes to the people who run the servers, not to a sales team." },
+    { title: "A person reads it", body: "Your message is read by a real person who knows the platform, not a sales script." },
     { title: "We reply with a suggestion", body: "Which package fits, what a move would involve, and anything we need to know first." },
     { title: "You decide", body: "No follow-up calls and no pressure. If we are not the right fit, we say so." },
   ],

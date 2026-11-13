@@ -21,8 +21,8 @@ function siteCount(plan: Plan): string {
 
 const specs: { label: string; value: (p: Plan) => string }[] = [
   { label: "Covers", value: siteCount },
-  { label: "Reserved CPU", value: (p) => `${p.vcpu} vCPU` },
-  { label: "Reserved memory", value: (p) => `${p.ramGb} GB` },
+  { label: "CPU", value: (p) => `${p.vcpu} vCPU` },
+  { label: "Memory", value: (p) => `${p.ramGb} GB` },
   { label: "Storage", value: (p) => `${p.storageGb} GB NVMe` },
   { label: "Bandwidth", value: (p) => `${p.bandwidthTb} TB a month` },
   { label: "Backup history", value: (p) => `${p.backupDays} days` },

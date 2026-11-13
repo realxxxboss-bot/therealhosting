@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Why Zaffre",
-  description: "Fully managed hosting on reserved resources, at a fixed price with no renewal jump, supported by the people who run the servers.",
+  description: "Fully managed hosting on dedicated resources, at a fixed price with no renewal jump, with a real person answering every day.",
   alternates: { canonical: "/features" },
 };
 

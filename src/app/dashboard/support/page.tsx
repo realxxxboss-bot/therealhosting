@@ -24,18 +24,14 @@ export default async function SupportPage() {
     <>
       <PageHeader
         title="Support"
-        description="Talk to the engineers who run your sites."
+        description="Talk to the people who look after your sites. We reply every day, within 24 hours."
         actions={
           <>
             {wa ? (
               <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-[4px] border border-border bg-surface px-4 text-sm font-medium hover:bg-surface-2">
                 <MessageCircle className="size-4 text-success" aria-hidden /> WhatsApp
               </a>
-            ) : (
-              <span className="inline-flex h-10 items-center gap-2 rounded-[4px] border border-dashed border-border px-4 text-sm text-muted" title="WhatsApp number coming soon">
-                <MessageCircle className="size-4" aria-hidden /> WhatsApp coming soon
-              </span>
-            )}
+            ) : null}
             <ButtonLink href="/dashboard/support/new">New ticket</ButtonLink>
           </>
         }

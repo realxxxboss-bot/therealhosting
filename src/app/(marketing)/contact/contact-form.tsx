@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 import { submitContact } from "@/app/actions/public";
@@ -73,6 +74,13 @@ export function ContactForm() {
         <Button type="submit" size="lg" disabled={pending}>
           {pending ? "Sending…" : "Send message"}
         </Button>
+        <p className="mt-3 text-sm text-muted">
+          We use your details only to reply to you. See our{" "}
+          <Link href="/legal/privacy" className="underline underline-offset-4">
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </div>
     </form>
   );

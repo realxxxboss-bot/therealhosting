@@ -94,7 +94,7 @@ export default function AboutPage() {
                 {site.contact.email}
               </a>
             </p>
-            <p className="mt-6 text-[0.9375rem] text-muted">Follow along, @{site.social.handle}</p>
+            <p className="mt-6 text-[0.9375rem] text-muted">Social media: @{site.social.handle}</p>
             <SocialLinks className="mt-2" />
           </div>
         </div>
