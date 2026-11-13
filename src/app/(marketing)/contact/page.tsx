@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { contact } from "@/config/marketing";
 import { photos } from "@/config/photos";
 import { site, whatsappLink } from "@/config/site";
+import { SocialLinks } from "@/components/marketing/social-links";
 import { Container, PageHero, Section, SectionHeading } from "@/components/marketing/section";
 import { LineList, TextLink } from "@/components/marketing/blocks";
 import { Photo } from "@/components/motion/photo";
@@ -29,15 +30,15 @@ export default function ContactPage() {
           <Photo photo={photos.contact} sizes="(min-width: 1024px) 33vw, 100vw" className="aspect-[4/3]" />
           <dl className="mt-8 border-t border-foreground">
             <div className="border-b border-border py-4">
-              <dt className="text-[0.9375rem] text-muted">New sites and questions</dt>
+              <dt className="text-[0.9375rem] text-muted">Email, for new sites and existing clients</dt>
               <dd className="mt-1 text-lg">
-                <TextLink href={`mailto:${site.contact.salesEmail}`}>{site.contact.salesEmail}</TextLink>
+                <TextLink href={`mailto:${site.contact.email}`}>{site.contact.email}</TextLink>
               </dd>
             </div>
             <div className="border-b border-border py-4">
-              <dt className="text-[0.9375rem] text-muted">Existing clients</dt>
-              <dd className="mt-1 text-lg">
-                <TextLink href={`mailto:${site.contact.supportEmail}`}>{site.contact.supportEmail}</TextLink>
+              <dt className="text-[0.9375rem] text-muted">Follow us, @{site.social.handle}</dt>
+              <dd className="mt-2">
+                <SocialLinks />
               </dd>
             </div>
             {wa ? (

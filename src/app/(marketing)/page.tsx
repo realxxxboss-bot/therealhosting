@@ -3,7 +3,7 @@ import Link from "next/link";
 import { home, migration } from "@/config/marketing";
 import { photos } from "@/config/photos";
 import { includedInEveryPlan, plansByType, siteTypes, type SiteType } from "@/config/plans";
-import { site, absoluteUrl } from "@/config/site";
+import { site, absoluteUrl, socialProfiles } from "@/config/site";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Section, SectionHeading } from "@/components/marketing/section";
 import { LineList, PhotoRow, RuledList, TextLink } from "@/components/marketing/blocks";
@@ -32,7 +32,8 @@ export default function HomePage() {
           url: site.url,
           logo: absoluteUrl("/brand/icon-512.png"),
           description: site.description,
-          email: site.contact.supportEmail,
+          email: site.contact.email,
+          sameAs: socialProfiles().map((p) => p.href),
         }}
       />
 

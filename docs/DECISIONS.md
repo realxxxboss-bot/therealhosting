@@ -217,3 +217,11 @@ The Cloudflare and UptimeRobot calls follow their public API references. The Coo
 Servers are now added, edited and removed on the admin Servers page. A server with sites on it can't be removed until they are moved. Usage meters show only in demo mode; in live mode the page says usage is not measured yet, until real server metrics are connected.
 
 Plans and list prices stay in `src/config/plans.ts` instead of moving to the database. The pricing page, the dashboard and invoices all read that one file, so they can never disagree, and the public pricing page stays a fast static page. List prices change rarely, and a change never touches existing clients, whose price is saved on their package. Per-client deals are already set in the admin on each client's packages. To change a list price, the owner asks for it and it ships as a reviewed change.
+
+## D-016 One public email and the social handles
+
+**Date:** 2026-11-13
+
+The owner confirmed the domain `zaffrehost.com`, a single public email `info@zaffrehost.com`, and the handle `@zaffreehost` on Instagram, Facebook and Threads. All public contact points (footer, contact page, About, legal pages, invoices, email reply-to) use info@. The code keeps `supportEmail` and `salesEmail` as names for the two jobs, so they can be split into separate inboxes later by changing one line in `src/config/site.ts`. Social links are plain text links with accessible names, not logo icons.
+
+The handle has two e's while the brand has one. We use the handle exactly as given.

@@ -25,16 +25,21 @@ export const site = {
   /** Where off-site backups are stored. Cloudflare R2 "EU" jurisdiction. TODO(confirm). */
   backupRegions: ["European Union (Cloudflare R2, EU jurisdiction)"],
   contact: {
-    supportEmail: "support@zaffrehost.com",
-    salesEmail: "hello@zaffrehost.com",
+    /** The one public address, confirmed by the owner on 2026-11-13. */
+    email: "info@zaffrehost.com",
+    /** Kept as names for the two jobs; both go to the same inbox for now. */
+    supportEmail: "info@zaffrehost.com",
+    salesEmail: "info@zaffrehost.com",
     /** E.164 number without "+" for wa.me links. Empty until the owner confirms. TODO(confirm). */
     whatsappNumber: "",
     supportHours: "Every day, replies within business hours",
   },
+  /** Confirmed by the owner on 2026-11-13. The handle is "zaffreehost" (two e's) on every network. */
   social: {
-    x: "",
-    linkedin: "",
-    github: "",
+    handle: "zaffreehost",
+    instagram: "https://www.instagram.com/zaffreehost",
+    facebook: "https://www.facebook.com/zaffreehost",
+    threads: "https://www.threads.com/@zaffreehost",
   },
   /** Year shown in the footer. Kept in config so static pages need no clock. */
   copyrightYear: 2026,
@@ -54,6 +59,14 @@ export function whatsappLink(message?: string): string | null {
   if (!site.contact.whatsappNumber) return null;
   const text = message ? `?text=${encodeURIComponent(message)}` : "";
   return `https://wa.me/${site.contact.whatsappNumber}${text}`;
+}
+
+export function socialProfiles(): { label: string; href: string }[] {
+  return [
+    { label: "Instagram", href: site.social.instagram },
+    { label: "Facebook", href: site.social.facebook },
+    { label: "Threads", href: site.social.threads },
+  ].filter((p) => p.href);
 }
 
 export function absoluteUrl(path = "/"): string {

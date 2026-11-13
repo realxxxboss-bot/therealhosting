@@ -26,3 +26,23 @@ test("never shows fabricated trust claims", async ({ page }) => {
     expect(text).not.toMatch(/99\.\d+% uptime last/);
   }
 });
+
+test("footer shows the email and social profiles", async ({ page }) => {
+  await page.goto("/");
+  const footer = page.locator("footer");
+  await expect(footer.locator('a[href="mailto:info@zaffrehost.com"]').first()).toBeVisible();
+  const profiles: [string, string][] = [
+    ["Instagram", "https://www.instagram.com/zaffreehost"],
+    ["Facebook", "https://www.facebook.com/zaffreehost"],
+    ["Threads", "https://www.threads.com/@zaffreehost"],
+  ];
+  for (const [name, href] of profiles) {
+    await expect(footer.getByRole("link", { name: `Zaffre on ${name}` })).toHaveAttribute("href", href);
+  }
+  for (const path of ["/", "/contact", "/legal/privacy", "/about"]) {
+    await page.goto(path);
+    const text = await page.locator("body").innerText();
+    expect(text).not.toMatch(/(support|hello)@zaffrehost\.com/);
+    expect(text).not.toContain("TODO(confirm)");
+  }
+});

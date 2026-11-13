@@ -9,7 +9,7 @@ Status: ⏳ = baaki, ✅ = ho gaya. Sab se zaroori upar hain.
 
 ---
 
-## 1. ⏳ Domain kharidein: `zaffrehost.com`  (blocks: launch, email, SSL)
+## 1. ✅ Domain: `zaffrehost.com`  (owner ne 2026-11-13 ko confirm kiya)
 
 **Kyun:** Hamara brand naam **Zaffre** hai (wajah: [DECISIONS.md D-001](./DECISIONS.md)). Website, client emails aur dashboard sab is domain par chalenge.
 
@@ -62,7 +62,7 @@ Agar list mein Vercel nahi hai: **https://github.com/apps/vercel** kholein → *
 | --- | --- | --- |
 | Company ka legal naam | Terms, Privacy, footer | `TODO(confirm)` |
 | Business address | Contact, legal pages | Nahi dikhaya (jab tak company register na ho) |
-| Support email | Contact, emails | `support@zaffrehost.com` (domain milne ke baad kaam karega) |
+| Email | Contact, footer, legal pages, invoices | ✅ `info@zaffrehost.com` |
 | WhatsApp business number | Contact page, dashboard | `TODO(confirm)` — button disabled |
 | Governing law (kis mulk ka qanoon) | Terms of Service | `TODO(confirm)` |
 | Refund window (din) | Refund Policy | Abhi 14 din likha hai, confirm karein |
@@ -88,7 +88,11 @@ Demo mein abhi sample (fake) details hain jo "DEMO" likhe hue hain.
 
 ---
 
-## 6. ⏳ Social handles reserve karein
+## 6. ✅ Social handles: `@zaffreehost` (Instagram, Facebook, Threads)
+
+Website ke footer, Contact aur About page par lag gaye hain. Note: handle mein do "e" hain (zaffre**e**host), brand naam mein ek. Agar `zaffrehost` (ek e) bhi mil jaye to woh bhi le lein aur mujhe batayein.
+
+### Pehle ke steps (reference)
 
 **Kyun:** Brand protection. Yeh naam koi aur na le le.
 

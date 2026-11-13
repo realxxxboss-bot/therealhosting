@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { about } from "@/config/marketing";
+import { includedInEveryPlan } from "@/config/plans";
+import { site } from "@/config/site";
+import { SocialLinks } from "@/components/marketing/social-links";
 import { photos } from "@/config/photos";
 import { PageHero, Section, SectionHeading } from "@/components/marketing/section";
 import { PhotoRow, RuledList, Split } from "@/components/marketing/blocks";
@@ -46,6 +50,54 @@ export default function AboutPage() {
         <Split heading={<SectionHeading title="How we work" />}>
           <RuledList items={about.values} />
         </Split>
+      </Section>
+
+      <Section tone="sunk">
+        <Split heading={<SectionHeading title={about.included.title} />}>
+          <p className="max-w-[62ch] text-lg leading-relaxed text-muted">{about.included.body}</p>
+          <ul className="mt-8 grid gap-x-10 sm:grid-cols-2">
+            {includedInEveryPlan.map((item) => (
+              <li key={item} className="border-t border-border py-3.5 text-lg">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </Split>
+      </Section>
+
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-6">
+            <SectionHeading title={about.where.title} />
+            <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-muted">{about.where.body}</p>
+            <dl className="mt-8 border-t border-foreground">
+              <div className="border-b border-border py-4">
+                <dt className="text-[0.9375rem] text-muted">Websites, databases and dashboard data</dt>
+                <dd className="mt-1 text-lg">{site.dataRegions.join("; ")}</dd>
+              </div>
+              <div className="border-b border-border py-4">
+                <dt className="text-[0.9375rem] text-muted">Daily off-site backups</dt>
+                <dd className="mt-1 text-lg">{site.backupRegions.join("; ")}</dd>
+              </div>
+            </dl>
+            <p className="mt-5">
+              <Link href="/legal/privacy" className="link">
+                Read the privacy policy
+              </Link>
+            </p>
+          </div>
+          <div className="lg:col-span-5 lg:col-start-8">
+            <SectionHeading title={about.talk.title} />
+            <p className="mt-5 text-lg leading-relaxed text-muted">{about.talk.body}</p>
+            <p className="mt-8 text-[1.5rem] font-semibold tracking-[-0.02em]">
+              <a href={`mailto:${site.contact.email}`} className="underline decoration-border underline-offset-[6px] hover:decoration-foreground">
+                {site.contact.email}
+              </a>
+            </p>
+            <p className="mt-6 text-[0.9375rem] text-muted">Follow along, @{site.social.handle}</p>
+            <SocialLinks className="mt-2" />
+          </div>
+        </div>
       </Section>
 
       <Section tone="sunk">

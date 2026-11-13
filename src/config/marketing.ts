@@ -510,6 +510,18 @@ export const about = {
     { title: "Plain words", body: "We explain what happened and what comes next, without jargon." },
     { title: "Yours to take", body: "Your content and data belong to you. You can leave with a full copy at any time." },
   ],
+  included: {
+    title: "What every plan includes",
+    body: "These come with every package, whatever its size. They are not add-ons.",
+  },
+  where: {
+    title: "Where your sites live",
+    body: "We tell you where your data is, because you are responsible for it too. Our privacy policy lists every provider we use.",
+  },
+  talk: {
+    title: "Talk to us",
+    body: "One inbox, read by the people who run the servers. Write about a new site, a move from another host, or a problem with an existing one.",
+  },
   paid: {
     title: "How we make money",
     body: "From the monthly or yearly price of your package, and nothing else. We do not sell add-ons at checkout, we do not earn from raising your renewal price, and we do not sell or share your data.",
