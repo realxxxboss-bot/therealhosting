@@ -1,30 +1,34 @@
 import Link from "next/link";
 import { footerNav } from "@/config/marketing";
-import { site } from "@/config/site";
-import { LogoMark } from "@/components/ui/logo";
+import { operatorStatement, site } from "@/config/site";
+import { Logo } from "@/components/ui/logo";
 import { SocialLinks } from "./social-links";
 
 /** Ink block. Always dark, in both themes. */
 export function SiteFooter() {
+  const operator = operatorStatement();
   return (
-    <footer className="bg-ink text-white">
-      <div className="mx-auto max-w-[1200px] px-4 pt-16 sm:px-6 sm:pt-24 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <p className="max-w-sm text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em]">Hosting that someone actually looks after.</p>
-            <p className="mt-6 max-w-sm text-white/65">Write to us and a person replies. No ticket robots, no sales script.</p>
+    <footer className="border-t border-white/10 bg-ink text-white">
+      <div className="mx-auto max-w-[1200px] px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <Link href="/" aria-label={`${site.name} home`} className="inline-block text-white">
+              <Logo />
+            </Link>
+            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-white/70">
+              Managed hosting for Next.js, WordPress and static sites. Servers in Germany (EU). A real person answers, every day.
+            </p>
             <p className="mt-6 text-[0.9375rem]">
-              <a className="underline decoration-white/30 underline-offset-4 transition-colors duration-200 hover:decoration-white" href={`mailto:${site.contact.email}`}>
+              <a className="font-medium underline decoration-white/30 underline-offset-4 transition-colors duration-200 hover:decoration-white" href={`mailto:${site.contact.email}`}>
                 {site.contact.email}
               </a>
-              <span className="text-white/55"> for new sites, questions and support</span>
             </p>
-            <SocialLinks tone="dark" className="mt-4" />
+            <SocialLinks tone="dark" className="mt-3" />
           </div>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:col-span-7">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:col-span-8">
             {footerNav.map((group) => (
-              <nav key={group.title} aria-label={group.title}>
-                <h2 className="text-sm font-medium tracking-normal text-white/55">{group.title}</h2>
+              <nav key={group.title} aria-label={`${group.title} links`}>
+                <p className="text-sm font-medium text-white/55">{group.title}</p>
                 <ul className="mt-4 grid gap-2.5">
                   {group.links.map((link) => (
                     <li key={link.href}>
@@ -39,15 +43,20 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-white/15 py-6 text-sm text-white/60 sm:mt-24">
-          <p className="flex items-center gap-3">
-            <LogoMark className="size-6" />
-            <span>
-              © {site.copyrightYear} {site.name}
-            </span>
+        <div className="mt-14 grid gap-3 border-t border-white/15 py-6 text-sm text-white/60 sm:mt-20 md:flex md:items-center md:justify-between">
+          <p>
+            © {site.copyrightYear} {site.name}
+            {operator ? <span className="block text-white/50 md:inline md:before:content-['_·_']">{operator}</span> : null}
           </p>
-          <p>All prices in US dollars. The price you start on is the price you renew at.</p>
-          <p>Client data is stored in {site.dataRegionShort}.</p>
+          <p className="flex flex-wrap gap-x-2">
+            <span>Prices in USD</span>
+            <span aria-hidden>·</span>
+            <span>Data stored in {site.dataRegionShort}</span>
+            <span aria-hidden>·</span>
+            <Link href="/credits" className="underline decoration-white/30 underline-offset-4 hover:decoration-white">
+              Photo credits
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

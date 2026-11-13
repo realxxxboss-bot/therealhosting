@@ -56,8 +56,8 @@ async function DashboardFrame({ children }: { children: ReactNode }) {
               </option>
             ))}
           </select>
-          <button type="submit" className="cursor-pointer rounded-[4px] border border-border px-2 text-xs">
-            Go
+          <button type="submit" className="cursor-pointer rounded-[4px] border border-border px-3 py-1 text-sm font-medium hover:bg-surface-2">
+            Switch
           </button>
         </form>
       ) : (

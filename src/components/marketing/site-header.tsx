@@ -32,13 +32,24 @@ function HostingMenu({ active }: { active: boolean }) {
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      // Return focus to the button so keyboard users don't lose their place.
+      ref.current?.querySelector("button")?.focus();
+    };
+    // Close when keyboard focus moves out of the menu.
+    const onFocus = (e: FocusEvent) => {
+      if (ref.current && e.target instanceof Node && !ref.current.contains(e.target)) setOpen(false);
+    };
     const onDown = (e: PointerEvent) => {
       if (ref.current && e.target instanceof Node && !ref.current.contains(e.target)) setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     window.addEventListener("pointerdown", onDown);
+    window.addEventListener("focusin", onFocus);
     return () => {
+      window.removeEventListener("focusin", onFocus);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("pointerdown", onDown);
     };
@@ -46,7 +57,7 @@ function HostingMenu({ active }: { active: boolean }) {
 
   return (
     <li ref={ref} className="relative">
-      <button type="button" aria-expanded={open} aria-controls="hosting-menu" onClick={() => setOpen((v) => !v)} className={cn(linkClass, "cursor-pointer gap-1.5", (active || open) && "text-foreground")}>
+      <button type="button" aria-expanded={open} aria-haspopup="true" aria-controls="hosting-menu" onClick={() => setOpen((v) => !v)} className={cn(linkClass, "cursor-pointer gap-1.5", (active || open) && "text-foreground")}>
         Hosting
         <ChevronDown className={cn("size-4 transition-transform duration-200", open && "rotate-180")} aria-hidden />
         {active ? <ActiveRule /> : null}

@@ -138,6 +138,12 @@
     outline-offset: 2px;
     border-radius: 6px;
   }
+  /* The ring colour matches the blue band and vanishes on ink, so dark blocks use white. */
+  .bg-band :focus-visible,
+  .bg-ink :focus-visible,
+  .bg-primary :focus-visible {
+    outline-color: #ffffff;
+  }
   ::selection {
     background: #0014a8;
     color: #ffffff;

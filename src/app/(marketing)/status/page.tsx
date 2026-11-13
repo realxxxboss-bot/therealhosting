@@ -81,7 +81,7 @@ async function LiveStatus() {
         <p className="mt-1 text-muted">
           {measured
             ? `Last checked ${formatDateTime(new Date(now).toISOString())}.`
-            : `${site.name} has not launched. The services below are listed so you can see what will be measured. We show "no data" instead of estimates until real measurements exist.`}
+            : `Monitoring is not connected yet. The services below are listed so you can see what will be measured. We show "no data" instead of estimates until real measurements exist.`}
         </p>
       </div>
       <ul className="mt-10 border-t border-foreground">

@@ -259,3 +259,13 @@ The owner chose to sell to both businesses and consumers. So the Terms now have 
 - **Fixes:** refund maths (yearly price minus the monthly price per started month, never negative), 7 days' email notice before suspension for late payment, support "every day, within 24 hours" everywhere, maintenance announced on the status page and by email, "service credit" replaced by a plain outage review.
 
 All documents stay marked as drafts (`legalDraft = true`) until a lawyer has reviewed them.
+
+## D-020 Footer and navigation
+
+**Date:** 2026-11-13
+
+- **Footer:** wordmark, one-line description, email and social links on the left. Four columns: Hosting (what we sell), Company (who we are), Help (sign in, domains, security, complaints), Legal (every policy, including Service Levels and the DPA). The repeated sales pitch is gone, since the call-to-action band sits right above. Group titles are plain text, not headings, so the page outline stays clean. The bottom row holds the copyright, the trading-name line once confirmed, and small print.
+- **System status** is out of the navigation until monitoring is connected. The page stays reachable and says monitoring is not connected yet.
+- **Main nav:** About replaces Domains; domain registration isn't available yet, so Domains moves to the footer.
+- **Admin sidebar** is grouped into Work, Clients and Platform.
+- Focus rings are white on the blue band and the ink footer, where the brand blue was invisible.

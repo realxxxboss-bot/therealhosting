@@ -25,10 +25,14 @@ export const mainNav = [
   { href: "/pricing", label: "Pricing" },
   { href: "/migration", label: "Free migration" },
   { href: "/features", label: "Why Zaffre" },
-  { href: "/domains", label: "Domains" },
+  { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
 ] as const;
 
+/**
+ * Footer columns. Hosting = what we sell, Company = who we are, Help = for existing and new clients,
+ * Legal = every policy. System status joins Help once monitoring is connected (D-020).
+ */
 export const footerNav = [
   {
     title: "Hosting",
@@ -37,7 +41,7 @@ export const footerNav = [
       { href: "/hosting/wordpress", label: "WordPress hosting" },
       { href: "/hosting/static", label: "Static hosting" },
       { href: "/pricing", label: "Pricing" },
-      { href: "/domains", label: "Domain search" },
+      { href: "/migration", label: "Free migration" },
     ],
   },
   {
@@ -45,18 +49,17 @@ export const footerNav = [
     links: [
       { href: "/about", label: "About" },
       { href: "/features", label: "Why Zaffre" },
-      { href: "/migration", label: "Free migration" },
       { href: "/blog", label: "Blog" },
       { href: "/contact", label: "Contact" },
     ],
   },
   {
-    title: "Support",
+    title: "Help",
     links: [
-      { href: "/status", label: "System status" },
       { href: "/sign-in", label: "Client sign in" },
-      { href: "/legal/sla", label: "Service levels" },
-      { href: "/credits", label: "Photo credits" },
+      { href: "/domains", label: "Domains" },
+      { href: "/security", label: "Security" },
+      { href: "/legal/complaints", label: "Complaints" },
     ],
   },
   {
@@ -66,6 +69,8 @@ export const footerNav = [
       { href: "/legal/privacy", label: "Privacy Policy" },
       { href: "/legal/refund", label: "Refund Policy" },
       { href: "/legal/acceptable-use", label: "Acceptable Use" },
+      { href: "/legal/sla", label: "Service Levels" },
+      { href: "/legal/dpa", label: "Data Processing" },
     ],
   },
 ] as const;
@@ -78,10 +83,10 @@ export const home = {
     primaryCta: { href: "/pricing", label: "See plans" },
     secondaryCta: { href: "/migration", label: "Move my sites for free" },
     facts: [
-      { title: "Free migration", body: "We move every site and test it before the switch." },
+      { title: "Free migration", body: "We move every site and test it. Your old host keeps running until you approve." },
       { title: "Same price on renewal", body: "The price you start on is the price you keep." },
-      { title: "No seat fees", body: "Invite your developers and your accountant at no cost." },
-      { title: "Cancel any time", body: "Monthly packages stop at the end of the month." },
+      { title: "Servers in the EU", body: "Sites run in Germany from launch, with backups stored in the EU." },
+      { title: "A real person answers", body: "Every day, within 24 hours. No ticket robots." },
     ],
   },
   why: {

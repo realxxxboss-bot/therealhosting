@@ -58,7 +58,7 @@ export function MobileNav() {
 
   return (
     <div className="lg:hidden">
-      <button ref={trigger} type="button" className="grid size-10 cursor-pointer place-items-center rounded-[4px] hover:bg-surface-2" aria-expanded={open} aria-controls="mobile-menu" aria-label="Open menu" onClick={() => setOpen(true)}>
+      <button ref={trigger} type="button" className="grid size-11 cursor-pointer place-items-center rounded-[4px] hover:bg-surface-2" aria-expanded={open} aria-controls="mobile-menu" aria-label="Open menu" onClick={() => setOpen(true)}>
         <Menu className="size-5" aria-hidden />
       </button>
       <AnimatePresence>
@@ -79,7 +79,7 @@ export function MobileNav() {
               <Link href="/" aria-label="Zaffre home">
                 <Logo />
               </Link>
-              <button type="button" className="grid size-10 cursor-pointer place-items-center rounded-[4px] hover:bg-surface-2" aria-label="Close menu" onClick={() => setOpen(false)}>
+              <button type="button" className="grid size-11 cursor-pointer place-items-center rounded-[4px] hover:bg-surface-2" aria-label="Close menu" onClick={() => setOpen(false)}>
                 <X className="size-5" aria-hidden />
               </button>
             </div>
@@ -87,7 +87,7 @@ export function MobileNav() {
               <ul className="border-t border-border">
                 {links.map((link) => (
                   <motion.li key={link.href} variants={item} className="border-b border-border">
-                    <Link href={link.href} aria-current={pathname === link.href ? "page" : undefined} className="flex items-center justify-between py-4 text-[1.375rem] font-semibold tracking-[-0.02em] aria-[current=page]:text-primary dark:aria-[current=page]:text-accent">
+                    <Link href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined} className="flex items-center justify-between py-4 text-[1.375rem] font-semibold tracking-[-0.02em] aria-[current=page]:text-primary dark:aria-[current=page]:text-accent">
                       {link.label}
                     </Link>
                   </motion.li>

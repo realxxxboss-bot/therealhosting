@@ -37,21 +37,22 @@ async function AdminFrame({ children }: { children: ReactNode }) {
   const restores = store.restoreRequests.filter((r) => r.status !== "done").length;
 
   const nav: NavItem[] = [
-    { href: "/admin", label: "Overview", icon: "overview", exact: true },
-    { href: "/admin/clients", label: "Clients", icon: "clients" },
-    { href: "/admin/sites", label: "Sites", icon: "sites" },
-    { href: "/admin/fleet", label: "Servers", icon: "fleet" },
-    { href: "/admin/plans", label: "Plans", icon: "plans" },
-    { href: "/admin/invoices", label: "Invoices", icon: "invoices" },
-    { href: "/admin/payments", label: "Payment checks", icon: "payments", badge: pendingPayments || undefined },
-    { href: "/admin/tickets", label: "Tickets", icon: "support", badge: openTickets || undefined },
-    { href: "/admin/backups", label: "Backups", icon: "backups", badge: restores || undefined },
-    { href: "/admin/payment-methods", label: "Payment methods", icon: "methods" },
-    { href: "/admin/templates", label: "Email templates", icon: "templates" },
-    { href: "/admin/announcements", label: "Announcement", icon: "announcements" },
-    { href: "/admin/audit", label: "Audit log", icon: "audit" },
-    { href: "/admin/account", label: "Your account", icon: "account" },
+    { href: "/admin", label: "Overview", icon: "overview", exact: true, group: "Work" },
+    { href: "/admin/tickets", label: "Tickets", icon: "support", badge: openTickets || undefined, group: "Work" },
+    { href: "/admin/payments", label: "Payment checks", icon: "payments", badge: pendingPayments || undefined, group: "Work" },
+    { href: "/admin/backups", label: "Backups", icon: "backups", badge: restores || undefined, group: "Work" },
+    { href: "/admin/clients", label: "Clients", icon: "clients", group: "Clients" },
+    { href: "/admin/sites", label: "Sites", icon: "sites", group: "Clients" },
+    { href: "/admin/invoices", label: "Invoices", icon: "invoices", group: "Clients" },
+    { href: "/admin/fleet", label: "Servers", icon: "fleet", group: "Platform" },
+    { href: "/admin/plans", label: "Plans", icon: "plans", group: "Platform" },
+    { href: "/admin/payment-methods", label: "Payment methods", icon: "methods", group: "Platform" },
+    { href: "/admin/templates", label: "Email templates", icon: "templates", group: "Platform" },
+    { href: "/admin/announcements", label: "Announcement", icon: "announcements", group: "Platform" },
+    { href: "/admin/audit", label: "Audit log", icon: "audit", group: "Platform" },
+    { href: "/admin/account", label: "Your account", icon: "account", group: "Platform" },
   ];
+
 
   return (
     <AppShell
