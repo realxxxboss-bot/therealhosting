@@ -12,10 +12,10 @@ export const site = {
   description:
     "Premium managed hosting for Next.js, WordPress and static sites. We deploy, update, back up and fix. One fixed price with no renewal jump, and real people on support.",
   currency: "USD",
-  /** Legal entity name. TODO(confirm): set once the company is registered. */
-  legalName: "TODO(confirm) legal entity name",
-  /** Governing law for the Terms of Service. TODO(confirm). */
-  governingLaw: "TODO(confirm) governing law",
+  /** Name used in legal documents. Owner confirmed "Zaffre" on 2026-11-13; update when a company is registered. */
+  legalName: "Zaffre",
+  /** Governing law for the Terms of Service. Chosen 2026-11-13 (DECISIONS D-017); the jurisdiction clause in terms.mdx names the same courts. */
+  governingLaw: "the laws of England and Wales",
   /** Refund window in days for the Refund Policy. TODO(confirm). */
   refundWindowDays: 14,
   /** Where client data and backups are physically stored. Shown in the Privacy Policy. TODO(confirm) once the VPS is rented. */

@@ -60,11 +60,11 @@ Agar list mein Vercel nahi hai: **https://github.com/apps/vercel** kholein → *
 
 | Field | Kahan use hota hai | Abhi kya hai |
 | --- | --- | --- |
-| Company ka legal naam | Terms, Privacy, footer | `TODO(confirm)` |
+| Company ka legal naam | Terms, Privacy, footer | ✅ `Zaffre` (company register hone par update) |
 | Business address | Contact, legal pages | Nahi dikhaya (jab tak company register na ho) |
 | Email | Contact, footer, legal pages, invoices | ✅ `info@zaffrehost.com` |
 | WhatsApp business number | Contact page, dashboard | `TODO(confirm)` — button disabled |
-| Governing law (kis mulk ka qanoon) | Terms of Service | `TODO(confirm)` |
+| Governing law (kis mulk ka qanoon) | Terms of Service | ✅ England and Wales (D-017) |
 | Refund window (din) | Refund Policy | Abhi 14 din likha hai, confirm karein |
 
 **Steps:** Har line ke liye mujhe sirf jawab likh dein (e.g. "WhatsApp: +44 …"). Main config mein daal dunga. **Apna personal naam ya ghar ka address na dein** — sirf company ki details.

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { expectNoA11yViolations } from "./helpers";
 
-const pages = ["/", "/pricing", "/features", "/hosting/nextjs", "/migration", "/domains", "/status", "/contact", "/about", "/blog", "/legal/privacy", "/sign-in", "/credits", "/hosting/wordpress", "/blog/renewal-prices-explained"];
+const pages = ["/", "/pricing", "/features", "/hosting/nextjs", "/migration", "/domains", "/status", "/contact", "/about", "/blog", "/legal/privacy", "/legal/terms", "/sign-in", "/credits", "/hosting/wordpress", "/blog/renewal-prices-explained"];
 
 for (const path of pages) {
   test(`${path} renders and passes axe`, async ({ page }) => {
