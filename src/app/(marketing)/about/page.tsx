@@ -35,7 +35,7 @@ export default function AboutPage() {
       <Section tone="band">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
           <Reveal className="lg:col-span-6">
-            <h2 className="text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[3rem]">{about.name.title}</h2>
+            <h2 className="text-h2-lg font-semibold">{about.name.title}</h2>
             <div className="mt-6 grid gap-5 text-lg leading-relaxed text-white/90">
               {about.name.body.map((p) => (
                 <p key={p}>{p}</p>
@@ -72,11 +72,11 @@ export default function AboutPage() {
             <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-muted">{about.where.body}</p>
             <dl className="mt-8 border-t border-foreground">
               <div className="border-b border-border py-4">
-                <dt className="text-[0.9375rem] text-muted">Client websites and databases, from launch</dt>
+                <dt className="text-small text-muted">Client websites and databases, from launch</dt>
                 <dd className="mt-1 text-lg">{site.dataRegions.join("; ")}</dd>
               </div>
               <div className="border-b border-border py-4">
-                <dt className="text-[0.9375rem] text-muted">Daily off-site backups</dt>
+                <dt className="text-small text-muted">Daily off-site backups</dt>
                 <dd className="mt-1 text-lg">{site.backupRegions.join("; ")}</dd>
               </div>
             </dl>
@@ -89,12 +89,12 @@ export default function AboutPage() {
           <div className="lg:col-span-5 lg:col-start-8">
             <SectionHeading title={about.talk.title} />
             <p className="mt-5 text-lg leading-relaxed text-muted">{about.talk.body}</p>
-            <p className="mt-8 text-[1.5rem] font-semibold tracking-[-0.02em]">
+            <p className="mt-8 text-h4 font-semibold">
               <a href={`mailto:${site.contact.email}`} className="underline decoration-border underline-offset-[6px] hover:decoration-foreground">
                 {site.contact.email}
               </a>
             </p>
-            <p className="mt-6 text-[0.9375rem] text-muted">Social media: @{site.social.handle}</p>
+            <p className="mt-6 text-small text-muted">Social media: @{site.social.handle}</p>
             <SocialLinks className="mt-2" />
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function AboutPage() {
 
       <Section tone="sunk">
         <div className="max-w-3xl">
-          <h2 className="text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[2.5rem]">{about.paid.title}</h2>
+          <h2 className="text-h2 font-semibold">{about.paid.title}</h2>
           <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{about.paid.body}</p>
         </div>
       </Section>

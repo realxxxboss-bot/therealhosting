@@ -50,14 +50,14 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
           }}
         />
         <Container className="pt-10 sm:pt-14">
-          <p className="text-[0.9375rem]">
+          <p className="text-small">
             <Link href="/blog" className="link font-medium">
               All posts
             </Link>
           </p>
-          <HeroIntro lines={[post.title]} className="mt-8 max-w-4xl" headingClassName="text-[2.5rem] sm:text-[3.25rem] lg:text-[3.75rem] leading-[1.04] tracking-[-0.035em]">
+          <HeroIntro lines={[post.title]} className="mt-8 max-w-4xl" headingClassName="text-title">
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-muted">{post.description}</p>
-            <p className="mt-6 text-[0.9375rem] text-muted">
+            <p className="mt-6 text-small text-muted">
               <span className="font-medium text-foreground">The {site.name} team</span>
               <span className="mx-3 inline-block h-3 w-px bg-border align-middle" aria-hidden />
               <time dateTime={post.date}>{formatLongDate(post.date)}</time>
@@ -90,7 +90,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
           {others.map((p) => (
             <li key={p.slug} className="border-b border-border">
               <Link href={`/blog/${p.slug}`} className="group block py-6">
-                <p className="text-[0.9375rem] text-muted">{p.topic}</p>
+                <p className="text-small text-muted">{p.topic}</p>
                 <p className="mt-2 text-xl leading-snug font-semibold tracking-[-0.02em] underline decoration-transparent decoration-2 underline-offset-4 transition-colors duration-200 group-hover:decoration-current">{p.title}</p>
               </Link>
             </li>

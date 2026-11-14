@@ -27,27 +27,27 @@ export default function ContactPage() {
         <aside className="lg:col-span-4 lg:col-start-9">
           <dl className="border-t border-foreground">
             <div className="border-b border-border py-4">
-              <dt className="text-[0.9375rem] text-muted">Email, for new sites and existing clients</dt>
+              <dt className="text-small text-muted">Email, for new sites and existing clients</dt>
               <dd className="mt-1 text-lg">
                 <TextLink href={`mailto:${site.contact.email}`}>{site.contact.email}</TextLink>
               </dd>
             </div>
             <div className="border-b border-border py-4">
-              <dt className="text-[0.9375rem] text-muted">Social media: @{site.social.handle}</dt>
+              <dt className="text-small text-muted">Social media: @{site.social.handle}</dt>
               <dd className="mt-2">
                 <SocialLinks />
               </dd>
             </div>
             {wa ? (
               <div className="border-b border-border py-4">
-                <dt className="text-[0.9375rem] text-muted">WhatsApp</dt>
+                <dt className="text-small text-muted">WhatsApp</dt>
                 <dd className="mt-1 text-lg">
                   <TextLink href={wa}>Message us on WhatsApp</TextLink>
                 </dd>
               </div>
             ) : null}
             <div className="border-b border-border py-4">
-              <dt className="text-[0.9375rem] text-muted">Hours</dt>
+              <dt className="text-small text-muted">Hours</dt>
               <dd className="mt-1">{site.contact.supportHours}.</dd>
             </div>
           </dl>
@@ -57,16 +57,7 @@ export default function ContactPage() {
       <Section tone="sunk">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
-            <SectionHeading title="What happens next" />
-            <ol className="mt-10 grid gap-8 sm:grid-cols-3">
-              {contact.next.map((step, i) => (
-                <li key={step.title} className="border-t border-foreground pt-5">
-                  <span className="text-[2.5rem] leading-none font-semibold tracking-[-0.04em] text-primary dark:text-accent">{i + 1}</span>
-                  <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em]">{step.title}</h3>
-                  <p className="mt-2 leading-relaxed text-muted">{step.body}</p>
-                </li>
-              ))}
-            </ol>
+            <SectionHeading title="What happens next" body={contact.next} />
           </div>
           <div className="lg:col-span-4 lg:col-start-9">
             <h2 className="text-xl font-semibold tracking-[-0.02em]">Helpful to include</h2>

@@ -32,7 +32,7 @@ export function DomainSearch() {
             <ul className="border-t border-foreground">
               {state.results.map((r) => (
                 <li key={r.domain} className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-b border-border py-4 sm:grid-cols-[1fr_8rem_8rem]">
-                  <span className="min-w-0 font-mono text-[0.9375rem] font-medium break-all">{r.domain}</span>
+                  <span className="min-w-0 font-mono text-small font-medium break-all">{r.domain}</span>
                   <span className={r.available ? "font-medium text-success" : "text-muted"}>{r.available ? "Available" : "Taken"}</span>
                   <span className="col-span-2 text-muted tabular-nums sm:col-span-1 sm:text-right">{r.available && r.priceUsd ? `${formatUSD(r.priceUsd)} a year` : ""}</span>
                 </li>

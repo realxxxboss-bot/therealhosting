@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 /** Text links to our social profiles. Plain words instead of logos, so they read on any background. */
 export function SocialLinks({ tone = "light", className }: { tone?: "light" | "dark"; className?: string }) {
   return (
-    <ul className={cn("flex flex-wrap gap-x-5 gap-y-2 text-[0.9375rem]", className)}>
+    <ul className={cn("flex flex-wrap gap-x-5 gap-y-2 text-small", className)}>
       {socialProfiles().map((p) => (
         <li key={p.label}>
           <a

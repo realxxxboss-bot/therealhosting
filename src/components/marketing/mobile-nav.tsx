@@ -87,7 +87,7 @@ export function MobileNav() {
               <ul className="border-t border-border">
                 {links.map((link) => (
                   <motion.li key={link.href} variants={item} className="border-b border-border">
-                    <Link href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined} className="flex items-center justify-between py-4 text-[1.375rem] font-semibold tracking-[-0.02em] aria-[current=page]:text-primary dark:aria-[current=page]:text-accent">
+                    <Link href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined} className="flex items-center justify-between py-4 text-h4 font-semibold aria-[current=page]:text-primary dark:aria-[current=page]:text-accent">
                       {link.label}
                     </Link>
                   </motion.li>

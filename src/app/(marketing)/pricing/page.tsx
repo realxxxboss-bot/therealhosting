@@ -25,7 +25,7 @@ export default function PricingPage() {
   return (
     <>
       <PageHero title="Pricing" lines={["Fair prices that", "do not jump", "at renewal."]} body="Choose a package for each kind of site. A package covers several sites. Pay monthly, or yearly and get two months free.">
-        <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-[0.9375rem] font-medium">
+        <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-small font-medium">
           {heroFacts.map((fact) => (
             <li key={fact}>{fact}</li>
           ))}
@@ -34,7 +34,7 @@ export default function PricingPage() {
 
       <Section className="py-12 sm:py-16 lg:py-20">
         <PricingCards showCompare />
-        <p className="mt-8 max-w-[70ch] text-[0.9375rem] text-muted">
+        <p className="mt-8 max-w-[70ch] text-small text-muted">
           Prices are in US dollars and exclude taxes. If you are a consumer and VAT applies to you, we show the total including VAT before you order. Consumers in the UK and EU can cancel a new package within 14 days. See our <Link href="/legal/refund" className="link">Refund Policy</Link>.
         </p>
       </Section>
@@ -84,7 +84,7 @@ export default function PricingPage() {
         <div className="mt-12 overflow-x-auto">
           <table className="w-full min-w-[720px] text-left">
             <thead>
-              <tr className="border-y border-foreground text-[0.9375rem]">
+              <tr className="border-y border-foreground text-small">
                 <th scope="col" className="w-[30%] py-3 pr-6 font-medium text-muted">Typical alternative</th>
                 <th scope="col" className="py-3 pr-6 font-medium text-muted">Intro price</th>
                 <th scope="col" className="py-3 pr-6 font-medium text-muted">Renewal price</th>

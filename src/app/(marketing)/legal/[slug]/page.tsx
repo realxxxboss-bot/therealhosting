@@ -28,9 +28,9 @@ export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) 
       <ReadingProgress />
       <div className="border-b border-border">
         <Container className="py-14 sm:py-20">
-          <HeroIntro lines={[doc.title]} headingClassName="text-[2.75rem] sm:text-[3.5rem] lg:text-[4rem] leading-[1.02] tracking-[-0.035em]">
+          <HeroIntro lines={[doc.title]} headingClassName="text-title">
             <p className="mt-6 max-w-xl text-lg text-muted">{doc.description}</p>
-            <p className="mt-4 text-[0.9375rem] text-muted">
+            <p className="mt-4 text-small text-muted">
               Last updated <time dateTime={doc.updated}>{formatLongDate(doc.updated)}</time>
             </p>
           </HeroIntro>
@@ -40,7 +40,7 @@ export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) 
         <ArticleWithContents>
           <div className="max-w-[68ch]">
             {legalDraft ? (
-              <p className="mb-6 rounded-[4px] bg-warning-soft px-4 py-3 text-[0.9375rem]">
+              <p className="mb-6 rounded-[4px] bg-warning-soft px-4 py-3 text-small">
                 {site.name} has not launched yet. This document is a draft that is being reviewed and may change before the service opens.
               </p>
             ) : null}
@@ -53,7 +53,7 @@ export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) 
                   <li key={line}>{line}</li>
                 ))}
               </ul>
-              <p className="mt-4 text-[0.9375rem] text-muted">This summary is a reading aid. The full text below is what applies.</p>
+              <p className="mt-4 text-small text-muted">This summary is a reading aid. The full text below is what applies.</p>
             </section>
             <div className="prose-zaffre mt-10">
               <Body />

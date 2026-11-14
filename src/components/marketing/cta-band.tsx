@@ -9,7 +9,7 @@ export function CtaBand({ title = home.cta.title, body = home.cta.body }: { titl
     <section className="bg-band text-band-foreground">
       <Container className="grid gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:items-end">
         <Reveal className="lg:col-span-8">
-          <h2 className="max-w-3xl text-[2.5rem] leading-[1.02] font-semibold tracking-[-0.035em] sm:text-[3.5rem]">{title}</h2>
+          <h2 className="max-w-3xl text-title font-semibold">{title}</h2>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl">{body}</p>
         </Reveal>
         <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">

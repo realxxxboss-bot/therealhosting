@@ -60,7 +60,7 @@ export default function SecurityPage() {
         <div className="grid gap-x-12 gap-y-14 lg:grid-cols-2">
           {sections.map((section) => (
             <section key={section.title} aria-labelledby={`sec-${section.title}`}>
-              <h2 id={`sec-${section.title}`} className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">
+              <h2 id={`sec-${section.title}`} className="text-h3 font-semibold">
                 {section.title}
               </h2>
               <ul className="mt-6 border-t border-foreground">
@@ -75,7 +75,7 @@ export default function SecurityPage() {
         </div>
 
         <section aria-labelledby="report" className="mt-20 max-w-[62ch] border-t border-foreground pt-8">
-          <h2 id="report" className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">
+          <h2 id="report" className="text-h3 font-semibold">
             Report a vulnerability
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted">

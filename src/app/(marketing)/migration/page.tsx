@@ -41,11 +41,11 @@ export default function MigrationPage() {
       <Section>
         <div className="grid gap-12 md:grid-cols-2 lg:gap-16">
           <Reveal>
-            <h2 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">{migration.need.title}</h2>
+            <h2 className="text-h3 font-semibold">{migration.need.title}</h2>
             <LineList items={migration.need.items} className="mt-6 border-foreground" />
           </Reveal>
           <Reveal delay={0.08}>
-            <h2 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">{migration.same.title}</h2>
+            <h2 className="text-h3 font-semibold">{migration.same.title}</h2>
             <LineList items={migration.same.items} className="mt-6 border-foreground" />
           </Reveal>
         </div>
@@ -54,7 +54,7 @@ export default function MigrationPage() {
       <Section tone="band">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-5">
-            <h2 className="text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[3rem]">{migration.rollback.title}</h2>
+            <h2 className="text-h2-lg font-semibold">{migration.rollback.title}</h2>
           </Reveal>
           <Reveal className="lg:col-span-7 lg:pt-2" delay={0.08}>
             <p className="text-xl leading-relaxed text-white/90">{migration.rollback.body}</p>

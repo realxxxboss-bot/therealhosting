@@ -37,7 +37,7 @@ export default function DomainsPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[520px] text-left">
               <thead>
-                <tr className="border-y border-foreground text-[0.9375rem]">
+                <tr className="border-y border-foreground text-small">
                   <th scope="col" className="py-3 pr-6 font-medium text-muted">Type</th>
                   <th scope="col" className="py-3 pr-6 font-medium text-muted">Name</th>
                   <th scope="col" className="py-3 pr-6 font-medium text-muted">Value</th>
@@ -47,8 +47,8 @@ export default function DomainsPage() {
               <tbody>
                 {records.map((r) => (
                   <tr key={r.type} className="border-b border-border">
-                    <td className="py-4 pr-6 font-mono text-[0.9375rem] font-medium">{r.type}</td>
-                    <td className="py-4 pr-6 font-mono text-[0.9375rem]">{r.name}</td>
+                    <td className="py-4 pr-6 font-mono text-small font-medium">{r.type}</td>
+                    <td className="py-4 pr-6 font-mono text-small">{r.name}</td>
                     <td className="py-4 pr-6">{r.value}</td>
                     <td className="py-4 text-muted">{r.note}</td>
                   </tr>

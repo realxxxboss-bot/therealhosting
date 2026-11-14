@@ -30,7 +30,7 @@ export function ContactForm() {
   if (state.ok) {
     return (
       <div role="status" className="border-y border-foreground py-10">
-        <p className="text-[2rem] leading-tight font-semibold tracking-[-0.03em]">Message sent.</p>
+        <p className="text-h3 font-semibold">Message sent.</p>
         <p className="mt-3 max-w-md text-lg text-muted">{state.message}</p>
       </div>
     );

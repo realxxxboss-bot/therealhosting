@@ -39,6 +39,10 @@ Status colours stay (success `#0B7A55`, warning `#B45309`, danger `#C8261B`). No
 - No shadow at rest. Structure comes from 1px Stone rules and spacing. One elevation for menus, drawers and dialogs.
 - Layout: 12-column, mostly 5/7 and 4/8 splits, left-aligned. Section rhythm 96/128px desktop, 64px mobile. Vary widths: narrow text columns next to full-bleed photos.
 
+### Type scale
+- Marketing pages use only the named sizes in `src/app/globals.css`: `text-title` (page titles), `text-h2-lg` (band and section intros), `text-h2` (section headings), `text-h3`, `text-h4`, `text-stat`, `text-price`, `text-lead`, `text-small`, `text-caption`, plus `text-display` for the home hero. Headings scale with the viewport through `clamp()`, so no `sm:` size pairs are needed.
+- `tests/unit/type-scale.test.ts` fails if an arbitrary `text-[…rem]` size comes back. New names must also be added to `cn()` in `src/lib/utils.ts`.
+
 ### Photography
 - Subjects: people doing web work, the business owners we host for, real hardware in daylight, and our own dashboard. No unrelated craft or still life (see docs/BRAND.md). Product visuals replace decorative photos.
 - Daylight, quiet, people mid-task and not looking at the camera. 8px corners. One grade.

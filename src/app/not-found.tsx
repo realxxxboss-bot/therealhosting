@@ -21,8 +21,8 @@ export default function NotFound() {
       </div>
       <div className="grid flex-1 content-center gap-12 py-16 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="text-[0.9375rem] font-medium text-muted">Error 404</p>
-          <h1 className="mt-4 text-[2.75rem] leading-[1.02] font-semibold tracking-[-0.035em] sm:text-[4rem]">That page is not here.</h1>
+          <p className="text-small font-medium text-muted">Error 404</p>
+          <h1 className="mt-4 text-title font-semibold">That page is not here.</h1>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">The link may be old, or the page has moved. Nothing is broken on your side.</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/" size="lg">

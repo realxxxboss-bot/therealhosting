@@ -46,11 +46,11 @@ export default function StatusPage() {
       <Section>
         <div className="grid gap-12 md:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">Incident history</h2>
+            <h2 className="text-h3 font-semibold">Incident history</h2>
             <p className="mt-5 border-y border-border py-6 text-muted">No incidents have been recorded. When one happens, the notes are published here and stay here.</p>
           </div>
           <div>
-            <h2 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em]">Planned maintenance</h2>
+            <h2 className="text-h3 font-semibold">Planned maintenance</h2>
             <p className="mt-5 border-y border-border py-6 text-muted">Nothing is scheduled.</p>
           </div>
         </div>
