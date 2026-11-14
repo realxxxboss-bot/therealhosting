@@ -41,7 +41,7 @@ export function FaqSection({ title = "Questions people ask us", body, items, ton
     <Section tone={tone}>
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
         <Reveal className="lg:col-span-4">
-          <h2 className="text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[2.5rem]">{title}</h2>
+          <h2 className="text-h2 font-semibold">{title}</h2>
           {body ? <div className="mt-5 text-lg leading-relaxed text-muted">{body}</div> : null}
         </Reveal>
         <div className="lg:col-span-8">

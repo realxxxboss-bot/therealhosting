@@ -16,7 +16,7 @@ export function ProductVisual({ type, className }: { type: SiteType; className?:
         <span className="size-2.5 rounded-full bg-white/25" aria-hidden />
         <span className="ml-2 font-mono text-xs text-white/60">{visual.title}</span>
       </div>
-      <div className="px-5 py-5 font-mono text-[0.8125rem] leading-7 sm:px-6 sm:text-sm">{visual.body}</div>
+      <div className="px-5 py-5 font-mono text-caption leading-7 sm:px-6 sm:text-sm">{visual.body}</div>
       <figcaption className="sr-only">{visual.caption}</figcaption>
     </figure>
   );

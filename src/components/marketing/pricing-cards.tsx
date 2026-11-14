@@ -39,7 +39,7 @@ function Price({ plan, cycle }: { plan: Plan; cycle: BillingCycle }) {
   const amount = formatUSD(effectiveMonthly(plan, cycle));
   return (
     <p className="mt-6 flex items-baseline gap-2">
-      <span className="relative inline-flex overflow-hidden text-[3.25rem] leading-none font-semibold tracking-[-0.04em]">
+      <span className="relative inline-flex overflow-hidden text-price font-semibold">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span key={amount} initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -14, opacity: 0 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}>
             {amount}
@@ -81,7 +81,7 @@ export function PricingCards({ initialType = "nextjs", showTypeSwitch = true, sh
             <ButtonLink href={`/contact?plan=${plan.id}&cycle=${cycle}`} variant={plan.highlight ? "primary" : "secondary"} size="lg" className="mt-7">
               Request {tiers[plan.tier].label}
             </ButtonLink>
-            <dl className="mt-8 border-t border-border text-[0.9375rem]">
+            <dl className="mt-8 border-t border-border text-small">
               {specs.map((spec) => (
                 <div key={spec.label} className="flex items-baseline justify-between gap-4 border-b border-border py-3">
                   <dt className="text-muted">{spec.label}</dt>
@@ -96,7 +96,7 @@ export function PricingCards({ initialType = "nextjs", showTypeSwitch = true, sh
 
       {showCompare ? (
         <div className="mt-14 overflow-x-auto">
-          <table className="w-full min-w-[560px] text-[0.9375rem]">
+          <table className="w-full min-w-[560px] text-small">
             <caption className="pb-4 text-left text-xl font-semibold tracking-[-0.02em]">What changes between {siteTypes[type].short} plans</caption>
             <thead>
               <tr className="border-y border-foreground">

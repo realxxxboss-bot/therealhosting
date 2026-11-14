@@ -31,7 +31,7 @@ export default function FeaturesPage() {
         <Reveal className="mt-12 overflow-x-auto">
           <table className="w-full min-w-[560px] text-left">
             <thead>
-              <tr className="border-y border-foreground text-[0.9375rem]">
+              <tr className="border-y border-foreground text-small">
                 <th scope="col" className="py-3 pr-6 font-medium text-muted">The job</th>
                 <th scope="col" className="w-28 py-3 pr-6 font-medium text-muted">Who</th>
                 <th scope="col" className="py-3 font-medium text-muted">Note</th>
@@ -55,7 +55,7 @@ export default function FeaturesPage() {
       <Section tone="band">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-4">
-            <h2 className="text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[3rem]">{features.never.title}</h2>
+            <h2 className="text-h2-lg font-semibold">{features.never.title}</h2>
           </Reveal>
           <div className="lg:col-span-8">
             <RuledList items={features.never.items} invert />

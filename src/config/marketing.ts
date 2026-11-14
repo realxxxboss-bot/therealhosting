@@ -137,11 +137,6 @@ export const home = {
     ],
     youDo: ["Run your business", "Tell us what you want changed", "Approve the things only you can decide"],
   },
-  steps: [
-    { title: "Tell us about your sites", body: "Send us your domains and where they are hosted today. That is all we need to start." },
-    { title: "We move everything", body: "We copy your sites, test them on a private link, and switch DNS when you are happy. Your old host keeps running until then." },
-    { title: "We look after it", body: "Updates, backups, SSL and monitoring run in the background. You hear from us when something needs your decision." },
-  ],
   dashboard: {
     title: "Everything in one calm place.",
     body: "One dashboard for every site, deploy, backup, invoice and support ticket. This is the real thing, not a drawing.",
@@ -551,10 +546,6 @@ export const domains = {
 };
 
 export const contact = {
-  next: [
-    { title: "A person reads it", body: "Your message is read by a real person who knows the platform, not a sales script." },
-    { title: "We reply with a suggestion", body: "Which package fits, what a move would involve, and anything we need to know first." },
-    { title: "You decide", body: "No follow-up calls and no pressure. If we are not the right fit, we say so." },
-  ],
+  next: "A real person reads your message and replies with a suggestion: which package fits, what a move would involve, and anything we need to know first. Then you decide. No follow-up calls and no pressure; if we are not the right fit, we say so.",
   helpful: ["The addresses of the sites you have today", "Where they are hosted now", "Whether they are Next.js, WordPress or plain HTML", "Anything that is going wrong at the moment"],
 };

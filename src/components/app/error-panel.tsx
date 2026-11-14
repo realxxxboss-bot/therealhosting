@@ -12,8 +12,8 @@ export function ErrorPanel({ error, retry, homeHref = "/" }: { error: unknown; r
   }, [error]);
   return (
     <div role="alert" className="mx-auto max-w-xl px-4 py-20 sm:px-6">
-      <p className="text-[0.9375rem] font-medium text-muted">Something went wrong</p>
-      <h1 className="mt-3 text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em]">This page didn&apos;t load.</h1>
+      <p className="text-small font-medium text-muted">Something went wrong</p>
+      <h1 className="mt-3 text-h3 font-semibold">This page didn&apos;t load.</h1>
       <p className="mt-4 text-lg leading-relaxed text-muted">
         It is usually a short problem on our side. Try again in a moment. If it keeps happening, email{" "}
         <a className="link" href={`mailto:${site.contact.email}`}>
@@ -29,7 +29,7 @@ export function ErrorPanel({ error, retry, homeHref = "/" }: { error: unknown; r
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Button onClick={() => retry()}>Try again</Button>
-        <a href={homeHref} className="inline-flex items-center px-3 text-[0.9375rem] underline underline-offset-4">
+        <a href={homeHref} className="inline-flex items-center px-3 text-small underline underline-offset-4">
           Go back to the start
         </a>
       </div>

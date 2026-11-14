@@ -31,8 +31,8 @@ export function Section({ children, className, id, tone = "plain" }: { children:
 export function SectionHeading({ kicker, title, body, className, invert = false }: { kicker?: string; title: string; body?: ReactNode; className?: string; invert?: boolean }) {
   return (
     <Reveal className={cn("max-w-2xl", className)}>
-      {kicker ? <p className={cn("text-[0.9375rem] font-medium", invert ? "text-white/70" : "text-primary dark:text-accent")}>{kicker}</p> : null}
-      <h2 className={cn("text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] text-balance sm:text-[2.5rem]", kicker && "mt-3")}>{title}</h2>
+      {kicker ? <p className={cn("text-small font-medium", invert ? "text-white/70" : "text-primary dark:text-accent")}>{kicker}</p> : null}
+      <h2 className={cn("text-h2 font-semibold text-balance", kicker && "mt-3")}>{title}</h2>
       {body ? <div className={cn("mt-5 text-lg leading-relaxed", invert ? "text-white/80" : "text-muted")}>{body}</div> : null}
     </Reveal>
   );
@@ -61,7 +61,7 @@ export function PageHero({
   return (
     <div className="border-b border-border">
       <Container className={cn("grid gap-10 py-14 sm:py-20", photo && "lg:grid-cols-12 lg:items-end lg:gap-12")}>
-        <HeroIntro lines={heading} className={cn(photo ? "lg:col-span-6 lg:pb-4" : "max-w-4xl")} headingClassName="text-[2.75rem] sm:text-[3.5rem] lg:text-[4rem] leading-[1.02] tracking-[-0.035em]">
+        <HeroIntro lines={heading} className={cn(photo ? "lg:col-span-6 lg:pb-4" : "max-w-4xl")} headingClassName="text-title">
           {body ? <div className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">{body}</div> : null}
           {children}
         </HeroIntro>

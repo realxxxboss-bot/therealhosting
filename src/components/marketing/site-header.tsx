@@ -14,7 +14,7 @@ import { cn, formatUSD } from "@/lib/utils";
 import { MobileNav } from "./mobile-nav";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const linkClass = "relative flex h-[4.5rem] items-center px-3 text-[0.9375rem] font-medium text-foreground/70 transition-colors duration-200 hover:text-foreground";
+const linkClass = "relative flex h-[4.5rem] items-center px-3 text-small font-medium text-foreground/70 transition-colors duration-200 hover:text-foreground";
 
 function ActiveRule() {
   return <motion.span layoutId="nav-rule" className="absolute inset-x-3 bottom-0 h-0.5 bg-primary dark:bg-accent" transition={{ duration: 0.3, ease }} />;

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 function Meta({ post }: { post: Post }) {
   return (
-    <p className="text-[0.9375rem] text-muted">
+    <p className="text-small text-muted">
       <span className="font-medium text-foreground">{post.topic}</span>
       <span className="mx-3 inline-block h-3 w-px bg-border align-middle" aria-hidden />
       <time dateTime={post.date}>{formatLongDate(post.date)}</time>
@@ -36,7 +36,7 @@ export default function BlogIndex() {
             <Photo photo={photos[featured.cover]} priority sizes="(min-width: 1024px) 58vw, 100vw" className="aspect-[16/10] lg:col-span-7 [&_img]:transition-transform [&_img]:duration-500 [&_img]:ease-[var(--ease-out)] group-hover:[&_img]:scale-[1.03]" />
             <div className="lg:col-span-5">
               <Meta post={featured} />
-              <h2 className="mt-4 text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] underline decoration-transparent decoration-2 underline-offset-[6px] transition-colors duration-200 group-hover:decoration-current sm:text-[2.5rem]">{featured.title}</h2>
+              <h2 className="mt-4 text-h2 font-semibold underline decoration-transparent decoration-2 underline-offset-[6px] transition-colors duration-200 group-hover:decoration-current">{featured.title}</h2>
               <p className="mt-4 text-lg leading-relaxed text-muted">{featured.description}</p>
             </div>
           </Link>

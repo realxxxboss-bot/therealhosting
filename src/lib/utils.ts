@@ -1,5 +1,10 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/** Knows our named font sizes (globals.css), so `text-h2` replaces `text-display` instead of being read as a colour. */
+const twMerge = extendTailwindMerge({
+  extend: { theme: { text: ["caption", "lead", "display", "small", "title", "h2-lg", "h2", "h3", "h4", "stat", "price"] } },
+});
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));

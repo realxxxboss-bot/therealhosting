@@ -15,10 +15,10 @@ export function SiteFooter() {
             <Link href="/" aria-label={`${site.name} home`} className="inline-block text-white">
               <Logo />
             </Link>
-            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-white/70">
+            <p className="mt-5 max-w-xs text-small leading-relaxed text-white/70">
               Managed hosting for Next.js, WordPress and static sites. Servers in Germany (EU). A real person answers, every day.
             </p>
-            <p className="mt-6 text-[0.9375rem]">
+            <p className="mt-6 text-small">
               <a className="font-medium underline decoration-white/30 underline-offset-4 transition-colors duration-200 hover:decoration-white" href={`mailto:${site.contact.email}`}>
                 {site.contact.email}
               </a>
@@ -32,7 +32,7 @@ export function SiteFooter() {
                 <ul className="mt-4 grid gap-2.5">
                   {group.links.map((link) => (
                     <li key={link.href}>
-                      <Link href={link.href} className="text-[0.9375rem] text-white/90 underline decoration-transparent underline-offset-4 transition-colors duration-200 hover:decoration-white/70">
+                      <Link href={link.href} className="text-small text-white/90 underline decoration-transparent underline-offset-4 transition-colors duration-200 hover:decoration-white/70">
                         {link.label}
                       </Link>
                     </li>

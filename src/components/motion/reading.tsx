@@ -48,7 +48,7 @@ export function ArticleWithContents({ children, className }: { children: ReactNo
           <ul className="mt-4 grid gap-0.5 border-l border-border">
             {headings.map((h) => (
               <li key={h.id}>
-                <a href={`#${h.id}`} aria-current={active === h.id ? "location" : undefined} className={cn("-ml-px block border-l py-1.5 pl-4 text-[0.9375rem] transition-colors duration-200", active === h.id ? "border-primary font-medium text-foreground dark:border-accent" : "border-transparent text-muted hover:text-foreground")}>
+                <a href={`#${h.id}`} aria-current={active === h.id ? "location" : undefined} className={cn("-ml-px block border-l py-1.5 pl-4 text-small transition-colors duration-200", active === h.id ? "border-primary font-medium text-foreground dark:border-accent" : "border-transparent text-muted hover:text-foreground")}>
                   {h.text}
                 </a>
               </li>

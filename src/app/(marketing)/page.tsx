@@ -62,7 +62,7 @@ export default function HomePage() {
           {home.hero.facts.map((fact) => (
             <li key={fact.title} className="border-b border-border py-6 sm:pr-8 lg:border-b-0">
               <p className="font-semibold">{fact.title}</p>
-              <p className="mt-1 text-[0.9375rem] text-muted">{fact.body}</p>
+              <p className="mt-1 text-small text-muted">{fact.body}</p>
             </li>
           ))}
         </ul>
@@ -71,7 +71,7 @@ export default function HomePage() {
       <Section tone="band" className="mt-16 sm:mt-24">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-7">
-            <h2 className="text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.035em] sm:text-[3.25rem]">{home.why.title}</h2>
+            <h2 className="text-h2-lg font-semibold">{home.why.title}</h2>
           </Reveal>
           <Reveal className="lg:col-span-5 lg:pt-3" delay={0.08}>
             <p className="text-lg leading-relaxed text-white/85">{home.why.body}</p>
@@ -80,7 +80,7 @@ export default function HomePage() {
         <dl className="mt-12 md:hidden">
           {home.why.rows.map((row) => (
             <div key={row.label} className="border-t border-white/30 py-6">
-              <dt className="text-[0.9375rem] font-medium text-white/70">{row.label}</dt>
+              <dt className="text-small font-medium text-white/70">{row.label}</dt>
               {row.values.map((value, i) => (
                 <dd key={value} className={i === 2 ? "mt-3 rounded-[4px] bg-white px-4 py-3 text-zaffre-700" : "mt-3"}>
                   <span className={i === 2 ? "block text-sm font-medium" : "block text-sm text-white/70"}>{home.why.columns[i]}</span>
@@ -94,7 +94,7 @@ export default function HomePage() {
           <table className="w-full text-left">
             <caption className="sr-only">How Zaffre compares with shared hosting and developer platforms</caption>
             <thead>
-              <tr className="border-b border-white/30 text-[0.9375rem]">
+              <tr className="border-b border-white/30 text-small">
                 <td className="w-[16%] py-4" />
                 {home.why.columns.map((col, i) => (
                   <th key={col} scope="col" className={i === 2 ? "w-[28%] py-4 pl-6 font-semibold" : "w-[28%] py-4 pr-6 font-medium text-white/70"}>
@@ -106,7 +106,7 @@ export default function HomePage() {
             <tbody>
               {home.why.rows.map((row) => (
                 <tr key={row.label} className="border-b border-white/30 align-top">
-                  <th scope="row" className="py-6 pr-6 text-[0.9375rem] font-medium text-white/70">
+                  <th scope="row" className="py-6 pr-6 text-small font-medium text-white/70">
                     {row.label}
                   </th>
                   {row.values.map((value, i) => (
@@ -119,7 +119,7 @@ export default function HomePage() {
             </tbody>
           </table>
         </div>
-        <p className="mt-8 text-[0.9375rem] text-white/75">
+        <p className="mt-8 text-small text-white/75">
           The public list prices behind this are on the{" "}
           <Link href="/pricing#renewal" className="font-medium text-white underline decoration-white/50 underline-offset-4 hover:decoration-white">
             pricing page
@@ -133,9 +133,9 @@ export default function HomePage() {
         <div className="mt-14 grid gap-20 sm:mt-20 lg:gap-28">
           {home.types.map((item, i) => (
             <VisualRow key={item.type} type={item.type} flip={i % 2 === 1}>
-              <h3 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] sm:text-[2rem]">{item.title}</h3>
+              <h3 className="text-h3 font-semibold">{item.title}</h3>
               <p className="mt-4 text-lg leading-relaxed text-muted">{item.body}</p>
-              <LineList items={item.points} className="mt-7 text-[0.9375rem]" />
+              <LineList items={item.points} className="mt-7 text-small" />
               <p className="mt-7 flex flex-wrap items-baseline gap-x-5 gap-y-2">
                 <span className="text-lg font-semibold">From {fromPrice(item.type)} a month</span>
                 <TextLink href={`/hosting/${item.type}`}>More about {siteTypes[item.type].label}</TextLink>
@@ -166,31 +166,24 @@ export default function HomePage() {
 
       <Section>
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-4">
-            <SectionHeading title="Switching takes one message." body="You tell us where your sites are. We do the move and you approve it." />
+          <div className="lg:col-span-5">
+            <SectionHeading title="Switching takes one message." body="Tell us where your sites are. We copy them, test them on a private link, and switch only when you approve. Your old host keeps running until then." />
             <p className="mt-8">
               <ButtonLink href="/migration" variant="secondary" size="lg">
                 How a move works
               </ButtonLink>
             </p>
           </div>
-          <ol className="grid gap-8 sm:grid-cols-3 lg:col-span-8">
-            {home.steps.map((step, i) => (
-              <li key={step.title} className="border-t border-foreground pt-5">
-                <span className="text-[2.5rem] leading-none font-semibold tracking-[-0.04em] text-primary dark:text-accent">{i + 1}</span>
-                <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em]">{step.title}</h3>
-                <p className="mt-2 leading-relaxed text-muted">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div className="mt-16 grid gap-6 border-t border-border pt-8 lg:grid-cols-12 lg:gap-12">
-          <p className="font-semibold lg:col-span-4">We move sites from</p>
-          <ul className="grid gap-x-10 gap-y-2 text-muted sm:grid-cols-2 lg:col-span-8">
-            {migration.from.map((from) => (
-              <li key={from.title}>{from.title}</li>
-            ))}
-          </ul>
+          <div className="lg:col-span-6 lg:col-start-7">
+            <p className="font-semibold">We move sites from</p>
+            <ul className="mt-4 grid gap-x-10 border-t border-foreground sm:grid-cols-2">
+              {migration.from.map((from) => (
+                <li key={from.title} className="border-b border-border py-3.5 text-muted">
+                  {from.title}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Section>
 
@@ -252,13 +245,13 @@ export default function HomePage() {
         </div>
         <div className="mt-16 grid gap-6 lg:grid-cols-12 lg:gap-12">
           <h3 className="text-xl font-semibold tracking-[-0.02em] lg:col-span-5">Included in every plan</h3>
-          <LineList items={includedInEveryPlan} columns={2} className="text-[0.9375rem] lg:col-span-7" />
+          <LineList items={includedInEveryPlan} columns={2} className="text-small lg:col-span-7" />
         </div>
       </Section>
 
       <Section tone="sunk">
         <PhotoRow photo={photos.support} flip>
-          <h2 className="text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[2.5rem]">{home.support.title}</h2>
+          <h2 className="text-h2 font-semibold">{home.support.title}</h2>
           <p className="mt-5 text-lg leading-relaxed text-muted">{home.support.body}</p>
           <p className="mt-5 text-muted">{site.contact.supportHours}.</p>
           <p className="mt-8">
