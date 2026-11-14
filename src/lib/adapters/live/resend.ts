@@ -16,7 +16,7 @@ export function createResendAdapter(apiKey: string): MessageAdapter {
         const response = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ from, to: [message.to], subject: message.subject, text: message.body, reply_to: site.contact.supportEmail }),
+          body: JSON.stringify({ from, to: [message.to], subject: message.subject, text: message.body, reply_to: message.replyTo ?? site.contact.email }),
           signal: AbortSignal.timeout(10_000),
         });
         if (!response.ok) {

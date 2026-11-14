@@ -52,4 +52,6 @@ export interface NavItem {
   badge?: number;
   /** Match exact path only (for the overview item). */
   exact?: boolean;
+  /** Heading shown above the first item of each group (admin sidebar). */
+  group?: string;
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import { AppShell, ShellSkeleton } from "@/components/app/app-shell";
 import { UserMenu } from "@/components/app/user-menu";
@@ -11,6 +12,8 @@ import { roleLabels } from "@/lib/auth/permissions";
 import { Alert } from "@/components/ui/alert";
 
 export const instant = false;
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -53,8 +56,8 @@ async function DashboardFrame({ children }: { children: ReactNode }) {
               </option>
             ))}
           </select>
-          <button type="submit" className="cursor-pointer rounded-[4px] border border-border px-2 text-xs">
-            Go
+          <button type="submit" className="cursor-pointer rounded-[4px] border border-border px-3 py-1 text-sm font-medium hover:bg-surface-2">
+            Switch
           </button>
         </form>
       ) : (
@@ -75,6 +78,11 @@ async function DashboardFrame({ children }: { children: ReactNode }) {
         <>
           {viewer.impersonator ? <ImpersonationBanner adminName={viewer.impersonator.name} clientName={viewer.account.name} /> : null}
           {adapterMode() === "mock" ? <DemoBanner /> : null}
+          {viewer.account.status === "suspended" ? (
+            <div className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6">
+              <Alert tone="warning">This account is suspended, so changes to sites, domains, mailboxes and team are paused. You can still pay invoices and open a support ticket, and we will restore it.</Alert>
+            </div>
+          ) : null}
           {announcement ? (
             <div className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6">
               <Alert tone={announcement.tone}>{announcement.message}</Alert>

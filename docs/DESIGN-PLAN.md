@@ -40,7 +40,7 @@ Status colours stay (success `#0B7A55`, warning `#B45309`, danger `#C8261B`). No
 - Layout: 12-column, mostly 5/7 and 4/8 splits, left-aligned. Section rhythm 96/128px desktop, 64px mobile. Vary widths: narrow text columns next to full-bleed photos.
 
 ### Photography
-- Subjects: the customer's world (shops, studios, cafés, makers), calm desk work, and cobalt craft (glazed ceramics, glass, blue-and-white tile) for the brand story.
+- Subjects: people doing web work, the business owners we host for, real hardware in daylight, and our own dashboard. No unrelated craft or still life (see docs/BRAND.md). Product visuals replace decorative photos.
 - Daylight, quiet, people mid-task and not looking at the camera. 8px corners. One grade.
 - Banned: handshakes, pointing at screens, server rooms with blue LEDs, globes, headsets, grins.
 - Never caption a stock person as staff, a client or a testimonial. Credits page lists every photographer.

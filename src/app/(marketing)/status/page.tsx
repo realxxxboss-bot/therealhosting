@@ -22,9 +22,9 @@ const barColor = { up: "bg-success", degraded: "bg-warning", down: "bg-danger", 
 
 const how = [
   { title: "Checked from outside", body: "Monitoring runs outside our own servers, so this page and our alerts keep working during an incident." },
-  { title: "A person investigates", body: "An alert goes to the people who run the servers. They look at it during support hours and write down what they find." },
+  { title: "A person investigates", body: "An alert goes to a real person, who looks at it as soon as they see it and writes down what they find." },
   { title: "You hear from us", body: "If your site is affected, we tell you by email what happened, what we did, and whether you need to do anything." },
-  { title: "Maintenance is announced", body: "Planned work is posted here and sent to affected clients before it starts." },
+  { title: "Maintenance is announced", body: "Planned work is posted here and emailed to affected clients at least 48 hours before it starts." },
 ];
 
 export default function StatusPage() {
@@ -81,7 +81,7 @@ async function LiveStatus() {
         <p className="mt-1 text-muted">
           {measured
             ? `Last checked ${formatDateTime(new Date(now).toISOString())}.`
-            : `${site.name} has not launched. The services below are listed so you can see what will be measured. We show "no data" instead of estimates until real measurements exist.`}
+            : `Monitoring is not connected yet. The services below are listed so you can see what will be measured. We show "no data" instead of estimates until real measurements exist.`}
         </p>
       </div>
       <ul className="mt-10 border-t border-foreground">

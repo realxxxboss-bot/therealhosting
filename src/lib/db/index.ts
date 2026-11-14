@@ -37,7 +37,8 @@ async function connect(): Promise<Database> {
       // Postgres advisory lock while it works, so several copies starting together
       // apply each migration once.
       const { migrate } = await import("drizzle-orm/postgres-js/migrator");
-      const migrator = postgres(url, { max: 1, onnotice: () => {} });
+      // A pooled connection (Neon's default) can't hold a session-level lock, so use the direct one when given.
+      const migrator = postgres(process.env.DATABASE_URL_UNPOOLED || url, { max: 1, onnotice: () => {} });
       try {
         await migrator`select pg_advisory_lock(${MIGRATION_LOCK})`;
         await migrate(drizzle(migrator), { migrationsFolder });

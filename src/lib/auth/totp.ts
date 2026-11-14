@@ -50,16 +50,24 @@ export function totpCode(secret: string, timeMs: number): string {
   return String(binary % 10 ** DIGITS).padStart(DIGITS, "0");
 }
 
-/** Accepts the current code and one step either side, to allow for clock drift. */
-export function verifyTotp(secret: string, code: string, timeMs: number = Date.now()): boolean {
-  if (!/^\d{6}$/.test(code)) return false;
+/**
+ * Accepts the current code and one step either side, to allow for clock drift.
+ * Returns the time step the code belongs to, so callers can refuse a code that was already used.
+ */
+export function matchTotpStep(secret: string, code: string, timeMs: number = Date.now()): number | null {
+  if (!/^\d{6}$/.test(code)) return null;
   const given = Buffer.from(code);
-  let ok = false;
+  const current = Math.floor(timeMs / 1000 / STEP_SECONDS);
+  let matched: number | null = null;
   for (const drift of [-1, 0, 1]) {
     const expected = Buffer.from(totpCode(secret, timeMs + drift * STEP_SECONDS * 1000));
-    if (timingSafeEqual(given, expected)) ok = true;
+    if (timingSafeEqual(given, expected)) matched = current + drift;
   }
-  return ok;
+  return matched;
+}
+
+export function verifyTotp(secret: string, code: string, timeMs: number = Date.now()): boolean {
+  return matchTotpStep(secret, code, timeMs) !== null;
 }
 
 /** Link that authenticator apps understand (also what a QR code would contain). */

@@ -7,6 +7,7 @@ import { fromRow, userColumns } from "@/lib/data/rows";
 import type { Account, Membership, User } from "@/lib/data/types";
 import { getDb, schema as t, usesSampleDatabase } from "@/lib/db";
 import { newId } from "@/lib/db/ids";
+import { ipFromHeaders } from "@/lib/request";
 import { appSecret, hashToken, newToken } from "./secrets";
 import { sign, verify } from "./token";
 
@@ -65,7 +66,7 @@ export async function createSession(input: { uid: string; acc?: string }): Promi
     tokenHash: hashToken(tok),
     accountId: input.acc,
     device: describeDevice(h.get("user-agent")),
-    location: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "",
+    location: ipFromHeaders(h),
     expiresAt: new Date(exp * 1000).toISOString(),
   });
   await setCookie({ uid: input.uid, tok, acc: input.acc, exp });
@@ -195,12 +196,24 @@ export async function requireViewer(): Promise<Viewer> {
   };
 }
 
-/** Current admin, or redirect. While impersonating, admin pages are not available. */
-export async function requireAdmin(): Promise<User> {
+/** Signed-in admin, or redirect. While impersonating, admin pages are not available. Does not check 2FA. */
+export async function requireAdminSession(): Promise<User> {
   const session = await readSession();
   if (!session) redirect("/sign-in");
   if (session.imp) redirect("/dashboard");
   const user = await findUser(session.uid);
   if (!user?.isAdmin) redirect("/dashboard");
+  return user;
+}
+
+/** Admin accounts can open any client's data, so they must use two-factor (not in the sample preview). */
+export function adminNeedsTwoFactor(user: Pick<User, "twoFactorEnabled">): boolean {
+  return !user.twoFactorEnabled && !usesSampleDatabase();
+}
+
+/** Current admin with two-factor on, or redirect to set it up. Every admin page and action starts here. */
+export async function requireAdmin(): Promise<User> {
+  const user = await requireAdminSession();
+  if (adminNeedsTwoFactor(user)) redirect("/admin/account");
   return user;
 }

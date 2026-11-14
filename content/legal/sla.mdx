@@ -1,32 +1,34 @@
 import { site } from "@/config/site";
 
-This page explains what we commit to. We do not publish an uptime percentage yet: we will only publish one when we have real measurements to back it up. Live service health is on our [status page](/status).
+This page explains what we commit to. We do not publish an uptime percentage yet: we will only publish one when we have real measurements to back it up. Service health will be shown on our [status page](/status) once monitoring is connected.
 
 ## What we do for every site
 
 - **Monitoring** from outside our own network, checking your site regularly.
-- **Alerts** to our team when a site goes down, and to you by email (and WhatsApp when available).
-- **Investigation** by a person as soon as an alert is raised during support hours.
+- **Alerts** to us when a site goes down, and to you by email.
+- **Investigation** by a person, as soon as we see an alert.
 - **Incident notes**: after any outage, we tell you what happened and what we changed.
 
 ## Support response targets
 
+We answer support every day, including weekends.
+
 | Priority | Example | First response target |
 | --- | --- | --- |
-| Urgent | Site down, data loss | As fast as possible, within support hours |
-| High | Feature broken, slow site | Same business day |
-| Normal | Questions, changes | Within one business day |
+| Urgent | Site down, data at risk | As soon as we see it, and within 24 hours at most |
+| High | Something broken, slow site | Within 24 hours |
+| Normal | Questions, changes | Within 24 hours |
 
-Support hours: {site.contact.supportHours}.
+These are targets, not guarantees. Support hours: {site.contact.supportHours}.
 
 ## Maintenance
 
-Planned maintenance is announced in your dashboard at least 48 hours in advance. We schedule it at low-traffic times and avoid downtime wherever possible.
+Planned maintenance is announced on our status page and by email at least 48 hours in advance. We schedule it at low-traffic times and plan it to avoid downtime.
 
 ## Backups
 
-Daily off-site backups are kept for the number of days in your plan. Restores are done by our team on request.
+Daily off-site backups are kept for the number of days in your plan. Restores are done by us on request.
 
-## Credits
+## Outages
 
-If a problem caused by us takes your site offline for an extended time, contact support. We will review it with you and offer a fair service credit.
+If a problem caused by us takes your site offline for an extended time, contact support. We will review it with you, explain what happened, and agree a fair credit against your next invoice. This does not limit your rights under our [Terms](/legal/terms).

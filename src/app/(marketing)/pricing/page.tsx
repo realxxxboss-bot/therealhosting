@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { competitorBenchmark, includedInEveryPlan, plansByType, YEARLY_MONTHS_CHARGED } from "@/config/plans";
 import { pricing, pricingFaq } from "@/config/marketing";
 import { PageHero, Section, SectionHeading } from "@/components/marketing/section";
@@ -33,6 +34,9 @@ export default function PricingPage() {
 
       <Section className="py-12 sm:py-16 lg:py-20">
         <PricingCards showCompare />
+        <p className="mt-8 max-w-[70ch] text-[0.9375rem] text-muted">
+          Prices are in US dollars and exclude taxes. If you are a consumer and VAT applies to you, we show the total including VAT before you order. Consumers in the UK and EU can cancel a new package within 14 days. See our <Link href="/legal/refund" className="link">Refund Policy</Link>.
+        </p>
       </Section>
 
       <Section tone="sunk">

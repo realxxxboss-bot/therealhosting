@@ -7,12 +7,13 @@ import { site } from "@/config/site";
 import { getAdapters, providerMessage } from "@/lib/adapters";
 import { hashPassword, MIN_PASSWORD_LENGTH, verifyPassword } from "@/lib/auth/password";
 import { decrypt, encrypt, hashToken } from "@/lib/auth/secrets";
-import { deleteUserSessions, readSession } from "@/lib/auth/session";
-import { formatSecret, generateTotpSecret, totpUri, verifyTotp } from "@/lib/auth/totp";
+import { deleteUserSessions, findUser, readSession } from "@/lib/auth/session";
+import { formatSecret, generateTotpSecret, matchTotpStep, totpUri } from "@/lib/auth/totp";
 import { getViewer } from "@/lib/auth/viewer";
 import { assertCan, audit, ForbiddenError } from "@/lib/data/client";
 import { defaultNotificationPrefs } from "@/lib/data/defaults";
-import type { NotificationKind } from "@/lib/data/types";
+import type { NotificationKind, User } from "@/lib/data/types";
+import { redirect } from "next/navigation";
 import { getDb, schema as t, usesSampleDatabase } from "@/lib/db";
 import { newId } from "@/lib/db/ids";
 import { fieldErrors, type FormState } from "@/lib/forms";
@@ -37,8 +38,33 @@ const passwordSchema = z
   })
   .refine((d) => d.password === d.confirm, { path: ["confirm"], message: "The two passwords don't match." });
 
-export async function changePassword(_prev: FormState, formData: FormData): Promise<FormState> {
+/**
+ * Who is changing their own security settings. Admins have no client membership, so they
+ * can't go through getViewer(); they use the same actions from /admin/account.
+ */
+async function securityActor(): Promise<{ user: User; impersonator: User | null; account?: { id: string }; sessionId?: string }> {
+  const session = await readSession();
+  if (!session) redirect("/sign-in");
+  if (!session.imp) {
+    const user = await findUser(session.uid);
+    if (user?.isAdmin) return { user, impersonator: null, sessionId: session.sessionId };
+  }
   const viewer = await getViewer();
+  return { user: viewer.user, impersonator: viewer.impersonator, account: viewer.account, sessionId: viewer.sessionId };
+}
+
+/** Checks a 6-digit code and refuses one that was already used (replay within its 90-second window). */
+async function acceptTotp(userId: string, secret: string | null, code: string, lastStep: number | null): Promise<boolean> {
+  if (secret === null) return usesSampleDatabase() && code === "123456";
+  const step = matchTotpStep(secret, code);
+  if (step === null || (lastStep !== null && step <= lastStep)) return false;
+  const db = await getDb();
+  await db.update(t.users).set({ totpLastStep: step }).where(eq(t.users.id, userId));
+  return true;
+}
+
+export async function changePassword(_prev: FormState, formData: FormData): Promise<FormState> {
+  const viewer = await securityActor();
   if (viewer.impersonator) return { ok: false, message: "Passwords can't be changed while signed in as a client." };
   const parsed = passwordSchema.safeParse({ current: formData.get("current"), password: formData.get("password"), confirm: formData.get("confirm") });
   if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error) };
@@ -58,7 +84,7 @@ export type TwoFactorSetupState = FormState & { secret?: string; uri?: string };
 
 /** Step 1 of turning 2FA on: create a secret and show it. Nothing is enabled until a code is confirmed. */
 export async function startTwoFactorSetup(): Promise<TwoFactorSetupState> {
-  const viewer = await getViewer();
+  const viewer = await securityActor();
   if (viewer.impersonator) return { ok: false, message: "Security settings can't be changed while signed in as a client." };
   if (viewer.user.twoFactorEnabled) return { ok: false, message: "Two-factor authentication is already on." };
   const secret = generateTotpSecret();
@@ -68,15 +94,15 @@ export async function startTwoFactorSetup(): Promise<TwoFactorSetupState> {
 }
 
 export async function toggleTwoFactor(_prev: FormState, formData: FormData): Promise<FormState> {
-  const viewer = await getViewer();
+  const viewer = await securityActor();
   if (viewer.impersonator) return { ok: false, message: "Security settings can't be changed while signed in as a client." };
   const enable = formData.get("enable") === "true";
   const code = String(formData.get("code") ?? "").replace(/\s/g, "");
   if (!(await rateLimit(`2fa-setup:${viewer.user.id}`, 8, 10 * 60_000)).ok) return { ok: false, message: "Too many attempts. Please try again in a few minutes." };
   const db = await getDb();
-  const [row] = await db.select({ totpSecret: t.users.totpSecret }).from(t.users).where(eq(t.users.id, viewer.user.id));
+  const [row] = await db.select({ totpSecret: t.users.totpSecret, totpLastStep: t.users.totpLastStep }).from(t.users).where(eq(t.users.id, viewer.user.id));
   const secret = row?.totpSecret ? decrypt(row.totpSecret) : null;
-  const codeOk = (secret !== null && verifyTotp(secret, code)) || (usesSampleDatabase() && secret === null && code === "123456");
+  const codeOk = await acceptTotp(viewer.user.id, secret, code, row?.totpLastStep ?? null);
 
   if (enable) {
     if (!secret) return { ok: false, message: "Start the setup again to get a new key." };
@@ -85,7 +111,8 @@ export async function toggleTwoFactor(_prev: FormState, formData: FormData): Pro
   } else {
     // Turning 2FA off needs a current code, so a borrowed session can't quietly remove it.
     if (!codeOk) return { ok: false, errors: { code: "Enter the 6-digit code from your app to turn this off." } };
-    await db.update(t.users).set({ twoFactorEnabled: false, totpSecret: null }).where(eq(t.users.id, viewer.user.id));
+    if (viewer.user.isAdmin && !usesSampleDatabase()) return { ok: false, message: "Two-factor authentication is required for admin accounts." };
+    await db.update(t.users).set({ twoFactorEnabled: false, totpSecret: null, totpLastStep: null }).where(eq(t.users.id, viewer.user.id));
   }
   await audit(viewer, enable ? "security.2fa_enable" : "security.2fa_disable");
   refresh();
@@ -93,7 +120,7 @@ export async function toggleTwoFactor(_prev: FormState, formData: FormData): Pro
 }
 
 export async function revokeSession(_prev: FormState, formData: FormData): Promise<FormState> {
-  const viewer = await getViewer();
+  const viewer = await securityActor();
   const sessionId = String(formData.get("sessionId") ?? "");
   if (sessionId === viewer.sessionId) return { ok: false, message: "That is this device. Use Sign out instead." };
   const db = await getDb();

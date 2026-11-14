@@ -39,6 +39,11 @@ export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) 
       <Container className="py-14 sm:py-20">
         <ArticleWithContents>
           <div className="max-w-[68ch]">
+            {legalDraft ? (
+              <p className="mb-6 rounded-[4px] bg-warning-soft px-4 py-3 text-[0.9375rem]">
+                {site.name} has not launched yet. This document is a draft that is being reviewed and may change before the service opens.
+              </p>
+            ) : null}
             <section aria-labelledby="in-short" className="border-y border-foreground py-6">
               <h2 id="in-short" className="text-xl font-semibold tracking-[-0.02em]">
                 In short
@@ -50,16 +55,11 @@ export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) 
               </ul>
               <p className="mt-4 text-[0.9375rem] text-muted">This summary is a reading aid. The full text below is what applies.</p>
             </section>
-            {legalDraft ? (
-              <p className="mt-6 rounded-[4px] bg-warning-soft px-4 py-3 text-[0.9375rem]">
-                {site.name} has not launched yet. This document is a draft that is being reviewed and may change before the service opens.
-              </p>
-            ) : null}
             <div className="prose-zaffre mt-10">
               <Body />
             </div>
             <p className="mt-12 border-t border-border pt-6 text-muted">
-              Questions about this document? Write to <TextLink href={`mailto:${site.contact.supportEmail}`}>{site.contact.supportEmail}</TextLink>.
+              Questions about this document? Write to <TextLink href={`mailto:${site.contact.email}`}>{site.contact.email}</TextLink>.
             </p>
           </div>
         </ArticleWithContents>

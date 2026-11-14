@@ -233,3 +233,39 @@ The handle has two e's while the brand has one. We use the handle exactly as giv
 The owner asked for formal, standard terms, "similar to Hostinger", and confirmed the legal name as Zaffre. The Terms now follow the usual structure for a hosting company: definitions, account, services, fees, responsibilities, IP, data protection, backups, third parties, suspension, termination, warranties, liability cap, indemnity, force majeure, changes, notices, general clauses and governing law. Our own promises are kept: no renewal price increase, notice before suspension for late payment (14 days after the due date), 30 days to take a copy of your data.
 
 Governing law is England and Wales. It is widely used in international hosting contracts, matches the UK GDPR reference in the Privacy Policy, and suits the first client. Consumers keep the mandatory protections of their own country. When a company is registered, the legal name and possibly the governing law should match it; both are one line in `src/config/site.ts`. The documents stay marked as drafts until a lawyer has reviewed them.
+
+## D-018 Production hardening before the first real client
+
+**Date:** 2026-11-13
+
+- **Live mode by default with a real database.** When `ADAPTER_MODE` is not set, a `DATABASE_URL` means live mode. Connecting the database alone can no longer leave real clients looking at demo data and the demo banner. `ADAPTER_MODE=mock` still works on purpose (a staging copy), and the startup check warns about it.
+- **No silent email loss.** The sample-data preview never sends real email, even with a Resend key, because its demo admin login is public. With a real database and no key, the server logs an error at start, and the contact form tells the visitor to email us instead of claiming it has their message. Contact-form emails set reply-to to the visitor.
+- **Admins must use two-factor.** Admin accounts can open every client's data. `requireAdmin` sends an admin without 2FA to `/admin/account` to set it up, and `loadAdminStore` checks for an admin itself. Not enforced on the sample database, so the public demo keeps working. A used code can't be replayed inside its 90-second window (`users.totp_last_step`).
+- **Static Content Security Policy, not nonces.** A nonce needs every page rendered per request, which would throw away the static marketing pages. The policy still blocks framing, plugins, foreign forms, foreign scripts and images except Unsplash's CDN. Inline scripts are allowed (Next's bootstrap, theme, JSON-LD).
+- **Client IP from the right of `X-Forwarded-For`**, counting `TRUSTED_PROXY_HOPS` (default 1). The left-most entry is whatever the visitor sends.
+- **Suspended accounts** can still view, pay and open tickets; changes to sites, domains, mailboxes and team are refused with a clear message. An admin acting as the client can still fix things.
+- **Error pages, health check and startup check.** `error.tsx` in each area and `global-error.tsx` show a reference (the error digest) that matches the server log line written by `onRequestError`. `/api/health` checks the database. `src/lib/env-check.ts` lists missing or half-set settings by name at start, never values.
+- **Migrations on Vercel** run at build time (`npm run db:migrate`) against `DATABASE_URL_UNPOOLED`, with the same advisory lock as the app, and `DATABASE_AUTO_MIGRATE=false`.
+
+## D-019 Legal set for businesses and consumers
+
+**Date:** 2026-11-13
+
+The owner chose to sell to both businesses and consumers. So the Terms now have a consumer cancellation right (section 4A: 14 days, with an express request to start early and a pro-rata deduction), consumer wording on liability (13.4) and VAT (4.1), and a model [cancellation form](/legal/cancellation). Business customers keep the liability cap and indemnity.
+
+- **Identity.** UK law requires the business name and a postal address before selling online. `site.legalAddress`, `site.operatorCountry` and `site.companyRegistration` are `TODO(confirm)`. Until the address is set, the legal pages say it will be published before the first paid order; they never show a placeholder. `operatorStatement()` builds the sentence.
+- **Providers have a status.** `src/config/providers.ts` is the one list for the Privacy Policy and the sub-processor page, and marks each provider "In use", "From launch" or "If you connect it", because the VPS and database are not live yet. Unsplash is listed because photos load from its CDN.
+- **New documents:** Data Processing Agreement (Art 28, 48-hour breach notice, 30 days' notice of new sub-processors with a right to object), sub-processor list, cancellation form, complaints procedure (2 business days to acknowledge, 14 days to reply), notice-and-takedown in the AUP, and a `/security` page that states only what the code does.
+- **Fixes:** refund maths (yearly price minus the monthly price per started month, never negative), 7 days' email notice before suspension for late payment, support "every day, within 24 hours" everywhere, maintenance announced on the status page and by email, "service credit" replaced by a plain outage review.
+
+All documents stay marked as drafts (`legalDraft = true`) until a lawyer has reviewed them.
+
+## D-020 Footer and navigation
+
+**Date:** 2026-11-13
+
+- **Footer:** wordmark, one-line description, email and social links on the left. Four columns: Hosting (what we sell), Company (who we are), Help (sign in, domains, security, complaints), Legal (every policy, including Service Levels and the DPA). The repeated sales pitch is gone, since the call-to-action band sits right above. Group titles are plain text, not headings, so the page outline stays clean. The bottom row holds the copyright, the trading-name line once confirmed, and small print.
+- **System status** is out of the navigation until monitoring is connected. The page stays reachable and says monitoring is not connected yet.
+- **Main nav:** About replaces Domains; domain registration isn't available yet, so Domains moves to the footer.
+- **Admin sidebar** is grouped into Work, Clients and Platform.
+- Focus rings are white on the blue band and the ink footer, where the brand blue was invisible.

@@ -50,10 +50,15 @@ export async function submitContact(_prev: FormState, formData: FormData): Promi
   const limit = await rateLimit(`contact:${await clientIp()}`, 5, 10 * 60_000);
   if (!limit.ok) return { ok: false, message: "You've sent several messages already. Please try again in a few minutes." };
   const { name, email, company, topic, sites, message } = parsed.data;
-  await getAdapters().email.send({
+  const sent = await getAdapters().email.send({
     to: site.contact.salesEmail,
+    replyTo: email,
     subject: `[${topic}] New enquiry from ${name}`,
     body: [`From: ${name} <${email}>`, company ? `Company: ${company}` : "", sites ? `Sites: ${sites}` : "", "", message].filter(Boolean).join("\n"),
   });
-  return { ok: true, message: "We have your message and will reply by email, usually within one business day." };
+  // Never tell a visitor we have their message when it went nowhere.
+  if (sent.id === "failed") {
+    return { ok: false, message: `We couldn't send your message just now. Please email us at ${site.contact.email}.` };
+  }
+  return { ok: true, message: `We have your message and will reply by email. We answer every day, within 24 hours.` };
 }

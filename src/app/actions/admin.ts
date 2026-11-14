@@ -96,6 +96,8 @@ export async function addAdminNote(_prev: FormState, formData: FormData): Promis
   const [account] = await db.select({ id: t.accounts.id }).from(t.accounts).where(eq(t.accounts.id, accountId));
   if (!account) return { ok: false, message: "Client not found." };
   await db.insert(t.adminNotes).values({ id: newId("note"), accountId, authorName: admin.name, body: body.data });
+  // Logged without the account id: internal notes must not appear in the client's own activity log.
+  await audit({ user: admin, impersonator: null }, "admin.note_add", accountId);
   refresh();
   return { ok: true, message: "Note added." };
 }

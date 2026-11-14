@@ -9,14 +9,14 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Why Zaffre",
-  description: "Fully managed hosting on reserved resources, at a fixed price with no renewal jump, supported by the people who run the servers.",
+  description: "Fully managed hosting on dedicated resources, at a fixed price with no renewal jump, with a real person answering every day.",
   alternates: { canonical: "/features" },
 };
 
 export default function FeaturesPage() {
   return (
     <>
-      <PageHero title={features.title} lines={features.lines} body={features.intro} photo={photos.support} />
+      <PageHero title={features.title} lines={features.lines} body={features.intro} photo={photos.features} />
 
       {features.groups.map((group, i) => (
         <Section key={group.id} id={group.id} tone={i % 2 === 1 ? "sunk" : "plain"} className="scroll-mt-20">

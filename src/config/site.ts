@@ -14,6 +14,15 @@ export const site = {
   currency: "USD",
   /** Name used in legal documents. Owner confirmed "Zaffre" on 2026-11-13; update when a company is registered. */
   legalName: "Zaffre",
+  /**
+   * Postal address of the business, shown in the legal documents and footer once confirmed.
+   * UK law requires it before selling online. TODO(confirm): a business address, never a home address unless the owner chooses.
+   */
+  legalAddress: "TODO(confirm) business address",
+  /** Country the business is run from, for the Privacy Policy "Who we are". TODO(confirm). */
+  operatorCountry: "TODO(confirm) country",
+  /** Company number once incorporated, e.g. "Registered in England and Wales, company number 01234567". TODO(confirm). */
+  companyRegistration: "TODO(confirm) company registration",
   /** Governing law for the Terms of Service. Chosen 2026-11-13 (DECISIONS D-017); the jurisdiction clause in terms.mdx names the same courts. */
   governingLaw: "the laws of England and Wales",
   /** Refund window in days for the Refund Policy. TODO(confirm). */
@@ -32,7 +41,7 @@ export const site = {
     salesEmail: "info@zaffrehost.com",
     /** E.164 number without "+" for wa.me links. Empty until the owner confirms. TODO(confirm). */
     whatsappNumber: "",
-    supportHours: "Every day, replies within business hours",
+    supportHours: "Every day, with a reply within 24 hours",
   },
   /** Confirmed by the owner on 2026-11-13. The handle is "zaffreehost" (two e's) on every network. */
   social: {
@@ -54,6 +63,17 @@ export function isConfirmed(value: string): boolean {
 
 /** The legal entity when it is confirmed, otherwise the brand name. Placeholders are never shown to visitors. */
 export const legalEntity: string = isConfirmed(site.legalName) ? site.legalName : site.name;
+
+/**
+ * Who runs Zaffre, in one sentence, for the legal pages and footer. Only confirmed facts are used;
+ * returns null while the address is not confirmed, and callers then say it will be published before launch.
+ */
+export function operatorStatement(): string | null {
+  if (!isConfirmed(site.legalAddress)) return null;
+  const who = legalEntity === site.name ? site.name : `${site.name} is a trading name of ${legalEntity}`;
+  const registration = isConfirmed(site.companyRegistration) ? ` ${site.companyRegistration}.` : "";
+  return `${who}, ${site.legalAddress}.${registration}`;
+}
 
 export function whatsappLink(message?: string): string | null {
   if (!site.contact.whatsappNumber) return null;

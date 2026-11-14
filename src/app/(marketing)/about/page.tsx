@@ -6,7 +6,7 @@ import { site } from "@/config/site";
 import { SocialLinks } from "@/components/marketing/social-links";
 import { photos } from "@/config/photos";
 import { PageHero, Section, SectionHeading } from "@/components/marketing/section";
-import { PhotoRow, RuledList, Split } from "@/components/marketing/blocks";
+import { RuledList, Split } from "@/components/marketing/blocks";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { Photo } from "@/components/motion/photo";
 import { Reveal } from "@/components/motion/reveal";
@@ -72,7 +72,7 @@ export default function AboutPage() {
             <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-muted">{about.where.body}</p>
             <dl className="mt-8 border-t border-foreground">
               <div className="border-b border-border py-4">
-                <dt className="text-[0.9375rem] text-muted">Websites, databases and dashboard data</dt>
+                <dt className="text-[0.9375rem] text-muted">Client websites and databases, from launch</dt>
                 <dd className="mt-1 text-lg">{site.dataRegions.join("; ")}</dd>
               </div>
               <div className="border-b border-border py-4">
@@ -94,17 +94,17 @@ export default function AboutPage() {
                 {site.contact.email}
               </a>
             </p>
-            <p className="mt-6 text-[0.9375rem] text-muted">Follow along, @{site.social.handle}</p>
+            <p className="mt-6 text-[0.9375rem] text-muted">Social media: @{site.social.handle}</p>
             <SocialLinks className="mt-2" />
           </div>
         </div>
       </Section>
 
       <Section tone="sunk">
-        <PhotoRow photo={photos.cobalt} flip>
+        <div className="max-w-3xl">
           <h2 className="text-[2rem] leading-[1.08] font-semibold tracking-[-0.03em] sm:text-[2.5rem]">{about.paid.title}</h2>
-          <p className="mt-5 text-lg leading-relaxed text-muted">{about.paid.body}</p>
-        </PhotoRow>
+          <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{about.paid.body}</p>
+        </div>
       </Section>
 
       <CtaBand />

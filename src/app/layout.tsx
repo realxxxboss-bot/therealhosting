@@ -28,7 +28,8 @@ export const metadata: Metadata = {
   title: { default: `${site.name}: ${site.tagline}`, template: `%s | ${site.name}` },
   description: site.description,
   applicationName: site.name,
-  openGraph: { type: "website", siteName: site.name, locale: "en", url: site.url },
+  // No og:url here: every page would inherit the home page's address. Pages set a canonical instead.
+  openGraph: { type: "website", siteName: site.name, locale: "en" },
   twitter: { card: "summary_large_image" },
   manifest: "/manifest.webmanifest",
 };

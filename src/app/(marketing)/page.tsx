@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { home, migration } from "@/config/marketing";
@@ -10,10 +11,14 @@ import { LineList, PhotoRow, RuledList, TextLink } from "@/components/marketing/
 import { FaqSection } from "@/components/marketing/faq";
 import { CtaBand } from "@/components/marketing/cta-band";
 import { JsonLd } from "@/components/marketing/json-ld";
+import { VisualRow } from "@/components/marketing/product-visual";
 import { HeroIntro } from "@/components/motion/hero-intro";
 import { Photo } from "@/components/motion/photo";
 import { Reveal } from "@/components/motion/reveal";
 import { formatUSD } from "@/lib/utils";
+import { usesSampleDatabase } from "@/lib/db";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const typeOrder: SiteType[] = ["nextjs", "wordpress", "static"];
 
@@ -127,7 +132,7 @@ export default function HomePage() {
         <SectionHeading title="Three kinds of site, each hosted properly." body="Most businesses end up with a mix. One account and one bill covers all of it." />
         <div className="mt-14 grid gap-20 sm:mt-20 lg:gap-28">
           {home.types.map((item, i) => (
-            <PhotoRow key={item.type} photo={photos[item.photo]} flip={i % 2 === 1}>
+            <VisualRow key={item.type} type={item.type} flip={i % 2 === 1}>
               <h3 className="text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] sm:text-[2rem]">{item.title}</h3>
               <p className="mt-4 text-lg leading-relaxed text-muted">{item.body}</p>
               <LineList items={item.points} className="mt-7 text-[0.9375rem]" />
@@ -135,7 +140,7 @@ export default function HomePage() {
                 <span className="text-lg font-semibold">From {fromPrice(item.type)} a month</span>
                 <TextLink href={`/hosting/${item.type}`}>More about {siteTypes[item.type].label}</TextLink>
               </p>
-            </PhotoRow>
+            </VisualRow>
           ))}
         </div>
       </Section>
@@ -194,9 +199,16 @@ export default function HomePage() {
           <div className="lg:col-span-5">
             <SectionHeading title={home.dashboard.title} body={home.dashboard.body} />
             <p className="mt-8">
-              <ButtonLink href="/sign-in" size="lg">
-                Open the demo dashboard
-              </ButtonLink>
+              {/* The public demo logins exist only on the sample database; with real data, offer a walkthrough instead. */}
+              {usesSampleDatabase() ? (
+                <ButtonLink href="/sign-in" size="lg">
+                  Open the demo dashboard
+                </ButtonLink>
+              ) : (
+                <ButtonLink href="/contact?topic=sales" size="lg">
+                  Ask for a walkthrough
+                </ButtonLink>
+              )}
             </p>
           </div>
           <RuledList items={home.dashboard.points} stacked className="lg:col-span-7" />
@@ -205,7 +217,7 @@ export default function HomePage() {
           <Image src="/screens/dashboard-light.webp" alt="The Zaffre client dashboard showing a list of sites with their status, last deploy and last backup" width={2400} height={1500} unoptimized className="h-auto w-full dark:hidden" />
           <Image src="/screens/dashboard-dark.webp" alt="" width={2400} height={1500} unoptimized className="hidden h-auto w-full dark:block" />
         </Reveal>
-        <p className="mt-3 text-sm text-muted">A screenshot of the demo account. The sites in it are sample data.</p>
+        <p className="mt-3 text-sm text-muted">A screenshot of the dashboard with sample data.</p>
       </Section>
 
       <Section>

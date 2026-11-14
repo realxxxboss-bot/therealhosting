@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { beforeAll, describe, expect, it } from "vitest";
 import { createPasswordLink, findPasswordLink } from "@/lib/auth/links";
 import { decrypt, encrypt, hashToken, newToken } from "@/lib/auth/secrets";
-import { base32Decode, base32Encode, generateTotpSecret, totpCode, totpUri, verifyTotp } from "@/lib/auth/totp";
+import { base32Decode, base32Encode, generateTotpSecret, totpCode, totpUri, verifyTotp, matchTotpStep } from "@/lib/auth/totp";
 import { bootstrapDatabase } from "@/lib/db/bootstrap";
 import { createSampleDatabase, schema as t, type Database } from "@/lib/db";
 import { renderInvoicePdf } from "@/lib/invoice-pdf";
@@ -34,6 +34,10 @@ describe("TOTP (RFC 6238)", () => {
     expect(verifyTotp(secret, totpCode(secret, now - 90_000), now)).toBe(false);
     expect(verifyTotp(secret, "12345", now)).toBe(false);
     expect(verifyTotp(secret, "abcdef", now)).toBe(false);
+    // The matched step lets callers refuse a replayed code.
+    const step = Math.floor(now / 30_000);
+    expect(matchTotpStep(secret, totpCode(secret, now), now)).toBe(step);
+    expect(matchTotpStep(secret, totpCode(secret, now - 30_000), now)).toBe(step - 1);
   });
 
   it("round-trips base32 and builds an authenticator link", () => {

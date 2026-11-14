@@ -11,11 +11,13 @@ export function SidebarNav({ items, label }: { items: NavItem[]; label: string }
   return (
     <nav aria-label={label}>
       <ul className="grid gap-0.5">
-        {items.map((item) => {
+        {items.map((item, i) => {
           const Icon = navIcons[item.icon];
+          const heading = item.group && item.group !== items[i - 1]?.group ? item.group : null;
           const active = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <li key={item.href}>
+              {heading ? <p className={cn("px-3 pb-1 text-xs font-medium text-muted", i > 0 && "mt-4")}>{heading}</p> : null}
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
